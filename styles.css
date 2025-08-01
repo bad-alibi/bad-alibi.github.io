@@ -1,3 +1,4 @@
+
 /* ====================
    Base Styles
 ==================== */
@@ -149,23 +150,24 @@ body {
   transition: transform 1s ease-in-out;
 }
 
-.featured-slide {
+/* Default (Desktop) Styles */
+.featured-book .featured-slide {
   flex: 0 0 100%;
   display: flex;
-  flex-direction: row;  /* Ensures side-by-side */
+  flex-direction: row;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 2rem;
   padding: 1rem;
   box-sizing: border-box;
 }
 
-.featured-image {
+.featured-book .featured-image {
   flex-shrink: 0;
   position: relative;
 }
 
-.featured-image img {
+.featured-book .featured-image img {
   width: 220px;
   height: auto;
   border-radius: 6px;
@@ -199,60 +201,41 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Featured Books Section - Responsive Fix */
-.featured-book .featured-slide {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1rem;
-}
-
-.featured-book .featured-image {
-  width: 100%;
-  max-width: 350px;
-}
-
-.featured-book .featured-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.featured-book .featured-description {
-  padding: 0 1rem;
-}
-
-.featured-book .featured-description h2 {
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-}
-
-.featured-book .featured-description p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-/* Adjustments specifically for small screens */
-@media (max-width: 600px) {
-  .featured-book .featured-slider-wrapper {
-    overflow: hidden;
+/* Responsive adjustments for tablets and mobile */
+@media (max-width: 768px) {
+  .featured-book .featured-slide {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
   }
 
-  .featured-book .featured-slide {
+  .featured-book .featured-image {
     width: 100%;
-    padding: 0.5rem;
+    max-width: 350px;
+  }
+
+  .featured-book .featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .featured-book .featured-description {
+    padding: 0 1rem;
+  }
+
+  .featured-book .featured-description h2 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
   }
 
   .featured-book .featured-description p {
     font-size: 0.9rem;
-  }
-
-  .featured-book .featured-description h2 {
-    font-size: 1.1rem;
+    margin-bottom: 1rem;
   }
 }
-
 
 /* ====================
    Animation
@@ -295,9 +278,6 @@ footer {
   font-size: 0.9rem;
 }
 
-.footer-links {
-  margin-top: 0.5rem;
-}
 .footer-links a {
   color: #ccc;
   margin: 0 0.5rem;
@@ -307,13 +287,6 @@ footer {
   text-decoration: underline;
 }
 
-.social-icons {
-  margin-top: 1rem;
-}
-.social-icons a {
-  display: inline-block;
-  margin: 0 0.5rem;
-}
 .social-icons img {
   width: 24px;
   height: 24px;
@@ -322,23 +295,4 @@ footer {
 }
 .social-icons img:hover {
   transform: scale(1.1);
-}
-
-/* ====================
-   Responsive Fix
-==================== */
-@media (max-width: 768px) {
-  .featured-slide {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .featured-image img {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .featured-description {
-    text-align: center;
-  }
 }
