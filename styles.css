@@ -199,6 +199,61 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Featured Books Section - Responsive Fix */
+.featured-book .featured-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.featured-book .featured-image {
+  width: 100%;
+  max-width: 350px;
+}
+
+.featured-book .featured-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.featured-book .featured-description {
+  padding: 0 1rem;
+}
+
+.featured-book .featured-description h2 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.featured-book .featured-description p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Adjustments specifically for small screens */
+@media (max-width: 600px) {
+  .featured-book .featured-slider-wrapper {
+    overflow: hidden;
+  }
+
+  .featured-book .featured-slide {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .featured-book .featured-description p {
+    font-size: 0.9rem;
+  }
+
+  .featured-book .featured-description h2 {
+    font-size: 1.1rem;
+  }
+}
+
+
 /* ====================
    Animation
 ==================== */
