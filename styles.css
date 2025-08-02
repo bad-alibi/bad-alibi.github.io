@@ -146,9 +146,11 @@ body {
 
 .featured-slider {
   display: flex;
-  width: 300%;
-  animation: slideBooks 18s infinite;
-  transition: transform 1s ease-in-out;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 2rem;
 }
 
 .featured-book .featured-slide {
@@ -160,6 +162,7 @@ body {
   gap: 2rem;
   padding: 1rem;
   box-sizing: border-box;
+  scroll-snap-align: start;
 }
 
 .featured-book .featured-image {
@@ -205,26 +208,21 @@ body {
    Responsive
 ==================== */
 @media (max-width: 768px) {
-  .featured-slider-wrapper {
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
-
   .featured-slider {
-    width: 100% !important;
-    flex-direction: column;
+    flex-direction: row;
+    overflow-x: scroll;
     animation: none;
-    transform: translateX(0%) !important;
+    width: 100%;
+    gap: 1rem;
   }
 
   .featured-book .featured-slide {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 1rem;
-    padding: 1rem;
-    flex: 0 0 100%;
+    flex: 0 0 90%;
     max-width: 100%;
+    padding: 1rem;
   }
 
   .featured-book .featured-image {
