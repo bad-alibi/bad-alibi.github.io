@@ -26,7 +26,6 @@
 <header class="hero">
   <div class="container">
     <h1>Bad Alibi</h1>
-    <!-- <p class="tagline">Where stories leave no witnesses</p> -->
   </div>
 </header>
 
@@ -41,10 +40,6 @@
       <img src="images/merch-tumbler.jpg" alt="Tumbler" />
       <a href="https://www.amazon.com/dp/B0FJL8G9DH" target="_blank" rel="noopener noreferrer" class="button">Buy Tumbler</a>
     </div>
-   <!-- <div class="merch-item">
-      <img src="merch-tote.jpg" alt="Tote" />
-      <a href="https://www.amazon.com/example-merch3" target="_blank" rel="noopener noreferrer" class="button">Buy Tote</a>
-    </div> -->
   </div>
 
   <div class="view-all-link">
@@ -62,10 +57,119 @@
   </div>
 </section>
 
+<!-- Best Sellers Section -->
+<section class="best-sellers" aria-labelledby="best-sellers-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="best-sellers-heading">Best Sellers</h2>
+      <p class="best-sellers-sub">Trending favorites across our authors</p>
+    </div>
+
+    <!-- CSS-only Tabs -->
+    <div class="bs-tabs" role="tablist" aria-label="Best sellers categories">
+      <!-- Radios -->
+      <input type="radio" name="bsTabs" id="bs-all" class="bs-tab-radio" checked>
+      <input type="radio" name="bsTabs" id="bs-finance" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-scifi" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-kids" class="bs-tab-radio">
+
+      <!-- Labels act as tabs -->
+      <div class="bs-tab-labels">
+        <label for="bs-all" class="bs-tab" role="tab" aria-controls="panel-all">All</label>
+        <label for="bs-finance" class="bs-tab" role="tab" aria-controls="panel-finance">Finance</label>
+        <label for="bs-scifi" class="bs-tab" role="tab" aria-controls="panel-scifi">Sci-Fi</label>
+        <label for="bs-kids" class="bs-tab" role="tab" aria-controls="panel-kids">Kids</label>
+      </div>
+
+      <!-- Panels -->
+      <div class="bs-panels">
+        <!-- All -->
+        <div id="panel-all" class="bs-panel" role="tabpanel">
+          <div class="bs-grid">
+            <article class="bs-item">
+              <span class="rank-badge">#1</span>
+              <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover">
+              </a>
+              <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
+              <p class="book-author">Harper Lane</p>
+              <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+            </article>
+
+            <article class="bs-item">
+              <span class="rank-badge">#2</span>
+              <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover">
+              </a>
+              <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+              <p class="book-author">Pamela Pardee</p>
+              <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+            </article>
+
+            <article class="bs-item">
+              <span class="rank-badge">#3</span>
+              <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover">
+              </a>
+              <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+              <p class="book-author">Pamela DuShane</p>
+              <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+            </article>
+          </div>
+        </div>
+
+        <!-- Finance -->
+        <div id="panel-finance" class="bs-panel" role="tabpanel">
+          <div class="bs-grid">
+            <article class="bs-item">
+              <span class="rank-badge">#1</span>
+              <a class="cover-wrap" href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/pamela-pardee.jpg" alt="Finance & Activity Books">
+              </a>
+              <h3 class="book-title"><a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability</a></h3>
+              <p class="book-author">Pamela Pardee</p>
+              <a class="button small" href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">See Books</a>
+            </article>
+          </div>
+        </div>
+
+        <!-- Sci-Fi -->
+        <div id="panel-scifi" class="bs-panel" role="tabpanel">
+          <div class="bs-grid">
+            <article class="bs-item">
+              <span class="rank-badge">#1</span>
+              <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover">
+              </a>
+              <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
+              <p class="book-author">Harper Lane</p>
+              <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+            </article>
+          </div>
+        </div>
+
+        <!-- Kids -->
+        <div id="panel-kids" class="bs-panel" role="tabpanel">
+          <div class="bs-grid">
+            <article class="bs-item">
+              <span class="rank-badge">#1</span>
+              <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover">
+              </a>
+              <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+              <p class="book-author">Pamela DuShane</p>
+              <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <main class="container">
   <section class="intro">
     <h2>Meet Our Authors</h2>
-    <!-- <p>Explore financial wisdom, space-bound romance, and delightful stories for kids.</p> -->
   </section>
 
   <section class="authors">
@@ -143,15 +247,14 @@
           </div>
         </div>
 
-      </div> <!-- .featured-slider -->
-    </div> <!-- .featured-slider-wrapper -->
-  </div> <!-- .container -->
+      </div>
+    </div>
+  </div>
 </section>
 
 <footer>
   <div class="container">
     <p>&copy; 2025 Bad Alibi. All rights reserved.</p>
-    
     <div class="footer-links">
       <a href="privacy.html" rel="noopener noreferrer">Privacy Policy</a> |
       <a href="terms.html" rel="noopener noreferrer">Terms of Service</a> |
@@ -161,7 +264,6 @@
       <a href="https://www.facebook.com/profile.php?id=61578929661049" target="_blank" rel="noopener noreferrer"><img src="facebook.svg" alt="Facebook" /></a>
       <a href="https://www.instagram.com/bad__alibi/" target="_blank" rel="noopener noreferrer"><img src="instagram.svg" alt="Instagram" /></a>
       <a href="https://www.tiktok.com/@bad.alibi" target="_blank" rel="noopener noreferrer"><img src="tiktok.svg" alt="TikTok" /></a>
-     <!-- <a href="https://x.com" target="_blank" rel="noopener noreferrer"><img src="x.svg" alt="X" /></a>  -->
     </div>
   </div>
 </footer>

@@ -4,7 +4,7 @@
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  background-color: #fdfdfd;
+  background-color: #f5f5f5; /* Changed to light gray */
   color: #222;
 }
 
@@ -84,13 +84,19 @@ body {
 }
 
 .author-card {
-  background: #fff;
+  background: #fafafa; /* Off-white for contrast */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1.5rem;
   width: 280px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
   text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.author-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
 .author-card img {
@@ -119,6 +125,17 @@ body {
 
 .merch-item {
   max-width: 200px;
+  background: #fafafa; /* Off-white for contrast */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.merch-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
 .merch-item img {
@@ -132,7 +149,7 @@ body {
    Featured Book
 ==================== */
 .featured-book {
-  background-color: #fff;
+  background-color: #f5f5f5; /* Light gray to match page */
   padding: 2rem 1rem;
   border-top: 1px solid #eee;
 }
@@ -281,6 +298,13 @@ body {
   background: #444;
 }
 
+.button.small {
+  align-self: start;
+  font-size: .9rem;
+  padding: .45rem .7rem;
+  border-radius: 10px;
+}
+
 /* ====================
    Footer
 ==================== */
@@ -310,3 +334,113 @@ footer {
 .social-icons img:hover {
   transform: scale(1.1);
 }
+
+/* ====================
+   Best Sellers
+==================== */
+.best-sellers { 
+  padding: 2.5rem 0; 
+  background: #f5f5f5; /* Light gray to match page */
+}
+.best-sellers .intro { 
+  text-align: center; 
+  margin-bottom: 1rem; 
+}
+.best-sellers-sub { 
+  margin: .25rem 0 1.25rem; 
+  color: #666; 
+  font-size: .95rem; 
+}
+
+.bs-tabs { width: 100%; }
+.bs-tab-radio { position: absolute; left: -9999px; }
+
+.bs-tab-labels {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: .5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.bs-tab {
+  padding: .5rem .9rem;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: background .2s ease, border-color .2s ease;
+}
+.bs-tab:hover { background: #f6f6f6; }
+
+#bs-all:checked ~ .bs-tab-labels label[for="bs-all"],
+#bs-finance:checked ~ .bs-tab-labels label[for="bs-finance"],
+#bs-scifi:checked ~ .bs-tab-labels label[for="bs-scifi"],
+#bs-kids:checked ~ .bs-tab-labels label[for="bs-kids"] {
+  background: #222; color: #fff; border-color: #222;
+}
+
+.bs-panels { position: relative; }
+.bs-panel { display: none; }
+#bs-all:checked ~ .bs-panels #panel-all,
+#bs-finance:checked ~ .bs-panels #panel-finance,
+#bs-scifi:checked ~ .bs-panels #panel-scifi,
+#bs-kids:checked ~ .bs-panels #panel-kids { display: block; }
+
+.bs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+@media (max-width: 900px) {
+  .bs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .bs-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 70%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: .75rem;
+    padding-bottom: .5rem;
+  }
+  .bs-item { scroll-snap-align: start; }
+}
+
+.bs-item {
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: .9rem;
+  background: #fafafa; /* Off-white for contrast */
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.bs-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.rank-badge {
+  position: absolute;
+  top: .6rem; left: .6rem;
+  background: #222; color: #fff;
+  font-weight: 700; font-size: .85rem;
+  padding: .2rem .5rem; border-radius: 999px;
+}
+
+.cover-wrap { display: block; border-radius: 10px; overflow: hidden; }
+.cover-wrap img {
+  width: 100%; height: auto; display: block;
+  aspect-ratio: 3/4; object-fit: cover;
+}
+
+.book-title { margin: .25rem 0 0; font-size: 1rem; line-height: 1.25; }
+.book-title a { color: inherit; text-decoration: none; }
+.book-title a:hover { text-decoration: underline; }
+.book-author { margin: 0; color: #666; font-size: .9rem; }
