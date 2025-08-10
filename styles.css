@@ -50,7 +50,7 @@ body {
 }
 
 /* ====================
-   Hero Section
+   Hero
 ==================== */
 .hero {
   background-color: #111;
@@ -67,45 +67,7 @@ body {
 /* ====================
    Intro
 ==================== */
-.intro {
-  text-align: center;
-  margin: 2rem 0;
-}
-
-/* ====================
-   Author Cards
-==================== */
-.authors {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: space-around;
-  margin-bottom: 3rem;
-}
-
-.author-card {
-  background: #fafafa; /* Off-white for contrast */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1.5rem;
-  width: 280px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.author-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-}
-
-.author-card img {
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 1rem;
-}
+.intro { text-align: center; margin: 2rem 0; }
 
 /* ====================
    Merch Grid
@@ -125,7 +87,7 @@ body {
 
 .merch-item {
   max-width: 200px;
-  background: #fafafa; /* Off-white for contrast */
+  background: #fafafa;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 0.5rem;
@@ -146,139 +108,37 @@ body {
 }
 
 /* ====================
-   Featured Book
+   Featured Book (legacy slider section)
 ==================== */
 .featured-book {
-  background-color: #f5f5f5; /* Light gray to match page */
+  background-color: #f5f5f5;
   padding: 2rem 1rem;
   border-top: 1px solid #eee;
 }
-
-.featured-slider-wrapper {
-  overflow: hidden;
-  width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-}
-
+.featured-slider-wrapper { overflow: hidden; width: 100%; max-width: 100vw; box-sizing: border-box; }
 .featured-slider {
-  display: flex;
-  width: 100%;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 2rem;
+  display: flex; width: 100%; overflow-x: auto;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; gap: 2rem;
 }
-
 .featured-book .featured-slide {
-  flex: 0 0 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 2rem;
-  padding: 1rem;
-  box-sizing: border-box;
-  scroll-snap-align: start;
+  flex: 0 0 100%; display: flex; flex-direction: row; align-items: flex-start;
+  justify-content: center; gap: 2rem; padding: 1rem; box-sizing: border-box; scroll-snap-align: start;
 }
+.featured-book .featured-image { flex-shrink: 0; position: relative; }
+.featured-book .featured-image img { width: 220px; height: auto; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+.featured-badge { position: absolute; top: 10px; right: 10px; background: crimson; color: #fff; font-size: .75rem; padding: .25rem .6rem; border-radius: 12px; }
+.featured-description { flex: 1; min-width: 250px; }
+.featured-description h2 { margin-top: 0; font-size: 1.5rem; }
+.featured-description p { font-size: 1rem; line-height: 1.5; margin-bottom: 1rem; }
 
-.featured-book .featured-image {
-  flex-shrink: 0;
-  position: relative;
-}
-
-.featured-book .featured-image img {
-  width: 220px;
-  height: auto;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.featured-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: crimson;
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 12px;
-}
-
-.featured-description {
-  flex: 1;
-  min-width: 250px;
-}
-
-.featured-description h2 {
-  margin-top: 0;
-  font-size: 1.5rem;
-}
-
-.featured-description p {
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-}
-
-/* ====================
-   Responsive (Featured Book)
-==================== */
 @media (max-width: 768px) {
-  .featured-slider {
-    flex-direction: row;
-    overflow-x: scroll;
-    animation: none;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .featured-book .featured-slide {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    flex: 0 0 90%;
-    max-width: 100%;
-    padding: 1rem;
-  }
-
-  .featured-book .featured-image {
-    width: 100%;
-    max-width: 350px;
-  }
-
-  .featured-book .featured-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-
-  .featured-book .featured-description {
-    padding: 0 1rem;
-  }
-
-  .featured-book .featured-description h2 {
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
-  }
-
-  .featured-book .featured-description p {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-}
-
-/* ====================
-   Animation
-==================== */
-@keyframes slideBooks {
-  0% { transform: translateX(0%); }
-  33.33% { transform: translateX(0%); }
-  36.66% { transform: translateX(-100%); }
-  66.66% { transform: translateX(-100%); }
-  69.99% { transform: translateX(-200%); }
-  99.99% { transform: translateX(-200%); }
-  100% { transform: translateX(0%); }
+  .featured-slider { gap: 1rem; }
+  .featured-book .featured-slide { flex-direction: column; align-items: center; text-align: center; flex: 0 0 90%; }
+  .featured-book .featured-image { width: 100%; max-width: 350px; }
+  .featured-book .featured-image img { width: 100%; height: auto; border-radius: 8px; }
+  .featured-book .featured-description { padding: 0 1rem; }
+  .featured-book .featured-description h2 { font-size: 1.2rem; margin: .5rem 0; }
+  .featured-book .featured-description p { font-size: .9rem; margin-bottom: 1rem; }
 }
 
 /* ====================
@@ -294,12 +154,10 @@ body {
   border-radius: 4px;
   transition: background 0.3s ease;
 }
-.button:hover {
-  background: #444;
-}
+.button:hover { background: #444; }
 
 .button.small {
-  align-self: start;
+  align-self: start; /* default; overridden inside cards */
   font-size: .9rem;
   padding: .45rem .7rem;
   border-radius: 10px;
@@ -314,72 +172,58 @@ footer {
   text-align: center;
   padding: 1rem 0;
   font-size: 0.9rem;
+  margin-top: 2rem;
 }
 
 .footer-links a {
   color: #ccc;
   margin: 0 0.5rem;
+  text-decoration: none;
 }
-.footer-links a:hover {
-  color: white;
-  text-decoration: underline;
-}
+.footer-links a:hover { color: white; text-decoration: underline; }
 
+.social-icons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-top: .5rem;
+}
 .social-icons img {
-  width: 24px;
-  height: 24px;
+  width: 24px; height: 24px;
   filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
 }
-.social-icons img:hover {
-  transform: scale(1.1);
-}
+.social-icons img:hover { transform: scale(1.1); }
 
 /* ====================
-   Best Sellers
+   Best Sellers (also used by New Releases)
 ==================== */
 .best-sellers { 
   padding: 2.5rem 0; 
-  background: #f5f5f5; /* Light gray to match page */
+  background: #f5f5f5;
+  overflow: hidden; /* keep inner edge-bleeds from affecting layout */
 }
-.best-sellers .intro { 
-  text-align: center; 
-  margin-bottom: 1rem; 
-}
-.best-sellers-sub { 
-  margin: .25rem 0 1.25rem; 
-  color: #666; 
-  font-size: .95rem; 
-}
+.best-sellers .intro { text-align: center; margin-bottom: 1rem; }
+.best-sellers-sub { margin: .25rem 0 1.25rem; color: #666; font-size: .95rem; }
 
 /* Tabs */
 .bs-tabs { width: 100%; }
-.bs-tab-radio { position: absolute; left: -9999px; }
-
+.bs-tab-radio { position: absolute; left: -9999px; } /* still checkable */
 .bs-tab-labels {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: .5rem;
-  justify-content: center;
-  margin-bottom: 1rem;
+  display: grid; grid-template-columns: repeat(4, auto);
+  gap: .5rem; justify-content: center; margin-bottom: 1rem;
 }
 .bs-tab {
-  padding: .5rem .9rem;
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
+  padding: .5rem .9rem; border: 1px solid #ddd; border-radius: 999px;
+  font-weight: 600; cursor: pointer; user-select: none;
   transition: background .2s ease, border-color .2s ease;
 }
 .bs-tab:hover { background: #f6f6f6; }
-
 #bs-all:checked ~ .bs-tab-labels label[for="bs-all"],
 #bs-finance:checked ~ .bs-tab-labels label[for="bs-finance"],
 #bs-scifi:checked ~ .bs-tab-labels label[for="bs-scifi"],
-#bs-kids:checked ~ .bs-tab-labels label[for="bs-kids"] {
-  background: #222; color: #fff; border-color: #222;
-}
+#bs-kids:checked ~ .bs-tab-labels label[for="bs-kids"] { background: #222; color: #fff; border-color: #222; }
 
 /* Panels */
 .bs-panels { position: relative; }
@@ -395,7 +239,6 @@ footer {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
 }
-
 @media (max-width: 900px) {
   .bs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -406,7 +249,7 @@ footer {
   border: 1px solid #eee;
   border-radius: 14px;
   padding: .9rem;
-  background: #fafafa; /* Off-white for contrast */
+  background: #fafafa;
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -414,6 +257,16 @@ footer {
   box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
+/* Center contents in cards (Best Sellers & New Releases) */
+.best-sellers .bs-item,
+.new-releases .bs-item {
+  align-items: center;
+  text-align: center;
+}
+.best-sellers .button.small,
+.new-releases .button.small { align-self: center; }
+
+/* Hover lift */
 .bs-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
@@ -438,29 +291,32 @@ footer {
 .book-title a:hover { text-decoration: underline; }
 .book-author { margin: 0; color: #666; font-size: .9rem; }
 
-/* Best Sellers: Mobile carousel */
+/* Mobile carousel behavior (Best Sellers & New Releases) */
 @media (max-width: 640px) {
-  .best-sellers .bs-grid {
+  .best-sellers .bs-grid,
+  .new-releases .bs-grid {
     display: grid;
-    /* Remove fixed columns so auto-columns take over */
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: 80%;
+    grid-template-columns: none;    /* let auto-columns take over */
+    grid-auto-flow: column;         /* place cards left-to-right */
+    grid-auto-columns: 80%;         /* each card width */
     gap: 0.9rem;
 
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
     touch-action: pan-x;
 
     padding: 0.25rem 0.25rem 0.5rem;
-    margin: 0 -0.5rem;
+    margin: 0;                      /* prevents overflow affecting footer */
   }
 
-  .best-sellers .bs-grid::-webkit-scrollbar { display: none; }
+  .best-sellers .bs-grid::-webkit-scrollbar,
+  .new-releases .bs-grid::-webkit-scrollbar { display: none; }
 
-  .best-sellers .bs-item {
+  .best-sellers .bs-item,
+  .new-releases .bs-item {
     scroll-snap-align: start;
     background: #fff;
     border-radius: 12px;
@@ -468,21 +324,75 @@ footer {
     box-shadow: 0 2px 10px rgba(0,0,0,.06);
   }
 
-  /* Tabs become horizontally scrollable on mobile */
+  /* Tabs become horizontally scrollable on small screens */
   .best-sellers .bs-tab-labels {
-    display: flex;
-    gap: .75rem;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    padding-bottom: .25rem;
+    display: flex; gap: .75rem; flex-wrap: nowrap;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin; padding-bottom: .25rem;
   }
   .best-sellers .bs-tab { flex: 0 0 auto; }
 }
 
-/* Buttons: mobile touch target in Best Sellers */
-.best-sellers .button.small {
-  min-height: 40px;
-  line-height: 40px;
+/* ====================
+   New Releases (uses Best Sellers layout)
+==================== */
+.new-releases .bs-grid { /* inherits all rules from .best-sellers .bs-grid */ }
+
+/* ====================
+   Author Cards
+==================== */
+.authors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.author-card {
+  text-align: center;
+  max-width: 220px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.author-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+
+.author-card h3 {
+  margin: 0.5rem 0;
+}
+
+.author-card p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.author-card .button {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+}
+
+/* ====================
+   Animation (legacy)
+==================== */
+@keyframes slideBooks {
+  0% { transform: translateX(0%); }
+  33.33% { transform: translateX(0%); }
+  36.66% { transform: translateX(-100%); }
+  66.66% { transform: translateX(-100%); }
+  69.99% { transform: translateX(-200%); }
+  99.99% { transform: translateX(-200%); }
+  100% { transform: translateX(0%); }
 }
