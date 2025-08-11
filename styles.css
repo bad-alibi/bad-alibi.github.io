@@ -420,3 +420,24 @@ footer {
   font-size: 0.9rem;
   pointer-events: none;
 }
+
+.view-more-category {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.view-more-category .button {
+  background-color: #333;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.view-more-category .button:hover {
+  background-color: #555;
+}
+

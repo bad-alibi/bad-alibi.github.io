@@ -8,6 +8,20 @@
   <meta name="robots" content="index, follow">
   <title>Bad Alibi - Home</title>
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Minimal inline CSS for the corner ribbon + centered "View More" buttons -->
+  <style>
+    .coming-soon-wrap { position: relative; display: inline-block; }
+    .coming-soon-ribbon {
+      position: absolute; top: 15px; left: -40px; width: 160px;
+      background: #ff0000; color: #fff; text-align: center; font-weight: 700;
+      padding: 5px 0; transform: rotate(-45deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); text-transform: uppercase; font-size: .9rem;
+      pointer-events: none;
+    }
+    .view-more-category { text-align: center; margin-top: 1.5rem; }
+    .view-more-category .button { display: inline-block; }
+  </style>
 </head>
 <body>
 
@@ -128,6 +142,10 @@
               <a class="button small" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
           </div>
+
+          <div class="view-more-category">
+            <a class="button" href="#authors">View All Authors</a>
+          </div>
         </div>
 
         <!-- Finance -->
@@ -136,7 +154,7 @@
             <article class="bs-item">
               <span class="rank-badge">#1</span>
               <a class="cover-wrap" href="https://a.co/d/eusgoWN" target="_blank" rel="noopener noreferrer">
-                <img loading="lazy" src="images/finance1.jpg" alt="Finance & Activity Books" width="480" height="480" sizes="(max-width: 640px) 80vw, 320px">
+                <img loading="lazy" src="images/finance1.jpg" alt="From Broke Joke to Financial Stability cover" width="480" height="480" sizes="(max-width: 640px) 80vw, 320px">
               </a>
               <h3 class="book-title"><a href="https://a.co/d/eusgoWN" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability</a></h3>
               <p class="book-author">Pamela Pardee</p>
@@ -153,6 +171,10 @@
               <a class="button small" href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
           </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">View More Finance Books</a>
+          </div>
         </div>
 
         <!-- Sci-Fi -->
@@ -168,7 +190,6 @@
               <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
 
-            <!-- Reunited also listed here -->
             <article class="bs-item">
               <span class="rank-badge">#2</span>
               <a class="cover-wrap" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">
@@ -178,6 +199,10 @@
               <p class="book-author">Harper Lane • Romance</p>
               <a class="button small" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
+          </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener noreferrer">View More Sci-Fi Books</a>
           </div>
         </div>
 
@@ -193,6 +218,20 @@
               <p class="book-author">Pamela DuShane</p>
               <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
+
+            <article class="bs-item">
+              <span class="rank-badge">#2</span>
+              <a class="cover-wrap" href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">
+                <img loading="lazy" src="images/benny.jpg" alt="Benny's Blizzard cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+              </a>
+              <h3 class="book-title"><a href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">Benny's Blizzard</a></h3>
+              <p class="book-author">Pamela DuShane</p>
+              <a class="button small" href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+            </article>
+          </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">View More Kids Books</a>
           </div>
         </div>
 
@@ -202,44 +241,46 @@
             <article class="bs-item">
               <span class="rank-badge">#1</span>
               <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
-                <img loading="lazy" src="images/dinosaur.jpg" alt="Halloween Word Search Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                <img loading="lazy" src="images/dinosaur.jpg" alt="Dinosaur Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
               </a>
               <h3 class="book-title"><a href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Dinosaur Word Search</a></h3>
               <p class="book-author">Pamela Pardee</p>
               <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
 
-<article class="bs-item">
+            <article class="bs-item">
               <span class="rank-badge">#2</span>
               <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
-                <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
               </a>
               <h3 class="book-title"><a href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Pirate Adventures Word Search</a></h3>
               <p class="book-author">Pamela Pardee</p>
               <a class="button small" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
 
-<article class="bs-item">
+            <article class="bs-item">
               <span class="rank-badge">#3</span>
               <a class="cover-wrap" href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">
-                <img loading="lazy" src="images/animals.jpg" alt="Animals Word Search" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                <img loading="lazy" src="images/animals.jpg" alt="Animals Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
               </a>
               <h3 class="book-title"><a href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">Animals Word Search</a></h3>
               <p class="book-author">Pamela Pardee</p>
               <a class="button small" href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
 
-<article class="bs-item">
+            <article class="bs-item">
               <span class="rank-badge">#4</span>
               <a class="cover-wrap" href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">
-                <img loading="lazy" src="images/food.jpg" alt="Food Word Search" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                <img loading="lazy" src="images/food.jpg" alt="Food Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
               </a>
               <h3 class="book-title"><a href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">Food Word Search</a></h3>
               <p class="book-author">Pamela Pardee</p>
               <a class="button small" href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
             </article>
+          </div>
 
-            <!-- Duplicate this article block for more activity titles -->
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">View More Activity Books</a>
           </div>
         </div>
 
@@ -250,7 +291,7 @@
 
 <main class="container">
   <section class="intro">
-    <h2>Meet Our Authors</h2>
+    <h2 id="authors">Meet Our Authors</h2>
   </section>
 
   <section class="authors">
@@ -288,8 +329,10 @@
       <!-- Position 1: Coming Soon -->
       <article class="bs-item coming-soon-item">
         <div class="cover-wrap coming-soon-wrap">
-          <!-- <a href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer"> -->
-            <img loading="lazy" src="images/BrokeJoke2.jpg" alt="Reunited cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+          <!-- Enable when live:
+          <a href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">
+          -->
+            <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
           <!-- </a> -->
           <span class="coming-soon-ribbon">Coming Soon</span>
         </div>
@@ -333,7 +376,6 @@
     </div>
   </div>
 </section>
-
 
 <footer>
   <div class="container">
