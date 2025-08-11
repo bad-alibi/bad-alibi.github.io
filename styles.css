@@ -338,6 +338,8 @@ footer {
 ==================== */
 .new-releases .bs-grid {}
 
+
+
 /* ====================
    Author Cards
 ==================== */
@@ -395,4 +397,26 @@ footer {
   69.99% { transform: translateX(-200%); }
   99.99% { transform: translateX(-200%); }
   100% { transform: translateX(0%); }
+}
+
+.coming-soon-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.coming-soon-ribbon {
+  position: absolute;
+  top: 15px;
+  left: -40px;
+  width: 160px;
+  background: #ff0000;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  pointer-events: none;
 }
