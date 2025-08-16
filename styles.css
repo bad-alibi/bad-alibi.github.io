@@ -57,27 +57,37 @@ a{color:inherit}
 .hero h1{margin:0; font-size:2rem; letter-spacing:.5px}
 
 /* ======================
-   Merch Grid (centered & capped width)
+   Merch Grid (centered, larger cards)
 ====================== */
 .merch-grid{padding:2rem 0}
 .merch-grid h2{margin:0 0 1rem 0; text-align:center}
+
+/* Wider grid + bigger columns so images can grow */
 .merch-grid .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns:repeat(2, minmax(280px, 1fr));
   gap:var(--gap);
   justify-content:center;
-  max-width:550px;      /* prevents full-width stretch */
+  max-width:720px;           /* wider than before (was 550px) */
   margin:0 auto;
 }
+
 .merch-item{
   background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
   padding:1rem; box-shadow:var(--shadow);
   display:flex; flex-direction:column; gap:.75rem; align-items:center;
 }
+
+/* Let images fill the (now larger) cards */
 .merch-item img{
-  width:100%; max-width:250px; height:auto;
-  aspect-ratio:4 / 3; object-fit:cover; border-radius:12px;
+  width:100%;
+  max-width:none;            /* remove small cap so it scales with card */
+  height:auto;
+  aspect-ratio:4 / 3;
+  object-fit:cover;
+  border-radius:12px;
 }
+
 .view-all-link{margin-top:1rem; text-align:center}
 
 /* ======================
@@ -247,7 +257,10 @@ footer p{margin:.2rem 0 1rem}
 @media (max-width: 640px){
   .nav-links{gap:.9rem}
   .authors{grid-template-columns:1fr}
-  .merch-grid .grid{grid-template-columns:1fr; max-width:300px}
+  .merch-grid .grid{
+    grid-template-columns:1fr;  /* single column on phones */
+    max-width:360px;            /* a bit wider than before */
+  }
   .new-releases .bs-grid{grid-template-columns:1fr}
   /* slightly narrower fixed cards on small screens */
   .bs-nav .bs-grid .bs-item{flex-basis:220px; min-width:220px}
