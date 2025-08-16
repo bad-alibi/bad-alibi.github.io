@@ -27,7 +27,7 @@ body{
 }
 img{max-width:100%; height:auto; display:block}
 a{color:inherit}
-.container{width:90%; max-width:1000px; margin:0 auto}
+.container{width:90%; max-width:1200px; margin:0 auto} /* was 1000px */
 
 /* Buttons */
 .button{
@@ -57,18 +57,18 @@ a{color:inherit}
 .hero h1{margin:0; font-size:2rem; letter-spacing:.5px}
 
 /* ======================
-   Merch Grid (centered, larger cards)
+   Merch Grid (centered, much larger + portrait images)
 ====================== */
 .merch-grid{padding:2rem 0}
 .merch-grid h2{margin:0 0 1rem 0; text-align:center}
 
-/* Wider grid + bigger columns so images can grow */
+/* Wider grid + larger columns so shirt designs are visible */
 .merch-grid .grid{
   display:grid;
-  grid-template-columns:repeat(2, minmax(280px, 1fr));
+  grid-template-columns:repeat(2, minmax(360px, 1fr)); /* was 320px */
   gap:var(--gap);
   justify-content:center;
-  max-width:720px;           /* wider than before (was 550px) */
+  max-width:1080px;           /* was 900px */
   margin:0 auto;
 }
 
@@ -78,14 +78,16 @@ a{color:inherit}
   display:flex; flex-direction:column; gap:.75rem; align-items:center;
 }
 
-/* Let images fill the (now larger) cards */
+/* Use portrait ratio + contain so the shirt art isn't cropped */
 .merch-item img{
   width:100%;
-  max-width:none;            /* remove small cap so it scales with card */
+  max-width:none;
   height:auto;
-  aspect-ratio:4 / 3;
-  object-fit:cover;
+  aspect-ratio:3 / 4;         /* portrait for apparel */
+  object-fit:contain;          /* show full design */
+  background:#fff;             /* clean backdrop behind transparent areas */
   border-radius:12px;
+  border:1px solid var(--border);
 }
 
 .view-all-link{margin-top:1rem; text-align:center}
@@ -259,7 +261,7 @@ footer p{margin:.2rem 0 1rem}
   .authors{grid-template-columns:1fr}
   .merch-grid .grid{
     grid-template-columns:1fr;  /* single column on phones */
-    max-width:360px;            /* a bit wider than before */
+    max-width:480px;            /* was 420px */
   }
   .new-releases .bs-grid{grid-template-columns:1fr}
   /* slightly narrower fixed cards on small screens */
