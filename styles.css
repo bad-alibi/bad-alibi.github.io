@@ -98,10 +98,11 @@ a{color:inherit}
 }
 .hero h1{
   margin:0 0 .5rem 0;
-  font-size:2rem;
-  letter-spacing:.3px;
-  font-family:'Sprite Graffiti', cursive; /* Apply custom font */
+  font-size:5rem;              /* Increased size */
+  letter-spacing:.5px;
+  font-family:'Sprite Graffiti', cursive;
 }
+
 .hero .btn{
   display:inline-block; margin-top:.6rem; padding:.6rem .9rem; border-radius:12px;
   background:#fff; color:#111; text-decoration:none; font-weight:700;
