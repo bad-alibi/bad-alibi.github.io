@@ -85,13 +85,13 @@
   </div>
 </section>
 
-<section class="about-authors">
+<!--<section class="about-authors">
   <div class="container">
     <p>
       At <strong>Bad Alibi</strong>, we’ve got your cover — literally. From bold, conversation-starting T-shirts to gripping reads by three incredible authors, you’ll find the perfect excuse to shop.
     </p>
   </div>
-</section>
+</section>-->
 
 <!-- NEW: Banner above Best Sellers -->
 <section class="container" aria-label="Bad Alibi Books banner" style="margin: 1.5rem auto;">
@@ -441,53 +441,84 @@
       <p class="best-sellers-sub">Just released and ready to enjoy!</p>
     </div>
 
-    <div class="bs-grid" aria-live="polite">
-      <!-- Position 1: Broke Joke (Now Available) -->
-      <article class="bs-item">
-        <span class="rank-badge">🆕</span>
-        <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
-          <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-        </a>
-        <h3 class="book-title"><a href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability 2nd Edition</a></h3>
-        <p class="book-author">Pamela Pardee</p>
-        <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-      </article>
+    <!-- Match Best Sellers navigation: arrows + scrolling grid -->
+    <div class="bs-nav">
+      <button class="bs-prev" aria-label="Previous">&#10094;</button>
 
-      <!-- Position 2 -->
-      <article class="bs-item">
-        <span class="rank-badge">🆕</span>
-        <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
-          <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-        </a>
-        <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
-        <p class="book-author">Harper Lane</p>
-        <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-      </article>
+      <div class="bs-grid" aria-live="polite">
+        <!-- Position 1: Broke Joke -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability 2nd Edition</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
 
-      <!-- Position 3 -->
-      <article class="bs-item">
-        <span class="rank-badge">🆕</span>
-        <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
-          <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-        </a>
-        <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
-        <p class="book-author">Pamela Pardee</p>
-        <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-      </article>
+        <!-- Position 2 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
+          <p class="book-author">Harper Lane</p>
+          <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
 
-      <!-- Position 4 -->
-      <article class="bs-item">
-        <span class="rank-badge">🆕</span>
-        <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
-          <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-        </a>
-        <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
-        <p class="book-author">Pamela DuShane</p>
-        <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-      </article>
+        <!-- Position 3 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 4 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+          <p class="book-author">Pamela DuShane</p>
+          <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 5: America Word Search -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/america.jpg" alt="America Word Search cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">America Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 6: Christmas Word Search -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/christmas.jpg" alt="Christmas Word Search cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">Christmas Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+      </div>
+
+      <button class="bs-next" aria-label="Next">&#10095;</button>
     </div>
   </div>
 </section>
+
+
 
 <footer>
   <div class="container">

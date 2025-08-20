@@ -40,12 +40,29 @@ a{color:inherit}
 /* Utilities */
 .text-center{text-align:center}
 .muted{color:var(--muted)}
+
+/* Buttons (center label) */
 .button{
-  display:inline-block; padding:.65rem 1rem; border-radius:12px;
-  background:var(--btn); color:var(--btnText); text-decoration:none; font-weight:700;
+  display:inline-flex;              /* center text reliably */
+  align-items:center;
+  justify-content:center;
+  padding:.65rem 1rem;
+  border-radius:12px;
+  background:var(--btn);
+  color:var(--btnText);
+  text-decoration:none;
+  font-weight:700;
+  text-align:center;
   transition:transform .08s ease, box-shadow .2s ease;
+  min-width:120px;                 /* keeps widths consistent */
 }
-.button.small{padding:.5rem .8rem; font-weight:600; border-radius:10px}
+.button.small{
+  padding:.5rem .8rem;
+  font-weight:600;
+  border-radius:10px;
+  font-size:.95rem;
+  min-width:110px;
+}
 .button:hover{transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.08)}
 
 /* ======================
@@ -77,7 +94,6 @@ a{color:inherit}
 
 /* ======================
    Cool Merch — responsive grid
-   3-up desktop, 2-up tablet, 1-up mobile
 ====================== */
 .merch-grid{padding:2rem 0}
 .merch-grid h2{text-align:center; margin:0 0 1rem}
@@ -85,7 +101,6 @@ a{color:inherit}
   display:grid; grid-template-columns:repeat(3,1fr);
   gap:var(--gap); width:90%; max-width:var(--container-w); margin:0 auto;
 }
-/* Cards equal height */
 .merch-grid .merch-item{
   background:var(--card); border:1px solid var(--border);
   border-radius:var(--radius); box-shadow:var(--shadow);
@@ -93,12 +108,12 @@ a{color:inherit}
 }
 .merch-grid .merch-item img{
   width:100%;
-  aspect-ratio:1/1; /* change to 4/5 for taller product photos */
+  aspect-ratio:1/1;          /* uniform square thumbnails */
   object-fit:cover;
   border-radius:calc(var(--radius) - 6px);
 }
-.merch-grid .merch-item .button{margin-top:auto; text-align:center}
-.merch-grid .view-all-link{text-align:center; margin-top:1rem}
+.merch-grid .merch-item .button{margin-top:auto}
+.view-all-link{text-align:center; margin-top:1rem}
 
 /* ======================
    About Authors banner text block
@@ -149,10 +164,12 @@ a{color:inherit}
 /* Horizontal scroller with snapping */
 .bs-nav{position:relative}
 .bs-grid{
-  display:grid; grid-auto-flow:column; grid-auto-columns:clamp(var(--bs-item-min), 26vw, var(--bs-item-max));
+  display:grid; grid-auto-flow:column;
+  grid-auto-columns:clamp(var(--bs-item-min), 26vw, var(--bs-item-max));
   gap:var(--bs-gap);
   overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory;
-  padding: .25rem 2.25rem; /* space for arrows */
+  padding:.25rem 2.25rem; /* space for arrows */
+  scroll-behavior:smooth;
 }
 .bs-grid::-webkit-scrollbar{height:10px}
 .bs-grid::-webkit-scrollbar-thumb{background:#d4d4d4; border-radius:10px}
@@ -160,6 +177,7 @@ a{color:inherit}
 
 /* Book card */
 .bs-item{
+  position:relative; /* anchor absolute children like the rank badge */
   background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
   box-shadow:var(--shadow); padding:.75rem; display:flex; flex-direction:column;
 }
@@ -171,13 +189,22 @@ a{color:inherit}
   width:100%; height:auto; display:block;
   aspect-ratio:2/3; object-fit:cover;
 }
-.rank-badge{
-  position:absolute; transform:translateY(-8px);
-}
 .book-title{font-size:1rem; margin:.4rem 0 .1rem}
 .book-title a{text-decoration:none; color:var(--text)}
 .book-title a:hover{text-decoration:underline}
 .book-author{margin:0 0 .5rem; color:var(--muted); font-size:.95rem}
+
+/* Rank / NEW badge — stays attached to each card */
+.rank-badge{
+  position:absolute;
+  top:10px; left:10px;
+  z-index:2;
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:32px; height:32px; padding:0 .5rem;
+  border-radius:999px;
+  background:#111; color:#fff; font-weight:700; font-size:.9rem; line-height:1;
+  pointer-events:none;
+}
 
 /* Scroller arrows */
 .bs-prev,.bs-next{
@@ -195,6 +222,9 @@ a{color:inherit}
    Authors section
 ====================== */
 .intro h2{margin:0}
+/* Center the "Meet Our Authors" heading specifically */
+.intro h2#authors{ text-align:center; }
+
 .authors{
   display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap);
   margin:1rem auto 2rem; width:90%; max-width:var(--container-w);
@@ -212,7 +242,7 @@ a{color:inherit}
 .author-card p{margin:0 0 .75rem; color:var(--muted)}
 
 /* ======================
-   New Releases (reuse bs styles)
+   New Releases (reuse best-sellers styles)
 ====================== */
 .new-releases .bs-grid{
   grid-auto-columns:clamp(220px, 28vw, 260px);
@@ -248,6 +278,9 @@ img[alt~="banner"]{border-radius:12px}
   .hero{padding:1.6rem 0}
   .hero h1{font-size:1.6rem}
   .bs-grid{padding:.25rem 2.1rem}
+  .rank-badge{
+    top:8px; left:8px; min-width:28px; height:28px; font-size:.85rem;
+  }
 }
 @media (max-width: 580px){
   .merch-grid .grid{grid-template-columns:1fr}
