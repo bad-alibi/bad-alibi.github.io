@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bad Alibi — Daily Word Search (Click to Select)</title>
+  <style>
+    :root{
+      --bg:#f5f5f5; --text:#222; --muted:#666; --card:#fff; --accent:#111; --brand:#111;
+      --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.08); --gap:1rem;
+      --grid-size: 12; /* cells per side */
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{color:inherit}
+
+    .container{width:92%;max-width:1100px;margin:0 auto;padding:2rem 0}
+
+    header{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+    .title{display:flex;align-items:center;gap:.75rem}
+    .title h1{font-size:clamp(1.25rem,2.5vw,1.75rem);margin:.25rem 0}
+    .badge{background:var(--brand);color:#fff;border-radius:999px;padding:.25rem .6rem;font-size:.8rem}
+
+    .cards{display:grid;grid-template-columns:1.25fr .75fr;gap:1.25rem}
+    @media (max-width: 900px){.cards{grid-template-columns:1fr}}
+
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card h2{font-size:1rem;margin:0 0 .5rem;color:#111}
+    .card .head{padding:1rem 1rem .5rem;border-bottom:1px solid #eee}
+    .card .body{padding:1rem}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(var(--grid-size), 1fr);gap:3px;user-select:none}
+    .cell{aspect-ratio:1;border:1px solid #e7e7e7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;cursor:pointer;transition:transform .05s ease, background .2s ease}
+    .cell:hover{transform:translateY(-1px)}
+    .cell[data-state="selected"]{background:#e6f0ff;border-color:#cfe0ff}
+    .cell[data-state="found"]{background:#c6f7d0;border-color:#a9e6b8;color:#0a4;}
+
+    /* Word bank */
+    .bank{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:.5rem}
+    @media (max-width: 600px){.bank{grid-template-columns:1fr}}
+    .word{padding:.4rem .6rem;border:1px dashed #ddd;border-radius:10px;font-weight:600;background:#fafafa;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+    .word[data-found="true"]{opacity:.5;text-decoration:line-through}
+
+    .meta{display:flex;flex-wrap:wrap;gap:.75rem;color:var(--muted);font-size:.95rem}
+    .meta b{color:#111}
+
+    .controls{display:flex;flex-wrap:wrap;gap:.5rem}
+    button{appearance:none;border:0;background:#111;color:#fff;padding:.6rem .9rem;border-radius:12px;cursor:pointer;box-shadow:var(--shadow);font-weight:600}
+    button.subtle{background:#efefef;color:#111}
+    button.ghost{background:transparent;color:#111;border:1px solid #ddd}
+
+    .footer-note{color:var(--muted);font-size:.95rem;margin-top:.75rem}
+
+    .promo{font-size:.95rem;color:#111;background:#fafafa;border:1px solid #eee;border-radius:12px;padding:1rem}
+    .promo a{font-weight:700;text-decoration:underline}
+
+    .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;padding:.6rem .9rem;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s ease}
+    .toast.show{opacity:1}
+
+    @media print{
+      header,.controls,.promo,.toast{display:none!important}
+      .container{padding:0}
+      .card{box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title">
+        <span class="badge">Bad Alibi</span>
+        <h1>Daily Word Search</h1>
+      </div>
+      <div class="meta" id="meta"></div>
+    </header>
+
+    <div class="cards">
+      <section class="card">
+        <div class="head">
+          <div class="controls">
+            <button id="btn-check" class="subtle" title="Check the current selection">Check</button>
+            <button id="btn-clear" class="ghost" title="Clear current selection">Clear</button>
+            <button id="btn-reveal" class="ghost" title="Reveal one word">Reveal One</button>
+            <button id="btn-reset" class="ghost" title="Reset today and start over">Reset Today</button>
+            <button id="btn-print" class="subtle" title="Print puzzle">Print</button>
+          </div>
+        </div>
+        <div class="body">
+          <div id="grid" class="grid" aria-label="Word search grid" role="grid"></div>
+          <p class="footer-note">Tip: Click letters in order along a straight line (horiz, vert, or diagonal). Use <b>Clear</b> to start a new selection.</p>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="head">
+          <h2>Word Bank</h2>
+        </div>
+        <div class="body">
+          <div id="bank" class="bank" aria-live="polite"></div>
+          <div class="promo" style="margin-top:1rem">
+            Love this puzzle? Explore our books & merch from three Bad Alibi authors.
+            <br />
+            • Pamela Pardee — Activity & finance · <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener">Amazon</a><br />
+            • Harper Lane — Sci‑Fi & Romance · <a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener">Amazon</a><br />
+            • Pamela DuShane — Children’s & Coloring · <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener">Amazon</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <p class="footer-note">Daily seed uses <b>America/Chicago</b> date so all visitors see the same puzzle for the day.</p>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /****************************
+     * Daily Word Search (click-to-select)
+     ****************************/
+
+    // ===== Config =====
+    const GRID_SIZE = 12; // 12x12
+    const WORDS_PER_PUZZLE = 12;
+    const TIMEZONE = 'America/Chicago';
+
+    const WORD_LISTS = {
+      'Sci‑Fi': [ 'MARS','ROVER','DRONE','TUNNEL','COLONY','ORBIT','ASTEROID','SATELLITE','HABITAT','DOME','OXYGEN','THRUSTER','LAB','SPACESHIP','AI','ROCKET' ],
+      'Romance': [ 'REUNITED','HEART','PASSION','EMBRACE','LONGING','KISS','CHANCE','FATE','DESIRE','TRUST','SECRET','DESTINY','LOVE','ROMANCE' ],
+      'Finance': [ 'BUDGET','SAVINGS','DEBT','CREDIT','CASHFLOW','INCOME','EXPENSE','INVEST','RETIRE','GOALS','TRACK','BALANCE','EARN','SPEND','ASSETS','DIVIDEND' ],
+      'Kids': [ 'MOON','NIGHT','LULLABY','DREAM','STARS','TEDDY','PILLOW','STORY','PAJAMAS','YAWN','QUIET','SNUGGLE','CUDDLE','SLEEPY' ],
+      'Halloween': [ 'PUMPKIN','GHOST','CANDY','SPOOKY','HAUNT','COSTUME','BAT','SPIDER','WITCH','BROOM','COBWEB','SKULL','ZOMBIE','CAULDRON' ],
+      'Dinosaur': [ 'FOSSIL','TREX','VELOCIRAPTOR','TRICERATOPS','STEGOSAURUS','PALEO','CRETACEOUS','JURASSIC','PANGEA','HERBIVORE','CARNIVORE','RAWR','CLAW','SCALES' ]
+    };
+
+    // ===== Seeded RNG (deterministic per date) =====
+    function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0,k;i<str.length;i++){ k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179);} h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]; }
+    function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; } }
+    function rngFromSeed(seedStr){ const [a]=cyrb128(seedStr); return mulberry32(a); }
+
+    // ===== Date helpers (America/Chicago) =====
+    function chicagoISODate(d=new Date()){ const fmt=new Intl.DateTimeFormat('en-CA',{ timeZone:TIMEZONE, year:'numeric', month:'2-digit', day:'2-digit'}); return fmt.format(d); }
+
+    // ===== Utility =====
+    function shuffle(arr, rnd){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+    function choice(arr, rnd){ return arr[Math.floor(rnd()*arr.length)]; }
+    function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._hide); t._hide=setTimeout(()=>t.classList.remove('show'), 1500); }
+
+    // Directions for lines
+    const DIRS=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]];
+    const inBounds=(x,y)=> x>=0 && y>=0 && x<GRID_SIZE && y<GRID_SIZE;
+
+    function makeEmptyGrid(n){ return Array.from({length:n},()=>Array(n).fill(null)); }
+
+    function placeWord(grid, word, rnd){
+      word=word.toUpperCase();
+      const tries=400;
+      for(let t=0;t<tries;t++){
+        const dir=choice(DIRS, rnd);
+        const startX=Math.floor(rnd()*GRID_SIZE);
+        const startY=Math.floor(rnd()*GRID_SIZE);
+        const endX=startX+dir[0]*(word.length-1);
+        const endY=startY+dir[1]*(word.length-1);
+        if(!inBounds(endX,endY)) continue;
+        let ok=true; let coords=[];
+        for(let i=0;i<word.length;i++){
+          const x=startX+dir[0]*i, y=startY+dir[1]*i;
+          const cell=grid[y][x];
+          if(cell!==null && cell!==word[i]){ ok=false; break; }
+          coords.push([x,y]);
+        }
+        if(!ok) continue;
+        for(let i=0;i<word.length;i++){
+          const x=startX+dir[0]*i, y=startY+dir[1]*i; grid[y][x]=word[i];
+        }
+        return coords;
+      }
+      return null;
+    }
+
+    function fillGrid(grid, rnd){
+      const A='A'.charCodeAt(0);
+      for(let y=0;y<GRID_SIZE;y++) for(let x=0;x<GRID_SIZE;x++) if(!grid[y][x]) grid[y][x]=String.fromCharCode(A+Math.floor(rnd()*26));
+      return grid;
+    }
+
+    // ===== Build Today =====
+    const todayKey=chicagoISODate();
+    const rng=rngFromSeed('BA_WORD_'+todayKey);
+    const themes=Object.keys(WORD_LISTS);
+    const theme=themes[Math.floor(rng()*themes.length)];
+    const allWords=shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
+
+    let grid=makeEmptyGrid(GRID_SIZE);
+    const placed={}; // word -> coords
+    for(const w of allWords){ const coords=placeWord(grid,w,rng); if(coords){ placed[w]=coords; } }
+
+    grid=fillGrid(grid,rng);
+
+    // ===== State & Persistence =====
+    const storageKey='ba-wordsearch-'+todayKey;
+    let state={ found: [] };
+    try{ const saved=JSON.parse(localStorage.getItem(storageKey)); if(saved) state=saved; }catch{}
+    const save=()=> localStorage.setItem(storageKey, JSON.stringify(state));
+
+    // ===== Render =====
+    const gridEl=document.getElementById('grid');
+    const bankEl=document.getElementById('bank');
+    const metaEl=document.getElementById('meta');
+    document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
+
+    function renderMeta(){ metaEl.innerHTML=`<span>Theme: <b>${theme}</b></span><span>·</span><span>Date: <b>${todayKey}</b></span><span>·</span><span>Found: <b>${state.found.length}</b> / ${Object.keys(placed).length}</span>`; }
+
+    const cellRefs=[];
+    function renderGrid(){ gridEl.innerHTML=''; cellRefs.length=0; for(let y=0;y<GRID_SIZE;y++){ const row=[]; for(let x=0;x<GRID_SIZE;x++){ const d=document.createElement('div'); d.className='cell'; d.setAttribute('role','gridcell'); d.dataset.x=x; d.dataset.y=y; d.textContent=grid[y][x]; gridEl.appendChild(d); row.push(d);} cellRefs.push(row);} }
+
+    function renderBank(){ bankEl.innerHTML=''; const words=Object.keys(placed).sort((a,b)=>a.localeCompare(b)); for(const w of words){ const div=document.createElement('div'); div.className='word'; div.textContent=w; div.dataset.word=w; if(state.found.includes(w)) div.dataset.found='true'; bankEl.appendChild(div);} }
+
+    renderGrid(); renderBank(); renderMeta();
+
+    function applyFoundHighlights(){ for(const w of state.found){ const coords=placed[w]; if(!coords) continue; for(const [x,y] of coords){ cellRefs[y][x].dataset.state='found'; } const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true'; } }
+    applyFoundHighlights();
+
+    // ===== Click-to-select logic =====
+    let currentPath=[];  // array of [x,y]
+    let direction=null;  // [dx,dy] once set on second click
+
+    function clearSelection(){
+      for(const el of document.querySelectorAll('.cell[data-state="selected"]')) el.removeAttribute('data-state');
+      currentPath=[]; direction=null;
+    }
+
+    function highlightPath(){
+      // remove previous selects first (but keep 'found')
+      for(const el of document.querySelectorAll('.cell[data-state="selected"]')) el.removeAttribute('data-state');
+      for(const [x,y] of currentPath){ cellRefs[y][x].dataset.state='selected'; }
+    }
+
+    function isAdjacent([x1,y1],[x2,y2]){ return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1 && !(x1===x2 && y1===y2); }
+
+    function setDirectionIfNeeded(){
+      if(currentPath.length===2 && !direction){
+        const [a,b]=currentPath; direction=[Math.sign(b[0]-a[0]), Math.sign(b[1]-a[1])];
+      }
+    }
+
+    function continuesLine(next){
+      if(currentPath.length<=1) return true; // always OK for 1st or 2nd
+      if(!direction) return true;            // will be set after 2nd
+      const [lx,ly]=currentPath[currentPath.length-1];
+      return next[0]===lx+direction[0] && next[1]===ly+direction[1];
+    }
+
+    function coordsEqual(a,b){ if(a.length!==b.length) return false; for(let i=0;i<a.length;i++){ if(a[i][0]!==b[i][0]||a[i][1]!==b[i][1]) return false; } return true; }
+
+    function trySubmit(path){
+      const words=Object.keys(placed);
+      for(const w of words){ if(state.found.includes(w)) continue; const coords=placed[w]; if(coordsEqual(path,coords) || coordsEqual(path.slice().reverse(),coords)){ state.found.push(w); save(); for(const [x,y] of coords){ cellRefs[y][x].dataset.state='found'; } const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true'; renderMeta(); showToast(`Found: ${w}!`); clearSelection(); return true; } }
+      return false;
+    }
+
+    // Auto-check on each click: if current path equals any word, mark found.
+    function autoCheck(){ if(currentPath.length<2) return; trySubmit(currentPath); }
+
+    gridEl.addEventListener('click', (e)=>{
+      const t=e.target.closest('.cell'); if(!t) return;
+      const x=Number(t.dataset.x), y=Number(t.dataset.y);
+      // ignore clicks on already found cells when building a path
+      if(t.dataset.state==='found') return;
+
+      const next=[x,y];
+
+      if(currentPath.length===0){
+        currentPath=[next];
+        highlightPath();
+        return;
+      }
+
+      const last=currentPath[currentPath.length-1];
+
+      // Undo: clicking the last selected cell removes it
+      if(last[0]===x && last[1]===y){
+        currentPath.pop();
+        if(currentPath.length<2) direction=null;
+        highlightPath();
+        return;
+      }
+
+      // If second cell, must be adjacent
+      if(currentPath.length===1){
+        if(!isAdjacent(last,next)){ clearSelection(); currentPath=[next]; highlightPath(); return; }
+        currentPath.push(next); setDirectionIfNeeded(); highlightPath(); autoCheck(); return;
+      }
+
+      // Otherwise, require continuation in same direction AND adjacency
+      if(!isAdjacent(last,next) || !continuesLine(next)){
+        // restart from this tile
+        clearSelection(); currentPath=[next]; highlightPath(); return;
+      }
+
+      currentPath.push(next);
+      highlightPath();
+      autoCheck();
+    });
+
+    // ===== Controls =====
+    document.getElementById('btn-check').addEventListener('click', ()=>{
+      if(currentPath && currentPath.length>1){
+        if(!trySubmit(currentPath)) showToast('Not a hidden word — continue or Clear');
+      } else {
+        showToast('Click letters in order to form a word');
+      }
+    });
+
+    document.getElementById('btn-clear').addEventListener('click', ()=>{ clearSelection(); });
+
+    document.getElementById('btn-reveal').addEventListener('click', ()=>{
+      const w=Object.keys(placed).find(x=>!state.found.includes(x));
+      if(!w){ showToast('All words found — great job!'); return; }
+      state.found.push(w); save();
+      for(const [x,y] of placed[w]){ cellRefs[y][x].dataset.state='found'; }
+      const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true';
+      renderMeta(); showToast(`Revealed: ${w}`);
+      clearSelection();
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', ()=>{
+      if(confirm('Reset today\'s progress?')){ localStorage.removeItem(storageKey); location.reload(); }
+    });
+
+    document.getElementById('btn-print').addEventListener('click', ()=>{ window.print(); });
+  </script>
+</body>
+</html>
