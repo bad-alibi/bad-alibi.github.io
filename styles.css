@@ -1,4 +1,14 @@
 /* ======================
+   Custom Font
+====================== */
+@font-face {
+  font-family: 'Sprite Graffiti';
+  src: url('fonts/SpriteGraffiti.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ======================
    Design Tokens
 ====================== */
 :root{
@@ -43,7 +53,7 @@ a{color:inherit}
 
 /* Buttons (center label) */
 .button{
-  display:inline-flex;              /* center text reliably */
+  display:inline-flex;              
   align-items:center;
   justify-content:center;
   padding:.65rem 1rem;
@@ -54,7 +64,7 @@ a{color:inherit}
   font-weight:700;
   text-align:center;
   transition:transform .08s ease, box-shadow .2s ease;
-  min-width:120px;                 /* keeps widths consistent */
+  min-width:120px;                 
 }
 .button.small{
   padding:.5rem .8rem;
@@ -86,7 +96,12 @@ a{color:inherit}
 .hero{
   background:#111; color:#fff; padding:2.25rem 0; text-align:center;
 }
-.hero h1{margin:0 0 .5rem 0; font-size:2rem; letter-spacing:.3px}
+.hero h1{
+  margin:0 0 .5rem 0;
+  font-size:2rem;
+  letter-spacing:.3px;
+  font-family:'Sprite Graffiti', cursive; /* Apply custom font */
+}
 .hero .btn{
   display:inline-block; margin-top:.6rem; padding:.6rem .9rem; border-radius:12px;
   background:#fff; color:#111; text-decoration:none; font-weight:700;
@@ -108,7 +123,7 @@ a{color:inherit}
 }
 .merch-grid .merch-item img{
   width:100%;
-  aspect-ratio:1/1;          /* uniform square thumbnails */
+  aspect-ratio:1/1;          
   object-fit:cover;
   border-radius:calc(var(--radius) - 6px);
 }
@@ -131,10 +146,8 @@ a{color:inherit}
 .best-sellers h2{margin:.2rem 0 .25rem}
 .best-sellers-sub{margin:0; color:var(--muted)}
 
-/* Tab radios hidden */
 .bs-tab-radio{position:absolute; left:-9999px}
 
-/* Tab labels */
 .bs-tab-labels{
   display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;
   margin:1rem auto .75rem; padding:0 .5rem;
@@ -152,7 +165,6 @@ a{color:inherit}
   background:#111; color:#fff; border-color:#111;
 }
 
-/* Panels */
 .bs-panels{position:relative}
 .bs-panel{display:none}
 #bs-all:checked ~ .bs-panels #panel-all,
@@ -161,23 +173,21 @@ a{color:inherit}
 #bs-kids:checked ~ .bs-panels #panel-kids,
 #bs-activity:checked ~ .bs-panels #panel-activity{display:block}
 
-/* Horizontal scroller with snapping */
 .bs-nav{position:relative}
 .bs-grid{
   display:grid; grid-auto-flow:column;
   grid-auto-columns:clamp(var(--bs-item-min), 26vw, var(--bs-item-max));
   gap:var(--bs-gap);
   overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory;
-  padding:.25rem 2.25rem; /* space for arrows */
+  padding:.25rem 2.25rem;
   scroll-behavior:smooth;
 }
 .bs-grid::-webkit-scrollbar{height:10px}
 .bs-grid::-webkit-scrollbar-thumb{background:#d4d4d4; border-radius:10px}
 .bs-grid > .bs-item{scroll-snap-align:start}
 
-/* Book card */
 .bs-item{
-  position:relative; /* anchor absolute children like the rank badge */
+  position:relative; 
   background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
   box-shadow:var(--shadow); padding:.75rem; display:flex; flex-direction:column;
 }
@@ -194,7 +204,6 @@ a{color:inherit}
 .book-title a:hover{text-decoration:underline}
 .book-author{margin:0 0 .5rem; color:var(--muted); font-size:.95rem}
 
-/* Rank / NEW badge — stays attached to each card */
 .rank-badge{
   position:absolute;
   top:10px; left:10px;
@@ -206,7 +215,6 @@ a{color:inherit}
   pointer-events:none;
 }
 
-/* Scroller arrows */
 .bs-prev,.bs-next{
   position:absolute; top:50%; transform:translateY(-50%);
   width:38px; height:38px; border-radius:50%;
@@ -222,7 +230,6 @@ a{color:inherit}
    Authors section
 ====================== */
 .intro h2{margin:0}
-/* Center the "Meet Our Authors" heading specifically */
 .intro h2#authors{ text-align:center; }
 
 .authors{
@@ -242,7 +249,7 @@ a{color:inherit}
 .author-card p{margin:0 0 .75rem; color:var(--muted)}
 
 /* ======================
-   New Releases (reuse best-sellers styles)
+   New Releases
 ====================== */
 .new-releases .bs-grid{
   grid-auto-columns:clamp(220px, 28vw, 260px);
@@ -252,15 +259,18 @@ a{color:inherit}
    Footer
 ====================== */
 footer{
-  margin-top:2rem; padding:1.25rem 0; background:#fff; border-top:1px solid var(--border);
+  margin-top:2rem; padding:1.25rem 0; background:#000; border-top:1px solid var(--border);
 }
 footer p{margin:.25rem 0; text-align:center; color:var(--muted)}
 .footer-links, .social-icons{
   display:flex; gap:.75rem; justify-content:center; align-items:center; margin-top:.25rem;
 }
-.footer-links a{color:#444; text-decoration:none}
+.footer-links a{color:#eee; text-decoration:none}
 .footer-links a:hover{text-decoration:underline}
-.social-icons img{width:22px; height:22px; display:block;}
+.social-icons img{
+  width:22px; height:22px; display:block;
+  /* keep icons in original colors */
+}
 
 /* ======================
    Images / Banners
