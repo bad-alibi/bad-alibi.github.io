@@ -145,7 +145,8 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script>
+  <script type="module">
+
     /****************************
      * Daily Word Search (click or drag-to-select)
      ****************************/
@@ -218,18 +219,61 @@
       return grid;
     }
 
-    // ===== Build Today =====
-    const todayKey=chicagoISODate();
-    const rng=rngFromSeed('BA_WORD_'+todayKey);
-    const themes=Object.keys(WORD_LISTS);
-    const theme=themes[Math.floor(rng()*themes.length)];
-    const allWords=shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
+// ===== Build Today (via Cloudflare Worker, with local fallback to 12 words) =====
+const todayKey = chicagoISODate();                    // America/Chicago
+const rng = rngFromSeed('BA_WORD_' + todayKey);
+const themes = Object.keys(WORD_LISTS);
+let theme = themes[Math.floor(rng() * themes.length)]; // display theme (will show "Daily" if API used)
 
-    let grid=makeEmptyGrid(GRID_SIZE);
-    const placed={}; // word -> coords
-    for(const w of allWords){ const coords=placeWord(grid,w,rng); if(coords){ placed[w]=coords; } }
+// Get words from your Worker (same-origin route recommended: /api/daily-words)
+async function getDailyWordsFromAPI() {
+  try {
+    const res = await fetch('/api/daily-words', { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    let words = Array.isArray(data?.words) ? data.words : null;
+    if (!words) return null;
 
-    grid=fillGrid(grid,rng);
+    // Normalize & guardrails
+    words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
+      .filter(w => /^[A-Z]{3,20}$/.test(w));
+
+    return words.length ? words : null;
+  } catch {
+    return null;
+  }
+}
+
+let allWords;
+{
+  const apiWords = await getDailyWordsFromAPI();  // <-- uses your Worker
+  if (apiWords && apiWords.length) {
+    theme = 'Daily'; // label it so users know it’s the daily set
+    allWords = apiWords.slice(0, WORDS_PER_PUZZLE);
+
+    // If API gave fewer than 12, top up from a local pool (no duplicates)
+    if (allWords.length < WORDS_PER_PUZZLE) {
+      const fillerTheme = themes[Math.floor(rng() * themes.length)];
+      for (const w of shuffle(WORD_LISTS[fillerTheme], rng)) {
+        if (!allWords.includes(w)) allWords.push(w);
+        if (allWords.length >= WORDS_PER_PUZZLE) break;
+      }
+    }
+  } else {
+    // Full local fallback (deterministic)
+    allWords = shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
+  }
+}
+
+// Build grid with the chosen words
+let grid = makeEmptyGrid(GRID_SIZE);
+const placed = {}; // word -> coords
+for (const w of allWords) {
+  const coords = placeWord(grid, w, rng);
+  if (coords) placed[w] = coords;
+}
+grid = fillGrid(grid, rng);
+
 
     // ===== State & Persistence =====
     const storageKey='ba-wordsearch-'+todayKey;
