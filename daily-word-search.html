@@ -114,7 +114,7 @@
             <button id="btn-reset" class="ghost" title="Reset today and start over">Reset Today</button>
             <button id="btn-print" class="subtle" title="Print puzzle">Print</button>
             <button id="btn-theme" class="ghost" title="Toggle dark mode">Dark Mode</button>
-<button id="btn-share" class="ghost" title="Share this puzzle">Share</button>
+            <button id="btn-share" class="ghost" title="Share this puzzle">Share</button>
           </div>
         </div>
         <div class="body">
@@ -344,50 +344,66 @@
       return false;
     }
 
-    // Auto-check for clicks (drag checks on release)
+    // Auto-check helper (kept for any explicit "Check" clicks)
     function autoCheck(){ if(currentPath.length<2) return; trySubmit(currentPath); }
 
-    // ----- Click selection -----
-    gridEl.addEventListener('click', (e)=>{
-      if (dragging) return; // ignore click fired after drag end
+    // ----- CLICK-TO-EXTEND FIX: we remove the old click handler and fold its logic into pointerdown -----
 
-      const t=e.target.closest('.cell'); if(!t) return;
-      const x=Number(t.dataset.x), y=Number(t.dataset.y);
-      const next=[x,y];
-
-      if(currentPath.length===0){
-        currentPath=[next]; highlightPath(); return;
-      }
-
-      const last=currentPath[currentPath.length-1];
-
-      // Undo last if clicking the same last cell
-      if(last[0]===x && last[1]===y){
-        currentPath.pop(); if(currentPath.length<2) direction=null; highlightPath(); return;
-      }
-
-      if(currentPath.length===1){
-        if(!isAdjacent(last,next)){ clearSelection(); currentPath=[next]; highlightPath(); return; }
-        currentPath.push(next); setDirectionIfNeeded(); highlightPath(); autoCheck(); return;
-      }
-
-      if(!isAdjacent(last,next) || !continuesLine(next)){
-        clearSelection(); currentPath=[next]; highlightPath(); return;
-      }
-
-      currentPath.push(next); highlightPath(); autoCheck();
-    });
-
-    // ----- Drag/touch selection (pointer events) -----
     function xyFromCell(el){ return [Number(el.dataset.x), Number(el.dataset.y)]; }
     function sameCoord(a,b){ return a && b && a[0]===b[0] && a[1]===b[1]; }
 
+    // Start selection on pointerdown WITHOUT clearing existing path unless rules require it.
     function startDragFrom(el){
-      dragging=true;
-      const start=xyFromCell(el);
-      clearSelection();
-      currentPath=[start];
-      direction=null;
+      dragging = true;
+      const [x, y] = xyFromCell(el);
+      const next = [x, y];
+
+      if (currentPath.length === 0) {
+        currentPath = [next];
+        direction = null;
+        highlightPath();
+        return;
+      }
+
+      const last = currentPath[currentPath.length - 1];
+
+      // Undo last if tapping the same last cell
+      if (last[0] === x && last[1] === y) {
+        currentPath.pop();
+        if (currentPath.length < 2) direction = null;
+        highlightPath();
+        return;
+      }
+
+      if (currentPath.length === 1) {
+        if (!isAdjacent(last, next)) {
+          clearSelection();
+          currentPath = [next];
+          direction = null;
+          highlightPath();
+          return;
+        }
+        currentPath.push(next);
+        setDirectionIfNeeded();
+        highlightPath();
+        return;
+      }
+
+      // For longer paths, require adjacency + same direction; otherwise restart
+      if (!isAdjacent(last, next) || !continuesLine(next)) {
+        clearSelection();
+        currentPath = [next];
+        direction = null;
+        highlightPath();
+        return;
+      }
+
+      // Avoid duplicates mid-path
+      for (let i = 0; i < currentPath.length; i++) {
+        if (currentPath[i][0] === x && currentPath[i][1] === y) return;
+      }
+
+      currentPath.push(next);
       highlightPath();
     }
 
@@ -429,10 +445,11 @@
     function endDrag(){
       if(!dragging) return;
       dragging=false;
+      // On tap or completed drag, check for word match
       if(currentPath.length>1){ trySubmit(currentPath); }
     }
 
-    // Start drag
+    // Start drag/tap
     gridEl.addEventListener('pointerdown', (e)=>{
       const t=e.target.closest('.cell'); if(!t) return;
       e.preventDefault();
@@ -471,18 +488,15 @@
       const w = remaining[Math.floor(Math.random()*remaining.length)];
       const coords = placed[w]; if(!coords || coords.length===0) return;
 
-      // first & last letter cells
       const ends = [coords[0], coords[coords.length-1]];
       const hintCells = [];
       for(const [x,y] of ends){
         const cell = cellRefs[y][x];
         if(cell){ cell.classList.add('hint'); hintCells.push(cell); }
       }
-      // pulse the word bank item too
       const bankItem=[...bankEl.children].find(n=>n.dataset.word===w);
       if(bankItem){ bankItem.classList.add('hint'); setTimeout(()=>bankItem.classList.remove('hint'), 1900); }
 
-      // remove visual hint after 1.8s
       setTimeout(()=> hintCells.forEach(c=>c.classList.remove('hint')), 1800);
       showToast(`Hint: ${w.length} letters — start & end highlighted`);
     });
@@ -510,7 +524,6 @@
       document.getElementById('btn-theme').textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
       try{ localStorage.setItem(THEME_KEY, theme); }catch{}
     }
-    // load saved theme
     (function initTheme(){
       let pref = 'light';
       try{
@@ -523,25 +536,16 @@
       applyTheme(cur==='dark' ? 'light' : 'dark');
     });
 
-// --- Share button ---
-document.getElementById('btn-share').addEventListener('click', async () => {
-  const shareText = `I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
-  if (navigator.share) {
-    try {
-      await navigator.share({ text: shareText });
-    } catch (err) {
-      // User cancelled share, ignore
-    }
-  } else {
-    try {
-      await navigator.clipboard.writeText(shareText);
-      showToast("Share text copied! Paste it on social media.");
-    } catch {
-      showToast("Unable to copy share text.");
-    }
-  }
-});
-
+    // --- Share button ---
+    document.getElementById('btn-share').addEventListener('click', async () => {
+      const shareText = `I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
+      if (navigator.share) {
+        try { await navigator.share({ text: shareText }); } catch (err) { /* cancelled */ }
+      } else {
+        try { await navigator.clipboard.writeText(shareText); showToast("Share text copied! Paste it on social media."); }
+        catch { showToast("Unable to copy share text."); }
+      }
+    });
 
     // ===== Midnight rollover (America/Chicago) =====
     (function scheduleChicagoMidnightRollover(){
