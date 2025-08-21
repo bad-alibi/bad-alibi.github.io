@@ -1,15 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bad Alibi — Daily Word Search (Click to Select)</title>
+  <title>Bad Alibi — Daily Word Search (Click or Drag to Select)</title>
   <style>
     :root{
       --bg:#f5f5f5; --text:#222; --muted:#666; --card:#fff; --accent:#111; --brand:#111;
+      --border:#e7e7e7;
       --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.08); --gap:1rem;
       --grid-size: 12; /* cells per side */
+      --hint: #ffbf47;
     }
+
+    /* Dark theme overrides */
+    :root[data-theme="dark"]{
+      --bg:#0e0f12; --text:#e8e8e8; --muted:#a0a0a0; --card:#17181c; --accent:#fafafa; --brand:#0ea5e9;
+      --border:#2a2c31;
+      --shadow:0 6px 18px rgba(0,0,0,.55);
+      --hint:#ffd166;
+    }
+
     *{box-sizing:border-box}
     body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
     a{color:inherit}
@@ -24,46 +35,62 @@
     .cards{display:grid;grid-template-columns:1.25fr .75fr;gap:1.25rem}
     @media (max-width: 900px){.cards{grid-template-columns:1fr}}
 
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .card h2{font-size:1rem;margin:0 0 .5rem;color:#111}
-    .card .head{padding:1rem 1rem .5rem;border-bottom:1px solid #eee}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+    .card h2{font-size:1rem;margin:0 0 .5rem;color:var(--accent)}
+    .card .head{padding:1rem 1rem .5rem;border-bottom:1px solid var(--border)}
     .card .body{padding:1rem}
 
     /* Grid */
-    .grid{display:grid;grid-template-columns:repeat(var(--grid-size), 1fr);gap:3px;user-select:none}
-    .cell{aspect-ratio:1;border:1px solid #e7e7e7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;cursor:pointer;transition:transform .05s ease, background .2s ease}
+    .grid{display:grid;grid-template-columns:repeat(var(--grid-size), 1fr);gap:3px;user-select:none;touch-action:none}
+    .cell{
+      aspect-ratio:1;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;
+      font-weight:600;cursor:pointer;transition:transform .05s ease, background .2s ease, border-color .2s ease, color .2s ease
+    }
     .cell:hover{transform:translateY(-1px)}
-    /* separate states so they can overlap */
+    /* independent states so they can overlap */
     .cell[data-selected="true"]{background:#e6f0ff;border-color:#cfe0ff}
+    :root[data-theme="dark"] .cell[data-selected="true"]{background:#0b3b6d;border-color:#155e9a}
     .cell[data-found="true"]{background:#c6f7d0;border-color:#a9e6b8;color:#0a4;}
+    :root[data-theme="dark"] .cell[data-found="true"]{background:#114a2c;border-color:#1f7a4a;color:#7ff1a3}
+
+    /* Hint effect */
+    @keyframes hintPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,193,7,0)} 50%{box-shadow:0 0 0 6px rgba(255,193,7,.35)} }
+    .cell.hint{
+      outline:2px solid var(--hint);
+      animation:hintPulse 900ms ease-in-out 2;
+      background: color-mix(in srgb, var(--hint) 25%, transparent);
+    }
+    .word.hint{
+      border-color: var(--hint) !important;
+      background: color-mix(in srgb, var(--hint) 18%, transparent);
+      animation:hintPulse 900ms ease-in-out 2;
+    }
 
     /* Word bank */
     .bank{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:.5rem}
     @media (max-width: 600px){.bank{grid-template-columns:1fr}}
-    .word{padding:.4rem .6rem;border:1px dashed #ddd;border-radius:10px;font-weight:600;background:#fafafa;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-    .word[data-found="true"]{opacity:.5;text-decoration:line-through}
+    .word{
+      padding:.4rem .6rem;border:1px dashed var(--border);border-radius:10px;font-weight:600;background:color-mix(in srgb, var(--card) 92%, var(--bg) 8%);
+      display:flex;align-items:center;justify-content:space-between;gap:.5rem;color:var(--text)
+    }
+    .word[data-found="true"]{opacity:.55;text-decoration:line-through}
 
     .meta{display:flex;flex-wrap:wrap;gap:.75rem;color:var(--muted);font-size:.95rem}
-    .meta b{color:#111}
+    .meta b{color:var(--accent)}
 
-    .controls{display:flex;flex-wrap:wrap;gap:.5rem}
+    .controls{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
     button{appearance:none;border:0;background:#111;color:#fff;padding:.6rem .9rem;border-radius:12px;cursor:pointer;box-shadow:var(--shadow);font-weight:600}
     button.subtle{background:#efefef;color:#111}
-    button.ghost{background:transparent;color:#111;border:1px solid #ddd}
+    button.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    :root[data-theme="dark"] button.subtle{background:#2a2c31;color:#e8e8e8}
 
     .footer-note{color:var(--muted);font-size:.95rem;margin-top:.75rem}
 
-    .promo{font-size:.95rem;color:#111;background:#fafafa;border:1px solid #eee;border-radius:12px;padding:1rem}
+    .promo{font-size:.95rem;color:var(--text);background:color-mix(in srgb, var(--card) 92%, var(--bg) 8%);border:1px solid var(--border);border-radius:12px;padding:1rem}
     .promo a{font-weight:700;text-decoration:underline}
 
     .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;padding:.6rem .9rem;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s ease}
     .toast.show{opacity:1}
-
-    @media print{
-      header,.controls,.promo,.toast{display:none!important}
-      .container{padding:0}
-      .card{box-shadow:none}
-    }
   </style>
 </head>
 <body>
@@ -82,14 +109,17 @@
           <div class="controls">
             <button id="btn-check" class="subtle" title="Check the current selection">Check</button>
             <button id="btn-clear" class="ghost" title="Clear current selection">Clear</button>
+            <button id="btn-hint"  class="ghost" title="Show a hint (first & last letter)">Show Hint</button>
             <button id="btn-reveal" class="ghost" title="Reveal one word">Reveal One</button>
             <button id="btn-reset" class="ghost" title="Reset today and start over">Reset Today</button>
             <button id="btn-print" class="subtle" title="Print puzzle">Print</button>
+            <button id="btn-theme" class="ghost" title="Toggle dark mode">Dark Mode</button>
+<button id="btn-share" class="ghost" title="Share this puzzle">Share</button>
           </div>
         </div>
         <div class="body">
           <div id="grid" class="grid" aria-label="Word search grid" role="grid"></div>
-          <p class="footer-note">Tip: Click letters in order along a straight line (horiz, vert, or diagonal). Use <b>Clear</b> to start a new selection.</p>
+          <p class="footer-note">Tip: Click or drag in a straight line (horiz, vert, or diagonal). Use <b>Clear</b> to start a new selection.</p>
         </div>
       </section>
 
@@ -117,7 +147,7 @@
 
   <script>
     /****************************
-     * Daily Word Search (click-to-select)
+     * Daily Word Search (click or drag-to-select)
      ****************************/
 
     // ===== Config =====
@@ -258,9 +288,10 @@
     }
     applyFoundHighlights();
 
-    // ===== Click-to-select logic (supports overlaps) =====
-    let currentPath=[];  // array of [x,y]
-    let direction=null;  // [dx,dy] once set on second click
+    // ===== Selection logic (click + drag/touch) =====
+    let currentPath=[];      // array of [x,y]
+    let direction=null;      // [dx,dy]
+    let dragging=false;
 
     function clearSelection(){
       for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
@@ -268,7 +299,6 @@
     }
 
     function highlightPath(){
-      // remove previous selects first (keep 'found')
       for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
       for(const [x,y] of currentPath){ cellRefs[y][x].dataset.selected='true'; }
     }
@@ -282,8 +312,8 @@
     }
 
     function continuesLine(next){
-      if(currentPath.length<=1) return true; // always OK for 1st or 2nd
-      if(!direction) return true;            // will be set after 2nd
+      if(currentPath.length<=1) return true;
+      if(!direction) return true;
       const [lx,ly]=currentPath[currentPath.length-1];
       return next[0]===lx+direction[0] && next[1]===ly+direction[1];
     }
@@ -314,57 +344,148 @@
       return false;
     }
 
-    // Auto-check on each click: if current path equals any word, mark found.
+    // Auto-check for clicks (drag checks on release)
     function autoCheck(){ if(currentPath.length<2) return; trySubmit(currentPath); }
 
+    // ----- Click selection -----
     gridEl.addEventListener('click', (e)=>{
+      if (dragging) return; // ignore click fired after drag end
+
       const t=e.target.closest('.cell'); if(!t) return;
       const x=Number(t.dataset.x), y=Number(t.dataset.y);
       const next=[x,y];
 
       if(currentPath.length===0){
-        currentPath=[next];
-        highlightPath();
-        return;
+        currentPath=[next]; highlightPath(); return;
       }
 
       const last=currentPath[currentPath.length-1];
 
-      // Undo: clicking the last selected cell removes it
+      // Undo last if clicking the same last cell
       if(last[0]===x && last[1]===y){
-        currentPath.pop();
-        if(currentPath.length<2) direction=null;
-        highlightPath();
-        return;
+        currentPath.pop(); if(currentPath.length<2) direction=null; highlightPath(); return;
       }
 
-      // If second cell, must be adjacent
       if(currentPath.length===1){
         if(!isAdjacent(last,next)){ clearSelection(); currentPath=[next]; highlightPath(); return; }
         currentPath.push(next); setDirectionIfNeeded(); highlightPath(); autoCheck(); return;
       }
 
-      // Otherwise, require continuation in same direction AND adjacency
       if(!isAdjacent(last,next) || !continuesLine(next)){
-        // restart from this tile
         clearSelection(); currentPath=[next]; highlightPath(); return;
       }
 
-      currentPath.push(next);
-      highlightPath();
-      autoCheck();
+      currentPath.push(next); highlightPath(); autoCheck();
     });
+
+    // ----- Drag/touch selection (pointer events) -----
+    function xyFromCell(el){ return [Number(el.dataset.x), Number(el.dataset.y)]; }
+    function sameCoord(a,b){ return a && b && a[0]===b[0] && a[1]===b[1]; }
+
+    function startDragFrom(el){
+      dragging=true;
+      const start=xyFromCell(el);
+      clearSelection();
+      currentPath=[start];
+      direction=null;
+      highlightPath();
+    }
+
+    function extendDragTo(el){
+      if(!dragging) return;
+      const next=xyFromCell(el);
+      const last=currentPath[currentPath.length-1];
+
+      if(sameCoord(next,last)) return;
+
+      // backtrack by one if user moves backwards
+      if(currentPath.length>1){
+        const prev=currentPath[currentPath.length-2];
+        if(sameCoord(next,prev)){
+          currentPath.pop();
+          if(currentPath.length<2) direction=null;
+          highlightPath();
+          return;
+        }
+      }
+
+      if(currentPath.length===1){
+        if(!isAdjacent(last,next)){
+          clearSelection(); currentPath=[next]; highlightPath(); return;
+        }
+        currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
+      }
+
+      if(!isAdjacent(last,next) || !continuesLine(next)){
+        clearSelection(); currentPath=[next]; highlightPath(); return;
+      }
+
+      // avoid duplicates mid-path
+      for(let i=0;i<currentPath.length;i++){ if(sameCoord(currentPath[i], next)) return; }
+
+      currentPath.push(next); highlightPath();
+    }
+
+    function endDrag(){
+      if(!dragging) return;
+      dragging=false;
+      if(currentPath.length>1){ trySubmit(currentPath); }
+    }
+
+    // Start drag
+    gridEl.addEventListener('pointerdown', (e)=>{
+      const t=e.target.closest('.cell'); if(!t) return;
+      e.preventDefault();
+      try { gridEl.setPointerCapture(e.pointerId); } catch {}
+      startDragFrom(t);
+    });
+
+    // Move during drag — robust hit-testing
+    window.addEventListener('pointermove', (e)=>{
+      if(!dragging) return;
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const cell = el && el.closest ? el.closest('.cell') : null;
+      if(cell && gridEl.contains(cell)){ extendDragTo(cell); }
+    }, { passive: true });
+
+    // End drag
+    window.addEventListener('pointerup',  ()=> endDrag(), { passive: true });
+    window.addEventListener('pointercancel', ()=> endDrag(), { passive: true });
+    window.addEventListener('pointerleave', ()=> endDrag(), { passive: true });
 
     // ===== Controls =====
     document.getElementById('btn-check').addEventListener('click', ()=>{
       if(currentPath && currentPath.length>1){
         if(!trySubmit(currentPath)) showToast('Not a hidden word — continue or Clear');
       } else {
-        showToast('Click letters in order to form a word');
+        showToast('Click or drag letters in order to form a word');
       }
     });
 
     document.getElementById('btn-clear').addEventListener('click', ()=>{ clearSelection(); });
+
+    // --- Show Hint (first & last letter of a random unfound word)
+    document.getElementById('btn-hint').addEventListener('click', ()=>{
+      const remaining = Object.keys(placed).filter(w => !state.found.includes(w));
+      if(remaining.length===0){ showToast('All words found — great job!'); return; }
+      const w = remaining[Math.floor(Math.random()*remaining.length)];
+      const coords = placed[w]; if(!coords || coords.length===0) return;
+
+      // first & last letter cells
+      const ends = [coords[0], coords[coords.length-1]];
+      const hintCells = [];
+      for(const [x,y] of ends){
+        const cell = cellRefs[y][x];
+        if(cell){ cell.classList.add('hint'); hintCells.push(cell); }
+      }
+      // pulse the word bank item too
+      const bankItem=[...bankEl.children].find(n=>n.dataset.word===w);
+      if(bankItem){ bankItem.classList.add('hint'); setTimeout(()=>bankItem.classList.remove('hint'), 1900); }
+
+      // remove visual hint after 1.8s
+      setTimeout(()=> hintCells.forEach(c=>c.classList.remove('hint')), 1800);
+      showToast(`Hint: ${w.length} letters — start & end highlighted`);
+    });
 
     document.getElementById('btn-reveal').addEventListener('click', ()=>{
       const w=Object.keys(placed).find(x=>!state.found.includes(x));
@@ -381,6 +502,46 @@
     });
 
     document.getElementById('btn-print').addEventListener('click', ()=>{ window.print(); });
+
+    // --- Dark Mode Toggle (persisted)
+    const THEME_KEY='ba-wordsearch-theme';
+    function applyTheme(theme){
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('btn-theme').textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+      try{ localStorage.setItem(THEME_KEY, theme); }catch{}
+    }
+    // load saved theme
+    (function initTheme(){
+      let pref = 'light';
+      try{
+        pref = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
+      }catch{}
+      applyTheme(pref);
+    })();
+    document.getElementById('btn-theme').addEventListener('click', ()=>{
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(cur==='dark' ? 'light' : 'dark');
+    });
+
+// --- Share button ---
+document.getElementById('btn-share').addEventListener('click', async () => {
+  const shareText = `I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ text: shareText });
+    } catch (err) {
+      // User cancelled share, ignore
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      showToast("Share text copied! Paste it on social media.");
+    } catch {
+      showToast("Unable to copy share text.");
+    }
+  }
+});
+
 
     // ===== Midnight rollover (America/Chicago) =====
     (function scheduleChicagoMidnightRollover(){
