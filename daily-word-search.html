@@ -121,13 +121,46 @@
     const WORDS_PER_PUZZLE = 12;
     const TIMEZONE = 'America/Chicago';
 
+    // Pretty names for themes from the Worker
+    const THEME_DISPLAY_NAMES = {
+      Animals: "Animals",
+      Fruits: "Fruits",
+      Vegetables: "Vegetables",
+      Sports: "Sports",
+      Colors: "Colors",
+      Weather: "Weather",
+      Transportation: "Transportation",
+      Nature: "Nature",
+      Music: "Music",
+      School: "School",
+      Ocean: "Ocean",
+      Camping: "Camping",
+      // Holidays
+      NewYear: "New Year's Day",
+      MLKDay: "Martin Luther King Jr. Day",
+      PresidentsDay: "Presidents' Day",
+      Valentine: "Valentine's Day",
+      StPatricks: "St. Patrick's Day",
+      Easter: "Easter",
+      MothersDay: "Mother's Day",
+      MemorialDay: "Memorial Day",
+      Juneteenth: "Juneteenth",
+      FathersDay: "Father's Day",
+      IndependenceDay: "Independence Day",
+      Patriotic: "Patriotic Week",
+      LaborDay: "Labor Day",
+      Halloween: "Halloween",
+      Thanksgiving: "Thanksgiving",
+      VeteransDay: "Veterans Day",
+      Christmas: "Christmas"
+    };
+
+    // Minimal local fallback (only used if API fails entirely)
     const WORD_LISTS = {
-      'Sci-Fi': [ 'MARS','ROVER','DRONE','TUNNEL','COLONY','ORBIT','ASTEROID','SATELLITE','HABITAT','DOME','OXYGEN','THRUSTER','LAB','SPACESHIP','AI','ROCKET' ],
-      'Romance': [ 'REUNITED','HEART','PASSION','EMBRACE','LONGING','KISS','CHANCE','FATE','DESIRE','TRUST','SECRET','DESTINY','LOVE','ROMANCE' ],
-      'Finance': [ 'BUDGET','SAVINGS','DEBT','CREDIT','CASHFLOW','INCOME','EXPENSE','INVEST','RETIRE','GOALS','TRACK','BALANCE','EARN','SPEND','ASSETS','DIVIDEND' ],
-      'Kids': [ 'MOON','NIGHT','LULLABY','DREAM','STARS','TEDDY','PILLOW','STORY','PAJAMAS','YAWN','QUIET','SNUGGLE','CUDDLE','SLEEPY' ],
-      'Halloween': [ 'PUMPKIN','GHOST','CANDY','SPOOKY','HAUNT','COSTUME','BAT','SPIDER','WITCH','BROOM','COBWEB','SKULL','ZOMBIE','CAULDRON' ],
-      'Dinosaur': [ 'FOSSIL','TREX','VELOCIRAPTOR','TRICERATOPS','STEGOSAURUS','PALEO','CRETACEOUS','JURASSIC','PANGEA','HERBIVORE','CARNIVORE','RAWR','CLAW','SCALES' ]
+      Animals: [ "DOG","CAT","HORSE","LION","TIGER","BEAR","MONKEY","FISH","BIRD","FROG","WHALE","MOUSE" ],
+      Colors: [ "RED","BLUE","GREEN","YELLOW","PURPLE","PINK","BLACK","WHITE","BROWN","ORANGE","GOLD","SILVER" ],
+      Sports: [ "SOCCER","BASEBALL","FOOTBALL","GOLF","TENNIS","RUNNING","CYCLING","SKATING","ROWING","SURFING","SKIING","HIKING" ],
+      Nature: [ "TREE","FLOWER","RIVER","MOUNTAIN","OCEAN","LAKE","FOREST","ISLAND","MEADOW","BEACH","VALLEY","CANYON" ]
     };
 
     function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0,k;i<str.length;i++){ k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179);} h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]; }
@@ -188,7 +221,7 @@
         if (!words) return null;
         words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
           .filter(w => /^[A-Z]{3,20}$/.test(w));
-        return { theme: data.theme || 'GENERAL', words };
+        return { theme: data.theme || 'Animals', words };
       } catch {
         return null;
       }
@@ -198,30 +231,22 @@
     async function main(){
       const todayKey = chicagoISODate();
       const rng = rngFromSeed('BA_WORD_' + todayKey);
-      const themes = Object.keys(WORD_LISTS);
-      let theme = themes[Math.floor(rng() * themes.length)];
-      let source = 'local'; // <-- default; will flip to 'api' if the Worker responds
 
       const gridEl=document.getElementById('grid');
       const bankEl=document.getElementById('bank');
       const metaEl=document.getElementById('meta');
       document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
 
-      // Build word list
-      let allWords;
+      // Build word list: try API first
+      let theme, allWords;
       const api = await getDailyWordsFromAPI();
       if (api && api.words && api.words.length) {
-        theme = api.theme;
-        source = 'api'; // <-- mark source
-        allWords = api.words.slice(0, WORDS_PER_PUZZLE);
-        if (allWords.length < WORDS_PER_PUZZLE) {
-          const fillerTheme = themes[Math.floor(rng() * themes.length)];
-          for (const w of shuffle(WORD_LISTS[fillerTheme], rng)) {
-            if (!allWords.includes(w)) allWords.push(w);
-            if (allWords.length >= WORDS_PER_PUZZLE) break;
-          }
-        }
+        theme = api.theme;                             // use Worker’s theme
+        allWords = api.words.slice(0, WORDS_PER_PUZZLE); // use exactly what Worker returns (already padded)
       } else {
+        // Fallback: local deterministic pick
+        const themes = Object.keys(WORD_LISTS);
+        theme = themes[Math.floor(rng() * themes.length)];
         allWords = shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
       }
 
@@ -241,14 +266,13 @@
       const save=()=> localStorage.setItem(storageKey, JSON.stringify(state));
 
       function renderMeta(){
+        const prettyTheme = THEME_DISPLAY_NAMES[theme] || theme;
         metaEl.innerHTML = `
-          <span>Theme: <b>${theme}</b></span>
+          <span>Theme: <b>${prettyTheme}</b></span>
           <span>·</span>
           <span>Date: <b>${todayKey}</b></span>
           <span>·</span>
           <span>Found: <b>${state.found.length}</b> / ${Object.keys(placed).length}</span>
-          <span>·</span>
-          <span>Source: <b>${source.toUpperCase()}</b></span>
         `;
       }
 
@@ -404,7 +428,7 @@
         if(currentPath.length>1){ trySubmit(currentPath); }
       }
 
-      // Pointer events — note: gridEl already defined above
+      // Pointer events
       gridEl.addEventListener('pointerdown', (e)=>{
         const t=e.target.closest('.cell'); if(!t) return;
         e.preventDefault();
