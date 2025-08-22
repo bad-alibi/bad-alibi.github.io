@@ -9,7 +9,7 @@
       --bg:#f5f5f5; --text:#222; --muted:#666; --card:#fff; --accent:#111; --brand:#111;
       --border:#e7e7e7;
       --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.08); --gap:1rem;
-      --grid-size: 12; /* cells per side */
+      --grid-size: 12;
       --hint: #ffbf47;
     }
     :root[data-theme="dark"]{
@@ -200,6 +200,7 @@
       const rng = rngFromSeed('BA_WORD_' + todayKey);
       const themes = Object.keys(WORD_LISTS);
       let theme = themes[Math.floor(rng() * themes.length)];
+      let source = 'local'; // <-- default; will flip to 'api' if the Worker responds
 
       const gridEl=document.getElementById('grid');
       const bankEl=document.getElementById('bank');
@@ -211,6 +212,7 @@
       const api = await getDailyWordsFromAPI();
       if (api && api.words && api.words.length) {
         theme = api.theme;
+        source = 'api'; // <-- mark source
         allWords = api.words.slice(0, WORDS_PER_PUZZLE);
         if (allWords.length < WORDS_PER_PUZZLE) {
           const fillerTheme = themes[Math.floor(rng() * themes.length)];
@@ -239,7 +241,15 @@
       const save=()=> localStorage.setItem(storageKey, JSON.stringify(state));
 
       function renderMeta(){
-        metaEl.innerHTML = `<span>Theme: <b>${theme}</b></span><span>·</span><span>Date: <b>${todayKey}</b></span><span>·</span><span>Found: <b>${state.found.length}</b> / ${Object.keys(placed).length}</span>`;
+        metaEl.innerHTML = `
+          <span>Theme: <b>${theme}</b></span>
+          <span>·</span>
+          <span>Date: <b>${todayKey}</b></span>
+          <span>·</span>
+          <span>Found: <b>${state.found.length}</b> / ${Object.keys(placed).length}</span>
+          <span>·</span>
+          <span>Source: <b>${source.toUpperCase()}</b></span>
+        `;
       }
 
       const cellRefs=[];
@@ -394,7 +404,7 @@
         if(currentPath.length>1){ trySubmit(currentPath); }
       }
 
-      // Pointer events — NOTE: gridEl already defined above; don't redeclare it.
+      // Pointer events — note: gridEl already defined above
       gridEl.addEventListener('pointerdown', (e)=>{
         const t=e.target.closest('.cell'); if(!t) return;
         e.preventDefault();
