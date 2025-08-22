@@ -116,12 +116,8 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script type="module">
-    /****************************
-     * Daily Word Search (click or drag-to-select)
-     ****************************/
-
-    // ===== Config =====
-    const GRID_SIZE = 12; // 12x12
+    // ========= Helpers & Config =========
+    const GRID_SIZE = 12;
     const WORDS_PER_PUZZLE = 12;
     const TIMEZONE = 'America/Chicago';
 
@@ -134,26 +130,21 @@
       'Dinosaur': [ 'FOSSIL','TREX','VELOCIRAPTOR','TRICERATOPS','STEGOSAURUS','PALEO','CRETACEOUS','JURASSIC','PANGEA','HERBIVORE','CARNIVORE','RAWR','CLAW','SCALES' ]
     };
 
-    // ===== Seeded RNG (deterministic per date) =====
     function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0,k;i<str.length;i++){ k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179);} h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]; }
     function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; } }
     function rngFromSeed(seedStr){ const [a]=cyrb128(seedStr); return mulberry32(a); }
 
-    // ===== Date helpers (America/Chicago) =====
     function chicagoISODate(d=new Date()){
       const fmt=new Intl.DateTimeFormat('en-CA',{ timeZone:TIMEZONE, year:'numeric', month:'2-digit', day:'2-digit'});
       return fmt.format(d);
     }
 
-    // ===== Utility =====
     function shuffle(arr, rnd){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
     function choice(arr, rnd){ return arr[Math.floor(rnd()*arr.length)]; }
     function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._hide); t._hide=setTimeout(()=>t.classList.remove('show'), 1500); }
 
-    // Directions
     const DIRS=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]];
     const inBounds=(x,y)=> x>=0 && y>=0 && x<GRID_SIZE && y<GRID_SIZE;
-
     function makeEmptyGrid(n){ return Array.from({length:n},()=>Array(n).fill(null)); }
 
     function placeWord(grid, word, rnd){
@@ -188,13 +179,6 @@
       return grid;
     }
 
-    // ===== Build Today (via Worker API with returned theme, local fallback) =====
-    const todayKey = chicagoISODate();                    // America/Chicago
-    const rng = rngFromSeed('BA_WORD_' + todayKey);
-    const themes = Object.keys(WORD_LISTS);
-    let theme = themes[Math.floor(rng() * themes.length)]; // will be replaced by API theme if present
-
-    // Fetch from your Worker and return { theme, words }
     async function getDailyWordsFromAPI() {
       try {
         const res = await fetch('/api/daily-words', { cache: 'no-store' });
@@ -210,14 +194,24 @@
       }
     }
 
-    let allWords;
-    {
-      const api = await getDailyWordsFromAPI();  // ← uses your Worker
-      if (api && api.words && api.words.length) {
-        theme = api.theme;                       // ← use Worker’s returned theme
-        allWords = api.words.slice(0, WORDS_PER_PUZZLE);
+    // ========= Main bootstrap =========
+    async function main(){
+      const todayKey = chicagoISODate();
+      const rng = rngFromSeed('BA_WORD_' + todayKey);
+      const themes = Object.keys(WORD_LISTS);
+      let theme = themes[Math.floor(rng() * themes.length)];
 
-        // If API gave fewer than needed, top up from a local pool (no duplicates)
+      const gridEl=document.getElementById('grid');
+      const bankEl=document.getElementById('bank');
+      const metaEl=document.getElementById('meta');
+      document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
+
+      // Build word list
+      let allWords;
+      const api = await getDailyWordsFromAPI();
+      if (api && api.words && api.words.length) {
+        theme = api.theme;
+        allWords = api.words.slice(0, WORDS_PER_PUZZLE);
         if (allWords.length < WORDS_PER_PUZZLE) {
           const fillerTheme = themes[Math.floor(rng() * themes.length)];
           for (const w of shuffle(WORD_LISTS[fillerTheme], rng)) {
@@ -226,316 +220,286 @@
           }
         }
       } else {
-        // Full local fallback (deterministic)
         allWords = shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
       }
-    }
 
-    // Build grid with chosen words
-    let grid = makeEmptyGrid(GRID_SIZE);
-    const placed = {}; // word -> coords
-    for (const w of allWords) {
-      const coords = placeWord(grid, w, rng);
-      if (coords) placed[w] = coords;
-    }
-    grid = fillGrid(grid, rng);
+      // Build grid with the chosen words
+      let grid = makeEmptyGrid(GRID_SIZE);
+      const placed = {}; // word -> coords
+      for (const w of allWords) {
+        const coords = placeWord(grid, w, rng);
+        if (coords) placed[w] = coords;
+      }
+      grid = fillGrid(grid, rng);
 
-    // ===== State & Persistence =====
-    const storageKey='ba-wordsearch-'+todayKey;
-    let state={ found: [] };
-    try{ const saved=JSON.parse(localStorage.getItem(storageKey)); if(saved) state=saved; }catch{}
-    const save=()=> localStorage.setItem(storageKey, JSON.stringify(state));
+      // State & persistence
+      const storageKey='ba-wordsearch-'+todayKey;
+      let state={ found: [] };
+      try{ const saved=JSON.parse(localStorage.getItem(storageKey)); if(saved) state=saved; }catch{}
+      const save=()=> localStorage.setItem(storageKey, JSON.stringify(state));
 
-    // ===== Render =====
-    const gridEl=document.getElementById('grid');
-    const bankEl=document.getElementById('bank');
-    const metaEl=document.getElementById('meta');
-    document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
+      function renderMeta(){
+        metaEl.innerHTML = `<span>Theme: <b>${theme}</b></span><span>·</span><span>Date: <b>${todayKey}</b></span><span>·</span><span>Found: <b>${state.found.length}</b> / ${Object.keys(placed).length}</span>`;
+      }
 
-    function renderMeta(){
-      metaEl.innerHTML = `<span>Theme: <b>${theme}</b></span><span>·</span><span>Date: <b>${todayKey}</b></span><span>·</span><span>Found: <b>${state.found.length}</b> / ${Object.keys(placed).length}</span>`;
-    }
-
-    const cellRefs=[];
-    function renderGrid(){
-      gridEl.innerHTML=''; cellRefs.length=0;
-      for(let y=0;y<GRID_SIZE;y++){
-        const row=[];
-        for(let x=0;x<GRID_SIZE;x++){
-          const d=document.createElement('div');
-          d.className='cell';
-          d.setAttribute('role','gridcell');
-          d.dataset.x=x; d.dataset.y=y;
-          d.textContent=grid[y][x];
-          gridEl.appendChild(d);
-          row.push(d);
+      const cellRefs=[];
+      function renderGrid(){
+        gridEl.innerHTML=''; cellRefs.length=0;
+        for(let y=0;y<GRID_SIZE;y++){
+          const row=[];
+          for(let x=0;x<GRID_SIZE;x++){
+            const d=document.createElement('div');
+            d.className='cell';
+            d.setAttribute('role','gridcell');
+            d.dataset.x=x; d.dataset.y=y;
+            d.textContent=grid[y][x];
+            gridEl.appendChild(d);
+            row.push(d);
+          }
+          cellRefs.push(row);
         }
-        cellRefs.push(row);
       }
-    }
 
-    function renderBank(){
-      bankEl.innerHTML='';
-      const words=Object.keys(placed).sort((a,b)=>a.localeCompare(b));
-      for(const w of words){
-        const div=document.createElement('div');
-        div.className='word';
-        div.textContent=w;
-        div.dataset.word=w;
-        if(state.found.includes(w)) div.dataset.found='true';
-        bankEl.appendChild(div);
+      function renderBank(){
+        bankEl.innerHTML='';
+        const words=Object.keys(placed).sort((a,b)=>a.localeCompare(b));
+        for(const w of words){
+          const div=document.createElement('div');
+          div.className='word';
+          div.textContent=w;
+          div.dataset.word=w;
+          if(state.found.includes(w)) div.dataset.found='true';
+          bankEl.appendChild(div);
+        }
       }
-    }
 
-    renderGrid(); renderBank(); renderMeta();
+      renderGrid(); renderBank(); renderMeta();
 
-    function applyFoundHighlights(){
-      for(const w of state.found){
-        const coords=placed[w]; if(!coords) continue;
-        for(const [x,y] of coords){ cellRefs[y][x].dataset.found='true'; }
-        const el=[...bankEl.children].find(n=>n.dataset.word===w);
-        if(el) el.dataset.found='true';
-      }
-    }
-    applyFoundHighlights();
-
-    // ===== Selection logic =====
-    let currentPath=[]; let direction=null; let dragging=false;
-
-    function clearSelection(){
-      for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
-      currentPath=[]; direction=null;
-    }
-
-    function highlightPath(){
-      for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
-      for(const [x,y] of currentPath){ cellRefs[y][x].dataset.selected='true'; }
-    }
-
-    function isAdjacent([x1,y1],[x2,y2]){ return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1 && !(x1===x2 && y1===y2); }
-
-    function setDirectionIfNeeded(){
-      if(currentPath.length===2 && !direction){
-        const [a,b]=currentPath; direction=[Math.sign(b[0]-a[0]), Math.sign(b[1]-a[1])];
-      }
-    }
-
-    function continuesLine(next){
-      if(currentPath.length<=1) return true;
-      if(!direction) return true;
-      const [lx,ly]=currentPath[currentPath.length-1];
-      return next[0]===lx+direction[0] && next[1]===ly+direction[1];
-    }
-
-    function coordsEqual(a,b){
-      if(a.length!==b.length) return false;
-      for(let i=0;i<a.length;i++){
-        if(a[i][0]!==b[i][0]||a[i][1]!==b[i][1]) return false;
-      }
-      return true;
-    }
-
-    function trySubmit(path){
-      const words=Object.keys(placed);
-      for(const w of words){
-        if(state.found.includes(w)) continue;
-        const coords=placed[w];
-        if(coordsEqual(path,coords) || coordsEqual(path.slice().reverse(),coords)){
-          state.found.push(w); save();
+      function applyFoundHighlights(){
+        for(const w of state.found){
+          const coords=placed[w]; if(!coords) continue;
           for(const [x,y] of coords){ cellRefs[y][x].dataset.found='true'; }
           const el=[...bankEl.children].find(n=>n.dataset.word===w);
           if(el) el.dataset.found='true';
-          renderMeta(); showToast(`Found: ${w}!`);
-          clearSelection();
-          return true;
         }
       }
-      return false;
-    }
+      applyFoundHighlights();
 
-    function xyFromCell(el){ return [Number(el.dataset.x), Number(el.dataset.y)]; }
-    function sameCoord(a,b){ return a && b && a[0]===b[0] && a[1]===b[1]; }
-
-    function startDragFrom(el){
-      dragging = true;
-      const [x, y] = xyFromCell(el);
-      const next = [x, y];
-
-      if (currentPath.length === 0) {
-        currentPath = [next]; direction = null; highlightPath(); return;
+      // Selection logic
+      let currentPath=[]; let direction=null; let dragging=false;
+      function clearSelection(){
+        for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
+        currentPath=[]; direction=null;
       }
-
-      const last = currentPath[currentPath.length - 1];
-
-      if (last[0] === x && last[1] === y) {
-        currentPath.pop();
-        if (currentPath.length < 2) direction = null;
-        highlightPath();
-        return;
+      function highlightPath(){
+        for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
+        for(const [x,y] of currentPath){ cellRefs[y][x].dataset.selected='true'; }
       }
-
-      if (currentPath.length === 1) {
-        if (!isAdjacent(last, next)) {
-          clearSelection(); currentPath = [next]; direction = null; highlightPath(); return;
+      function isAdjacent([x1,y1],[x2,y2]){ return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1 && !(x1===x2 && y1===y2); }
+      function setDirectionIfNeeded(){
+        if(currentPath.length===2 && !direction){
+          const [a,b]=currentPath; direction=[Math.sign(b[0]-a[0]), Math.sign(b[1]-a[1])];
         }
-        currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
       }
-
-      if (!isAdjacent(last, next) || !continuesLine(next)) {
-        clearSelection(); currentPath = [next]; direction = null; highlightPath(); return;
+      function continuesLine(next){
+        if(currentPath.length<=1) return true;
+        if(!direction) return true;
+        const [lx,ly]=currentPath[currentPath.length-1];
+        return next[0]===lx+direction[0] && next[1]===ly+direction[1];
       }
-
-      for (let i = 0; i < currentPath.length; i++) {
-        if (currentPath[i][0] === x && currentPath[i][1] === y) return;
+      function coordsEqual(a,b){
+        if(a.length!==b.length) return false;
+        for(let i=0;i<a.length;i++){
+          if(a[i][0]!==b[i][0]||a[i][1]!==b[i][1]) return false;
+        }
+        return true;
       }
+      function trySubmit(path){
+        const words=Object.keys(placed);
+        for(const w of words){
+          if(state.found.includes(w)) continue;
+          const coords=placed[w];
+          if(coordsEqual(path,coords) || coordsEqual(path.slice().reverse(),coords)){
+            state.found.push(w); save();
+            for(const [x,y] of coords){ cellRefs[y][x].dataset.found='true'; }
+            const el=[...bankEl.children].find(n=>n.dataset.word===w);
+            if(el) el.dataset.found='true';
+            renderMeta(); showToast(`Found: ${w}!`);
+            clearSelection();
+            return true;
+          }
+        }
+        return false;
+      }
+      function xyFromCell(el){ return [Number(el.dataset.x), Number(el.dataset.y)]; }
+      function sameCoord(a,b){ return a && b && a[0]===b[0] && a[1]===b[1]; }
 
-      currentPath.push(next); highlightPath();
-    }
-
-    function extendDragTo(el){
-      if(!dragging) return;
-      const next=xyFromCell(el);
-      const last=currentPath[currentPath.length-1];
-
-      if(sameCoord(next,last)) return;
-
-      if(currentPath.length>1){
-        const prev=currentPath[currentPath.length-2];
-        if(sameCoord(next,prev)){
+      function startDragFrom(el){
+        dragging = true;
+        const [x, y] = xyFromCell(el);
+        const next = [x, y];
+        if (currentPath.length === 0) { currentPath = [next]; direction = null; highlightPath(); return; }
+        const last = currentPath[currentPath.length - 1];
+        if (last[0] === x && last[1] === y) {
           currentPath.pop();
-          if(currentPath.length<2) direction=null;
+          if (currentPath.length < 2) direction = null;
           highlightPath();
           return;
         }
+        if (currentPath.length === 1) {
+          if (!isAdjacent(last, next)) {
+            clearSelection(); currentPath = [next]; direction = null; highlightPath(); return;
+          }
+          currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
+        }
+        if (!isAdjacent(last, next) || !continuesLine(next)) {
+          clearSelection(); currentPath = [next]; direction = null; highlightPath(); return;
+        }
+        for (let i = 0; i < currentPath.length; i++) {
+          if (currentPath[i][0] === x && currentPath[i][1] === y) return;
+        }
+        currentPath.push(next); highlightPath();
       }
 
-      if(currentPath.length===1){
-        if(!isAdjacent(last,next)){
+      function extendDragTo(el){
+        if(!dragging) return;
+        const next=xyFromCell(el);
+        const last=currentPath[currentPath.length-1];
+        if(sameCoord(next,last)) return;
+        if(currentPath.length>1){
+          const prev=currentPath[currentPath.length-2];
+          if(sameCoord(next,prev)){
+            currentPath.pop();
+            if(currentPath.length<2) direction=null;
+            highlightPath();
+            return;
+          }
+        }
+        if(currentPath.length===1){
+          if(!isAdjacent(last,next)){
+            clearSelection(); currentPath=[next]; highlightPath(); return;
+          }
+          currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
+        }
+        if(!isAdjacent(last,next) || !continuesLine(next)){
           clearSelection(); currentPath=[next]; highlightPath(); return;
         }
-        currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
+        for(let i=0;i<currentPath.length;i++){ if(sameCoord(currentPath[i], next)) return; }
+        currentPath.push(next); highlightPath();
       }
 
-      if(!isAdjacent(last,next) || !continuesLine(next)){
-        clearSelection(); currentPath=[next]; highlightPath(); return;
+      function endDrag(){
+        if(!dragging) return;
+        dragging=false;
+        if(currentPath.length>1){ trySubmit(currentPath); }
       }
 
-      for(let i=0;i<currentPath.length;i++){ if(sameCoord(currentPath[i], next)) return; }
+      // Pointer events — NOTE: gridEl already defined above; don't redeclare it.
+      gridEl.addEventListener('pointerdown', (e)=>{
+        const t=e.target.closest('.cell'); if(!t) return;
+        e.preventDefault();
+        try { gridEl.setPointerCapture(e.pointerId); } catch {}
+        startDragFrom(t);
+      });
+      window.addEventListener('pointermove', (e)=>{
+        if(!dragging) return;
+        const el = document.elementFromPoint(e.clientX, e.clientY);
+        const cell = el && el.closest ? el.closest('.cell') : null;
+        if(cell && gridEl.contains(cell)){ extendDragTo(cell); }
+      }, { passive: true });
+      window.addEventListener('pointerup',  ()=> endDrag(), { passive: true });
+      window.addEventListener('pointercancel', ()=> endDrag(), { passive: true });
+      window.addEventListener('pointerleave', ()=> endDrag(), { passive: true });
 
-      currentPath.push(next); highlightPath();
-    }
-
-    function endDrag(){
-      if(!dragging) return;
-      dragging=false;
-      if(currentPath.length>1){ trySubmit(currentPath); }
-    }
-
-    // Pointer events
-    const gridEl = document.getElementById('grid');
-    gridEl.addEventListener('pointerdown', (e)=>{
-      const t=e.target.closest('.cell'); if(!t) return;
-      e.preventDefault();
-      try { gridEl.setPointerCapture(e.pointerId); } catch {}
-      startDragFrom(t);
-    });
-    window.addEventListener('pointermove', (e)=>{
-      if(!dragging) return;
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      const cell = el && el.closest ? el.closest('.cell') : null;
-      if(cell && gridEl.contains(cell)){ extendDragTo(cell); }
-    }, { passive: true });
-    window.addEventListener('pointerup',  ()=> endDrag(), { passive: true });
-    window.addEventListener('pointercancel', ()=> endDrag(), { passive: true });
-    window.addEventListener('pointerleave', ()=> endDrag(), { passive: true });
-
-    // Controls
-    document.getElementById('btn-check').addEventListener('click', ()=>{
-      if(currentPath && currentPath.length>1){
-        if(!trySubmit(currentPath)) showToast('Not a hidden word — continue or Clear');
-      } else {
-        showToast('Click or drag letters in order to form a word');
-      }
-    });
-    document.getElementById('btn-clear').addEventListener('click', ()=>{ clearSelection(); });
-
-    document.getElementById('btn-hint').addEventListener('click', ()=>{
-      const remaining = Object.keys(placed).filter(w => !state.found.includes(w));
-      if(remaining.length===0){ showToast('All words found — great job!'); return; }
-      const w = remaining[Math.floor(Math.random()*remaining.length)];
-      const coords = placed[w]; if(!coords || coords.length===0) return;
-
-      const ends = [coords[0], coords[coords.length-1]];
-      const hintCells = [];
-      for(const [x,y] of ends){
-        const cell = cellRefs[y][x];
-        if(cell){ cell.classList.add('hint'); hintCells.push(cell); }
-      }
-      const bankItem=[...bankEl.children].find(n=>n.dataset.word===w);
-      if(bankItem){ bankItem.classList.add('hint'); setTimeout(()=>bankItem.classList.remove('hint'), 1900); }
-
-      setTimeout(()=> hintCells.forEach(c=>c.classList.remove('hint')), 1800);
-      showToast(`Hint: ${w.length} letters — start & end highlighted`);
-    });
-
-    document.getElementById('btn-reveal').addEventListener('click', ()=>{
-      const w=Object.keys(placed).find(x=>!state.found.includes(x));
-      if(!w){ showToast('All words found — great job!'); return; }
-      state.found.push(w); save();
-      for(const [x,y] of placed[w]){ cellRefs[y][x].dataset.found='true'; }
-      const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true';
-      renderMeta(); showToast(`Revealed: ${w}`);
-      clearSelection();
-    });
-
-    document.getElementById('btn-reset').addEventListener('click', ()=>{
-      if(confirm('Reset today\'s progress?')){ localStorage.removeItem(storageKey); location.reload(); }
-    });
-
-    document.getElementById('btn-print').addEventListener('click', ()=>{ window.print(); });
-
-    // Theme toggle
-    const THEME_KEY='ba-wordsearch-theme';
-    function applyTheme(themeMode){
-      document.documentElement.setAttribute('data-theme', themeMode);
-      document.getElementById('btn-theme').textContent = themeMode === 'dark' ? 'Light Mode' : 'Dark Mode';
-      try{ localStorage.setItem(THEME_KEY, themeMode); }catch{}
-    }
-    (function initTheme(){
-      let pref = 'light';
-      try{
-        pref = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
-      }catch{}
-      applyTheme(pref);
-    })();
-    document.getElementById('btn-theme').addEventListener('click', ()=>{
-      const cur = document.documentElement.getAttribute('data-theme') || 'light';
-      applyTheme(cur==='dark' ? 'light' : 'dark');
-    });
-
-    // Share
-    document.getElementById('btn-share').addEventListener('click', async () => {
-      const shareText = `I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
-      if (navigator.share) {
-        try { await navigator.share({ text: shareText }); } catch (err) { /* cancelled */ }
-      } else {
-        try { await navigator.clipboard.writeText(shareText); showToast("Share text copied! Paste it on social media."); }
-        catch { showToast("Unable to copy share text."); }
-      }
-    });
-
-    // Midnight rollover (America/Chicago)
-    (function scheduleChicagoMidnightRollover(){
-      let activeKey = chicagoISODate();
-      const prefix = 'ba-wordsearch-';
-      setInterval(() => {
-        const nowKey = chicagoISODate();
-        if (nowKey !== activeKey) {
-          try { localStorage.removeItem(prefix + activeKey); } catch {}
-          location.reload();
+      // Controls
+      document.getElementById('btn-check').addEventListener('click', ()=>{
+        if(currentPath && currentPath.length>1){
+          if(!trySubmit(currentPath)) showToast('Not a hidden word — continue or Clear');
+        } else {
+          showToast('Click or drag letters in order to form a word');
         }
-      }, 30_000);
-    })();
+      });
+      document.getElementById('btn-clear').addEventListener('click', ()=>{ clearSelection(); });
+
+      document.getElementById('btn-hint').addEventListener('click', ()=>{
+        const remaining = Object.keys(placed).filter(w => !state.found.includes(w));
+        if(remaining.length===0){ showToast('All words found — great job!'); return; }
+        const w = remaining[Math.floor(Math.random()*remaining.length)];
+        const coords = placed[w]; if(!coords || coords.length===0) return;
+        const ends = [coords[0], coords[coords.length-1]];
+        const hintCells = [];
+        for(const [x,y] of ends){
+          const cell = cellRefs[y][x];
+          if(cell){ cell.classList.add('hint'); hintCells.push(cell); }
+        }
+        const bankItem=[...bankEl.children].find(n=>n.dataset.word===w);
+        if(bankItem){ bankItem.classList.add('hint'); setTimeout(()=>bankItem.classList.remove('hint'), 1900); }
+        setTimeout(()=> hintCells.forEach(c=>c.classList.remove('hint')), 1800);
+        showToast(`Hint: ${w.length} letters — start & end highlighted`);
+      });
+
+      document.getElementById('btn-reveal').addEventListener('click', ()=>{
+        const w=Object.keys(placed).find(x=>!state.found.includes(x));
+        if(!w){ showToast('All words found — great job!'); return; }
+        state.found.push(w); save();
+        for(const [x,y] of placed[w]){ cellRefs[y][x].dataset.found='true'; }
+        const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true';
+        renderMeta(); showToast(`Revealed: ${w}`);
+        clearSelection();
+      });
+
+      document.getElementById('btn-reset').addEventListener('click', ()=>{
+        if(confirm('Reset today\'s progress?')){ localStorage.removeItem(storageKey); location.reload(); }
+      });
+
+      document.getElementById('btn-print').addEventListener('click', ()=>{ window.print(); });
+
+      // Theme toggle
+      const THEME_KEY='ba-wordsearch-theme';
+      function applyTheme(themeMode){
+        document.documentElement.setAttribute('data-theme', themeMode);
+        document.getElementById('btn-theme').textContent = themeMode === 'dark' ? 'Light Mode' : 'Dark Mode';
+        try{ localStorage.setItem(THEME_KEY, themeMode); }catch{}
+      }
+      (function initTheme(){
+        let pref = 'light';
+        try{
+          pref = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
+        }catch{}
+        applyTheme(pref);
+      })();
+      document.getElementById('btn-theme').addEventListener('click', ()=>{
+        const cur = document.documentElement.getAttribute('data-theme') || 'light';
+        applyTheme(cur==='dark' ? 'light' : 'dark');
+      });
+
+      // Share
+      document.getElementById('btn-share').addEventListener('click', async () => {
+        const shareText = `I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
+        if (navigator.share) {
+          try { await navigator.share({ text: shareText }); } catch (err) {}
+        } else {
+          try { await navigator.clipboard.writeText(shareText); showToast("Share text copied! Paste it on social media."); }
+          catch { showToast("Unable to copy share text."); }
+        }
+      });
+
+      // Midnight rollover
+      (function scheduleChicagoMidnightRollover(){
+        let activeKey = chicagoISODate();
+        const prefix = 'ba-wordsearch-';
+        setInterval(() => {
+          const nowKey = chicagoISODate();
+          if (nowKey !== activeKey) {
+            try { localStorage.removeItem(prefix + activeKey); } catch {}
+            location.reload();
+          }
+        }, 30_000);
+      })();
+    }
+
+    // Kick off
+    main();
   </script>
 </body>
 </html>
