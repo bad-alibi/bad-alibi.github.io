@@ -108,28 +108,53 @@ a{color:inherit}
   background:#fff; color:#111; text-decoration:none; font-weight:700;
 }
 
-/* ======================
-   Cool Merch — responsive grid
-====================== */
-.merch-grid{padding:2rem 0}
-.merch-grid h2{text-align:center; margin:0 0 1rem}
-.merch-grid .grid{
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:var(--gap); width:90%; max-width:var(--container-w); margin:0 auto;
+/* ====================== Cool Merch — responsive grid ====================== */
+.merch-grid {
+  padding: 2rem 0;
 }
-.merch-grid .merch-item{
-  background:var(--card); border:1px solid var(--border);
-  border-radius:var(--radius); box-shadow:var(--shadow);
-  padding:.75rem; display:flex; flex-direction:column; min-height:100%;
+
+.merch-grid h2 {
+  text-align: center;
+  margin: 0 0 1rem;
 }
-.merch-grid .merch-item img{
-  width:100%;
-  aspect-ratio:1/1;          
-  object-fit:cover;
-  border-radius:calc(var(--radius) - 6px);
+
+.merch-grid .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  width: 90%;
+  max-width: var(--container-w);
+  margin: 0 auto;
 }
-.merch-grid .merch-item .button{margin-top:auto}
-.view-all-link{text-align:center; margin-top:1rem}
+
+.merch-grid .merch-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: .75rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.merch-grid .merch-item img {
+  width: 100%;
+  aspect-ratio: 3 / 4;        /* rectangular ratio */
+  object-fit: contain;        /* show entire product image */
+  background: #fff;           /* fill any padding */
+  border-radius: calc(var(--radius) - 6px);
+}
+
+.merch-grid .merch-item .button {
+  margin-top: auto;
+}
+
+.view-all-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
 
 /* ======================
    About Authors banner text block
