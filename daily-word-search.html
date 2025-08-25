@@ -59,62 +59,100 @@
     <p class="meta">Seed: America/Chicago</p>
   </div>
 
-  <script>
-  // --------- ZERO promises, ZERO fetch; just render ----------
-  (function(){
-    const GRID_SIZE = 12;
-    const WORDS = ["OCEAN","TREE","ISLAND","MOUNTAIN","VOLCANO","FLOWER","DESERT","RIVER","WATERFALL","FOREST","CANYON","BEACH"];
-    const DIRS = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]];
-    function rng(n){let a=123456789^n;return()=>{a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^a>>>15,a|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
-    function choice(a,r){return a[Math.floor(r()*a.length)]}
-    function chicagoISO(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
-    const r=rng(Number(chicagoISO().replace(/-/g,'')));
+<script>
+/* ---------- settings ---------- */
+const GRID_SIZE = 12;
+const TIMEZONE = 'America/Chicago';
 
-    const gridEl=document.getElementById('grid');
-    const bankEl=document.getElementById('bank');
-    document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
-    document.getElementById('meta').textContent = `Theme: Nature (local) · Date: ${chicagoISO()}`;
+/* local fallback words (kept simple) */
+const LOCAL_THEME = 'Nature';
+const LOCAL_WORDS = ["OCEAN","TREE","ISLAND","MOUNTAIN","VOLCANO","FLOWER","DESERT","RIVER","WATERFALL","FOREST","CANYON","BEACH"];
 
-    function empty(n){return Array.from({length:n},()=>Array(n).fill(null))}
-    function inb(x,y){return x>=0&&y>=0&&x<GRID_SIZE&&y<GRID_SIZE}
-    function place(grid,word){
-      for(let t=0;t<400;t++){
-        const dir=choice(DIRS,r), sx=Math.floor(r()*GRID_SIZE), sy=Math.floor(r()*GRID_SIZE);
-        const ex=sx+dir[0]*(word.length-1), ey=sy+dir[1]*(word.length-1);
-        if(!inb(ex,ey)) continue;
-        let ok=true, coords=[];
-        for(let i=0;i<word.length;i++){
-          const x=sx+dir[0]*i, y=sy+dir[1]*i;
-          const c=grid[y][x]; if(c && c!==word[i]){ ok=false; break; }
-          coords.push([x,y]);
-        }
-        if(!ok) continue;
-        for(let i=0;i<word.length;i++){ const x=sx+dir[0]*i, y=sy+dir[1]*i; grid[y][x]=word[i]; }
-        return coords;
-      }
-      return null;
+/* rng + helpers (same as before) */
+function rng(seed){let a=seed|0;return()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^a>>>15,a|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function chicagoISO(){return new Intl.DateTimeFormat('en-CA',{timeZone:TIMEZONE,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function choice(a,r){return a[Math.floor(r()*a.length)]}
+const DIRS=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]];
+function empty(n){return Array.from({length:n},()=>Array(n).fill(null))}
+function inb(x,y){return x>=0&&y>=0&&x<GRID_SIZE&&y<GRID_SIZE}
+function place(grid,word,r){
+  for(let t=0;t<400;t++){
+    const d=choice(DIRS,r), sx=Math.floor(r()*GRID_SIZE), sy=Math.floor(r()*GRID_SIZE);
+    const ex=sx+d[0]*(word.length-1), ey=sy+d[1]*(word.length-1);
+    if(!inb(ex,ey)) continue;
+    let ok=true, coords=[];
+    for(let i=0;i<word.length;i++){
+      const x=sx+d[0]*i, y=sy+d[1]*i, c=grid[y][x];
+      if(c && c!==word[i]){ ok=false; break; } coords.push([x,y]);
     }
-    function fill(grid){
-      const A='A'.charCodeAt(0);
-      for(let y=0;y<GRID_SIZE;y++) for(let x=0;x<GRID_SIZE;x++)
-        if(!grid[y][x]) grid[y][x]=String.fromCharCode(A+Math.floor(r()*26));
-      return grid;
-    }
+    if(!ok) continue;
+    for(let i=0;i<word.length;i++){const x=sx+d[0]*i,y=sy+d[1]*i; grid[y][x]=word[i];}
+    return coords;
+  }
+  return null;
+}
+function fill(grid,r){
+  const A='A'.charCodeAt(0);
+  for(let y=0;y<GRID_SIZE;y++) for(let x=0;x<GRID_SIZE;x++)
+    if(!grid[y][x]) grid[y][x]=String.fromCharCode(A+Math.floor(r()*26));
+  return grid;
+}
 
-    const grid=fill(WORDS.reduce((g,w)=>{place(g,w);return g;}, empty(GRID_SIZE)));
+/* guarded API call */
+async function getDailyWordsFromAPI(){
+  const url = `/worker/daily-words?ts=${Date.now()}`;
+  try{
+    const res = await fetch(url, { cache:'no-store' });
+    const ct = (res.headers.get('content-type')||'').toLowerCase();
+    const txt = await res.text();                       // read once
+    if(!res.ok || !ct.includes('application/json')) return {ok:false, reason:`${res.status} ${ct}`, txt};
+    const data = JSON.parse(txt);
+    const words = Array.isArray(data?.words) ? data.words : [];
+    const cleaned = [...new Set(words.map(w=>String(w).toUpperCase().trim()))].filter(w=>/^[A-Z]{3,20}$/.test(w));
+    if(!cleaned.length) return {ok:false, reason:'empty words'};
+    return {ok:true, theme: data.theme||'Animals', words: cleaned};
+  }catch(e){
+    return {ok:false, reason:String(e)};
+  }
+}
 
-    // render grid
-    for(let y=0;y<GRID_SIZE;y++)
-      for(let x=0;x<GRID_SIZE;x++){
-        const d=document.createElement('div');
-        d.className='cell';
-        d.textContent=grid[y][x];
-        gridEl.appendChild(d);
-      }
+/* render puzzle with given words */
+function render(theme, words){
+  const r = rng(Number(chicagoISO().replace(/-/g,'')) ^ 0xBADA551);
+  const meta=document.getElementById('meta');
+  const gridEl=document.getElementById('grid');
+  const bankEl=document.getElementById('bank');
+  document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
 
-    // render word bank
-    bankEl.innerHTML = WORDS.sort().map(w=>`<div class="word">${w}</div>`).join('');
-  })();
-  </script>
+  meta.textContent = `Theme: ${theme} · Date: ${chicagoISO()}`;
+
+  const grid = fill(words.reduce((g,w)=>{place(g,w,r);return g;}, empty(GRID_SIZE)), r);
+
+  gridEl.innerHTML='';
+  for(let y=0;y<GRID_SIZE;y++) for(let x=0;x<GRID_SIZE;x++){
+    const d=document.createElement('div'); d.className='cell'; d.textContent=grid[y][x]; gridEl.appendChild(d);
+  }
+  bankEl.innerHTML = words.slice().sort().map(w=>`<div class="word">${w}</div>`).join('');
+}
+
+/* bootstrap */
+(async function(){
+  // try API, otherwise fall back
+  const api = await getDailyWordsFromAPI();
+  const banner = document.createElement('div');
+  banner.style.cssText='margin:.25rem 0 0;color:#666;font-size:.9rem';
+
+  if(api.ok){
+    banner.textContent = `Using API — Theme: ${api.theme}`;
+    document.getElementById('meta').after(banner);
+    render(api.theme, api.words);
+  }else{
+    banner.textContent = `Using local fallback — Theme: ${LOCAL_THEME}`;
+    document.getElementById('meta').after(banner);
+    render(LOCAL_THEME, LOCAL_WORDS);
+  }
+})();
+</script>
+
 </body>
 </html>
