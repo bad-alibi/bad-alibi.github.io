@@ -7,16 +7,11 @@
   <style>
     :root{
       --bg:#f5f5f5; --text:#222; --muted:#666; --card:#fff; --accent:#111; --brand:#111;
-      --border:#e7e7e7;
-      --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.08); --gap:1rem;
-      --grid-size: 12;
-      --hint: #ffbf47;
+      --border:#e7e7e7; --grid-size:12; --hint:#ffbf47; --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.08);
     }
     :root[data-theme="dark"]{
       --bg:#0e0f12; --text:#e8e8e8; --muted:#a0a0a0; --card:#17181c; --accent:#fafafa; --brand:#0ea5e9;
-      --border:#2a2c31;
-      --shadow:0 6px 18px rgba(0,0,0,.55);
-      --hint:#ffd166;
+      --border:#2a2c31; --shadow:0 6px 18px rgba(0,0,0,.55); --hint:#ffd166;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
@@ -32,22 +27,20 @@
     .card h2{font-size:1rem;margin:0 0 .5rem;color:var(--accent)}
     .card .head{padding:1rem 1rem .5rem;border-bottom:1px solid var(--border)}
     .card .body{padding:1rem}
-    .grid{display:grid;grid-template-columns:repeat(var(--grid-size), 1fr);gap:3px;user-select:none;touch-action:none}
-    .cell{
-      aspect-ratio:1;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;
-      font-weight:600;cursor:pointer;transition:transform .05s ease, background .2s ease, border-color .2s ease, color .2s ease
-    }
+    .grid{display:grid;grid-template-columns:repeat(var(--grid-size),1fr);gap:3px;user-select:none;touch-action:none}
+    .cell{aspect-ratio:1;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;
+      font-weight:600;cursor:pointer;transition:transform .05s ease, background .2s ease, border-color .2s ease, color .2s ease}
     .cell:hover{transform:translateY(-1px)}
     .cell[data-selected="true"]{background:#e6f0ff;border-color:#cfe0ff}
     :root[data-theme="dark"] .cell[data-selected="true"]{background:#0b3b6d;border-color:#155e9a}
     .cell[data-found="true"]{background:#c6f7d0;border-color:#a9e6b8;color:#0a4;}
     :root[data-theme="dark"] .cell[data-found="true"]{background:#114a2c;border-color:#1f7a4a;color:#7ff1a3}
-    @keyframes hintPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,193,7,0)} 50%{box-shadow:0 0 0 6px rgba(255,193,7,.35)} }
-    .cell.hint{ outline:2px solid var(--hint); animation:hintPulse 900ms ease-in-out 2; background: color-mix(in srgb, var(--hint) 25%, transparent); }
-    .word.hint{ border-color: var(--hint) !important; background: color-mix(in srgb, var(--hint) 18%, transparent); animation:hintPulse 900ms ease-in-out 2; }
+    @keyframes hintPulse {0%,100%{box-shadow:0 0 0 0 rgba(255,193,7,0)} 50%{box-shadow:0 0 0 6px rgba(255,193,7,.35)}}
+    .cell.hint{outline:2px solid var(--hint);animation:hintPulse 900ms ease-in-out 2;background:color-mix(in srgb, var(--hint) 25%, transparent)}
+    .word.hint{border-color:var(--hint)!important;background:color-mix(in srgb, var(--hint) 18%, transparent);animation:hintPulse 900ms ease-in-out 2}
     .bank{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:.5rem}
     @media (max-width: 600px){.bank{grid-template-columns:1fr}}
-    .word{ padding:.4rem .6rem;border:1px dashed var(--border);border-radius:10px;font-weight:600;background:color-mix(in srgb, var(--card) 92%, var(--bg) 8%); display:flex;align-items:center;justify-content:space-between;gap:.5rem;color:var(--text) }
+    .word{padding:.4rem .6rem;border:1px dashed var(--border);border-radius:10px;font-weight:600;background:color-mix(in srgb, var(--card) 92%, var(--bg) 8%);display:flex;align-items:center;justify-content:space-between;gap:.5rem;color:var(--text)}
     .word[data-found="true"]{opacity:.55;text-decoration:line-through}
     .meta{display:flex;flex-wrap:wrap;gap:.75rem;color:var(--muted);font-size:.95rem}
     .meta b{color:var(--accent)}
@@ -61,6 +54,7 @@
     .promo a{font-weight:700;text-decoration:underline}
     .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;padding:.6rem .9rem;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s ease}
     .toast.show{opacity:1}
+    .banner{margin:.25rem 0 0;font-size:.9rem;color:#666}
   </style>
 </head>
 <body>
@@ -94,16 +88,14 @@
       </section>
 
       <aside class="card">
-        <div class="head">
-          <h2>Word Bank</h2>
-        </div>
+        <div class="head"><h2>Word Bank</h2></div>
         <div class="body">
           <div id="bank" class="bank" aria-live="polite"></div>
           <div class="promo" style="margin-top:1rem">
             Love this puzzle? Explore more books from our Bad Alibi authors.
-            <br />
-            • Pamela Pardee — Activity & finance · <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener">Amazon</a><br />
-            • Harper Lane — Sci-Fi & Romance · <a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener">Amazon</a><br />
+            <br/>
+            • Pamela Pardee — Activity & finance · <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener">Amazon</a><br/>
+            • Harper Lane — Sci-Fi & Romance · <a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener">Amazon</a><br/>
             • Pamela DuShane — Children’s & Coloring · <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener">Amazon</a>
           </div>
         </div>
@@ -115,82 +107,49 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script type="module">
-    // ========= Helpers & Config =========
+  <script>
+    /* ====== config & simple fallback ====== */
     const GRID_SIZE = 12;
     const WORDS_PER_PUZZLE = 12;
     const TIMEZONE = 'America/Chicago';
+    const LOCAL_FALLBACK = {
+      theme: 'Nature',
+      words: ["OCEAN","TREE","ISLAND","MOUNTAIN","VOLCANO","FLOWER","DESERT","RIVER","WATERFALL","FOREST","CANYON","BEACH"]
+    };
 
-    // Pretty names for themes from the Worker
     const THEME_DISPLAY_NAMES = {
-      Animals: "Animals",
-      Fruits: "Fruits",
-      Vegetables: "Vegetables",
-      Sports: "Sports",
-      Colors: "Colors",
-      Weather: "Weather",
-      Transportation: "Transportation",
-      Nature: "Nature",
-      Music: "Music",
-      School: "School",
-      Ocean: "Ocean",
-      Camping: "Camping",
-      // Holidays
-      NewYear: "New Year's Day",
-      MLKDay: "Martin Luther King Jr. Day",
-      PresidentsDay: "Presidents' Day",
-      Valentine: "Valentine's Day",
-      StPatricks: "St. Patrick's Day",
-      Easter: "Easter",
-      MothersDay: "Mother's Day",
-      MemorialDay: "Memorial Day",
-      Juneteenth: "Juneteenth",
-      FathersDay: "Father's Day",
-      IndependenceDay: "Independence Day",
-      Patriotic: "Patriotic Week",
-      LaborDay: "Labor Day",
-      Halloween: "Halloween",
-      Thanksgiving: "Thanksgiving",
-      VeteransDay: "Veterans Day",
-      Christmas: "Christmas"
+      Animals:"Animals",Fruits:"Fruits",Vegetables:"Vegetables",Sports:"Sports",Colors:"Colors",
+      Weather:"Weather",Transportation:"Transportation",Nature:"Nature",Music:"Music",School:"School",
+      Ocean:"Ocean",Camping:"Camping",NewYear:"New Year's Day",MLKDay:"Martin Luther King Jr. Day",
+      PresidentsDay:"Presidents' Day",Valentine:"Valentine's Day",StPatricks:"St. Patrick's Day",
+      Easter:"Easter",MothersDay:"Mother's Day",MemorialDay:"Memorial Day",Juneteenth:"Juneteenth",
+      FathersDay:"Father's Day",IndependenceDay:"Independence Day",Patriotic:"Patriotic Week",
+      LaborDay:"Labor Day",Halloween:"Halloween",Thanksgiving:"Thanksgiving",VeteransDay:"Veterans Day",Christmas:"Christmas"
     };
 
-    // Minimal local fallback (only used if API fails entirely)
-    const WORD_LISTS = {
-      Animals: [ "DOG","CAT","HORSE","LION","TIGER","BEAR","MONKEY","FISH","BIRD","FROG","WHALE","MOUSE" ],
-      Colors: [ "RED","BLUE","GREEN","YELLOW","PURPLE","PINK","BLACK","WHITE","BROWN","ORANGE","GOLD","SILVER" ],
-      Sports: [ "SOCCER","BASEBALL","FOOTBALL","GOLF","TENNIS","RUNNING","CYCLING","SKATING","ROWING","SURFING","SKIING","HIKING" ],
-      Nature: [ "TREE","FLOWER","RIVER","MOUNTAIN","OCEAN","LAKE","FOREST","ISLAND","MEADOW","BEACH","VALLEY","CANYON" ]
-    };
-
-    function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0,k;i<str.length;i++){ k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179);} h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]; }
-    function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; } }
-    function rngFromSeed(seedStr){ const [a]=cyrb128(seedStr); return mulberry32(a); }
-
-    function chicagoISODate(d=new Date()){
-      const fmt=new Intl.DateTimeFormat('en-CA',{ timeZone:TIMEZONE, year:'numeric', month:'2-digit', day:'2-digit'});
-      return fmt.format(d);
-    }
-
-    function shuffle(arr, rnd){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-    function choice(arr, rnd){ return arr[Math.floor(rnd()*arr.length)]; }
-    function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._hide); t._hide=setTimeout(()=>t.classList.remove('show'), 1500); }
+    /* ====== tiny RNG & utils ====== */
+    function cyrb128(str){let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762;for(let i=0,k;i<str.length;i++){k=str.charCodeAt(i);h1=h2^Math.imul(h1^k,597399067);h2=h3^Math.imul(h2^k,2869860233);h3=h4^Math.imul(h3^k,951274213);h4=h1^Math.imul(h4^k,2716044179);}h1=Math.imul(h3^(h1>>>18),597399067);h2=Math.imul(h4^(h2>>>22),2869860233);h3=Math.imul(h1^(h3>>>17),951274213);h4=Math.imul(h2^(h4>>>19),2716044179);return[(h1^h2^h3^h4)>>>0];}
+    function mulberry32(a){return function(){let t=a+=0x6D2B79F5;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;}}
+    function rngFromSeed(seedStr){const[a]=cyrb128(seedStr);return mulberry32(a);}
+    function chicagoISODate(d=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:TIMEZONE,year:'numeric',month:'2-digit',day:'2-digit'}).format(d);}
+    function shuffle(arr,rnd){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+    function choice(a,rnd){return a[Math.floor(rnd()*a.length)];}
+    function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._hide);t._hide=setTimeout(()=>t.classList.remove('show'),1500);}
 
     const DIRS=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]];
-    const inBounds=(x,y)=> x>=0 && y>=0 && x<GRID_SIZE && y<GRID_SIZE;
-    function makeEmptyGrid(n){ return Array.from({length:n},()=>Array(n).fill(null)); }
+    const inBounds=(x,y)=>x>=0&&y>=0&&x<GRID_SIZE&&y<GRID_SIZE;
+    function makeEmptyGrid(n){return Array.from({length:n},()=>Array(n).fill(null));}
 
-    function placeWord(grid, word, rnd){
+    function placeWord(grid,word,rnd){
       word=word.toUpperCase();
-      const tries=400;
-      for(let t=0;t<tries;t++){
-        const dir=choice(DIRS, rnd);
+      for(let t=0;t<400;t++){
+        const dir=choice(DIRS,rnd);
         const startX=Math.floor(rnd()*GRID_SIZE);
         const startY=Math.floor(rnd()*GRID_SIZE);
         const endX=startX+dir[0]*(word.length-1);
         const endY=startY+dir[1]*(word.length-1);
         if(!inBounds(endX,endY)) continue;
-        let ok=true; let coords=[];
+        let ok=true, coords=[];
         for(let i=0;i<word.length;i++){
           const x=startX+dir[0]*i, y=startY+dir[1]*i;
           const cell=grid[y][x];
@@ -206,29 +165,39 @@
       return null;
     }
 
-    function fillGrid(grid, rnd){
+    function fillGrid(grid,rnd){
       const A='A'.charCodeAt(0);
-      for(let y=0;y<GRID_SIZE;y++) for(let x=0;x<GRID_SIZE;x++) if(!grid[y][x]) grid[y][x]=String.fromCharCode(A+Math.floor(rnd()*26));
+      for(let y=0;y<GRID_SIZE;y++) for(let x=0;x<GRID_SIZE;x++)
+        if(!grid[y][x]) grid[y][x]=String.fromCharCode(A+Math.floor(rnd()*26));
       return grid;
     }
 
-    async function getDailyWordsFromAPI() {
-      try {
-        const res = await fetch('/api/daily-words', { cache: 'no-store' });
-        if (!res.ok) return null;
-        const data = await res.json();
-        let words = Array.isArray(data?.words) ? data.words : null;
-        if (!words) return null;
-        words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
-          .filter(w => /^[A-Z]{3,20}$/.test(w));
-        return { theme: data.theme || 'Animals', words };
-      } catch {
-        return null;
+    /* ====== robust API fetch (new route) ====== */
+    async function getDailyWordsFromAPI(){
+      const url = `/worker/daily-words?ts=${Date.now()}`;
+      // timeout guard — prevents hanging promises
+      const timeout = new Promise(res => setTimeout(() => res({ok:false,reason:'timeout'}), 2500));
+      try{
+        const attempt = (async () => {
+          const res = await fetch(url, { cache:'no-store' });
+          const ct = (res.headers.get('content-type')||'').toLowerCase();
+          const txt = await res.text();
+          if(!res.ok || !ct.includes('application/json')) return {ok:false,reason:`${res.status} ${ct}`,txt};
+          let data;
+          try{ data = JSON.parse(txt); }catch{ return {ok:false,reason:'bad json'}; }
+          const words = Array.isArray(data?.words) ? data.words : [];
+          const cleaned = [...new Set(words.map(w=>String(w).toUpperCase().trim()))].filter(w=>/^[A-Z]{3,20}$/.test(w));
+          if(!cleaned.length) return {ok:false,reason:'empty words'};
+          return {ok:true, theme: data.theme || 'Animals', words: cleaned};
+        })();
+        return await Promise.race([attempt, timeout]);
+      }catch(e){
+        return {ok:false, reason:String(e)};
       }
     }
 
-    // ========= Main bootstrap =========
-    async function main(){
+    /* ====== main bootstrap ====== */
+    (async function main(){
       const todayKey = chicagoISODate();
       const rng = rngFromSeed('BA_WORD_' + todayKey);
 
@@ -237,23 +206,28 @@
       const metaEl=document.getElementById('meta');
       document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
 
-      // Build word list: try API first
-      let theme, allWords;
+      // Try API first (new route); hard fallback to local sample on any failure
+      let theme, words, sourceNote;
       const api = await getDailyWordsFromAPI();
-      if (api && api.words && api.words.length) {
-        theme = api.theme;                             // use Worker’s theme
-        allWords = api.words.slice(0, WORDS_PER_PUZZLE); // use exactly what Worker returns (already padded)
-      } else {
-        // Fallback: local deterministic pick
-        const themes = Object.keys(WORD_LISTS);
-        theme = themes[Math.floor(rng() * themes.length)];
-        allWords = shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
+      if(api && api.ok){
+        theme = api.theme;
+        words = api.words.slice(0, WORDS_PER_PUZZLE);
+        sourceNote = `Using API — Theme: ${THEME_DISPLAY_NAMES[theme]||theme}`;
+      }else{
+        theme = LOCAL_FALLBACK.theme;
+        words = LOCAL_FALLBACK.words.slice(0, WORDS_PER_PUZZLE);
+        sourceNote = `Using local fallback — check Worker route/binding`;
       }
 
-      // Build grid with the chosen words
+      const banner=document.createElement('div');
+      banner.className='banner';
+      banner.textContent=sourceNote;
+      metaEl.after(banner);
+
+      // Build grid with chosen words
       let grid = makeEmptyGrid(GRID_SIZE);
-      const placed = {}; // word -> coords
-      for (const w of allWords) {
+      const placed = {};
+      for(const w of words){
         const coords = placeWord(grid, w, rng);
         if (coords) placed[w] = coords;
       }
@@ -265,6 +239,7 @@
       try{ const saved=JSON.parse(localStorage.getItem(storageKey)); if(saved) state=saved; }catch{}
       const save=()=> localStorage.setItem(storageKey, JSON.stringify(state));
 
+      // Renderers
       function renderMeta(){
         const prettyTheme = THEME_DISPLAY_NAMES[theme] || theme;
         metaEl.innerHTML = `
@@ -319,35 +294,14 @@
       }
       applyFoundHighlights();
 
-      // Selection logic
+      // Selection / controls (unchanged)
       let currentPath=[]; let direction=null; let dragging=false;
-      function clearSelection(){
-        for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
-        currentPath=[]; direction=null;
-      }
-      function highlightPath(){
-        for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
-        for(const [x,y] of currentPath){ cellRefs[y][x].dataset.selected='true'; }
-      }
-      function isAdjacent([x1,y1],[x2,y2]){ return Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1 && !(x1===x2 && y1===y2); }
-      function setDirectionIfNeeded(){
-        if(currentPath.length===2 && !direction){
-          const [a,b]=currentPath; direction=[Math.sign(b[0]-a[0]), Math.sign(b[1]-a[1])];
-        }
-      }
-      function continuesLine(next){
-        if(currentPath.length<=1) return true;
-        if(!direction) return true;
-        const [lx,ly]=currentPath[currentPath.length-1];
-        return next[0]===lx+direction[0] && next[1]===ly+direction[1];
-      }
-      function coordsEqual(a,b){
-        if(a.length!==b.length) return false;
-        for(let i=0;i<a.length;i++){
-          if(a[i][0]!==b[i][0]||a[i][1]!==b[i][1]) return false;
-        }
-        return true;
-      }
+      function clearSelection(){ for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected'); currentPath=[]; direction=null; }
+      function highlightPath(){ for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected'); for(const [x,y] of currentPath){ cellRefs[y][x].dataset.selected='true'; } }
+      const isAdjacent=([x1,y1],[x2,y2])=> Math.abs(x1-x2)<=1 && Math.abs(y1-y2)<=1 && !(x1===x2 && y1===y2);
+      function setDirectionIfNeeded(){ if(currentPath.length===2 && !direction){ const [a,b]=currentPath; direction=[Math.sign(b[0]-a[0]), Math.sign(b[1]-a[1])]; } }
+      function continuesLine(next){ if(currentPath.length<=1) return true; if(!direction) return true; const [lx,ly]=currentPath[currentPath.length-1]; return next[0]===lx+direction[0] && next[1]===ly+direction[1]; }
+      function coordsEqual(a,b){ if(a.length!==b.length) return false; for(let i=0;i<a.length;i++){ if(a[i][0]!==b[i][0]||a[i][1]!==b[i][1]) return false; } return true; }
       function trySubmit(path){
         const words=Object.keys(placed);
         for(const w of words){
@@ -356,42 +310,26 @@
           if(coordsEqual(path,coords) || coordsEqual(path.slice().reverse(),coords)){
             state.found.push(w); save();
             for(const [x,y] of coords){ cellRefs[y][x].dataset.found='true'; }
-            const el=[...bankEl.children].find(n=>n.dataset.word===w);
-            if(el) el.dataset.found='true';
-            renderMeta(); showToast(`Found: ${w}!`);
-            clearSelection();
-            return true;
+            const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true';
+            renderMeta(); showToast(`Found: ${w}!`); clearSelection(); return true;
           }
         }
         return false;
       }
-      function xyFromCell(el){ return [Number(el.dataset.x), Number(el.dataset.y)]; }
-      function sameCoord(a,b){ return a && b && a[0]===b[0] && a[1]===b[1]; }
+      const xyFromCell=el=>[Number(el.dataset.x), Number(el.dataset.y)];
+      const sameCoord=(a,b)=>a && b && a[0]===b[0] && a[1]===b[1];
 
       function startDragFrom(el){
-        dragging = true;
-        const [x, y] = xyFromCell(el);
-        const next = [x, y];
-        if (currentPath.length === 0) { currentPath = [next]; direction = null; highlightPath(); return; }
-        const last = currentPath[currentPath.length - 1];
-        if (last[0] === x && last[1] === y) {
-          currentPath.pop();
-          if (currentPath.length < 2) direction = null;
-          highlightPath();
-          return;
-        }
-        if (currentPath.length === 1) {
-          if (!isAdjacent(last, next)) {
-            clearSelection(); currentPath = [next]; direction = null; highlightPath(); return;
-          }
+        dragging=true; const [x,y]=xyFromCell(el); const next=[x,y];
+        if(currentPath.length===0){ currentPath=[next]; direction=null; highlightPath(); return; }
+        const last=currentPath[currentPath.length-1];
+        if(last[0]===x && last[1]===y){ currentPath.pop(); if(currentPath.length<2) direction=null; highlightPath(); return; }
+        if(currentPath.length===1){
+          if(!isAdjacent(last,next)){ clearSelection(); currentPath=[next]; direction=null; highlightPath(); return; }
           currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
         }
-        if (!isAdjacent(last, next) || !continuesLine(next)) {
-          clearSelection(); currentPath = [next]; direction = null; highlightPath(); return;
-        }
-        for (let i = 0; i < currentPath.length; i++) {
-          if (currentPath[i][0] === x && currentPath[i][1] === y) return;
-        }
+        if(!isAdjacent(last,next) || !continuesLine(next)){ clearSelection(); currentPath=[next]; direction=null; highlightPath(); return; }
+        for(let i=0;i<currentPath.length;i++){ if(currentPath[i][0]===x && currentPath[i][1]===y) return; }
         currentPath.push(next); highlightPath();
       }
 
@@ -402,123 +340,63 @@
         if(sameCoord(next,last)) return;
         if(currentPath.length>1){
           const prev=currentPath[currentPath.length-2];
-          if(sameCoord(next,prev)){
-            currentPath.pop();
-            if(currentPath.length<2) direction=null;
-            highlightPath();
-            return;
-          }
+          if(sameCoord(next,prev)){ currentPath.pop(); if(currentPath.length<2) direction=null; highlightPath(); return; }
         }
         if(currentPath.length===1){
-          if(!isAdjacent(last,next)){
-            clearSelection(); currentPath=[next]; highlightPath(); return;
-          }
+          if(!isAdjacent(last,next)){ clearSelection(); currentPath=[next]; highlightPath(); return; }
           currentPath.push(next); setDirectionIfNeeded(); highlightPath(); return;
         }
-        if(!isAdjacent(last,next) || !continuesLine(next)){
-          clearSelection(); currentPath=[next]; highlightPath(); return;
-        }
+        if(!isAdjacent(last,next) || !continuesLine(next)){ clearSelection(); currentPath=[next]; highlightPath(); return; }
         for(let i=0;i<currentPath.length;i++){ if(sameCoord(currentPath[i], next)) return; }
         currentPath.push(next); highlightPath();
       }
 
-      function endDrag(){
-        if(!dragging) return;
-        dragging=false;
-        if(currentPath.length>1){ trySubmit(currentPath); }
-      }
+      function endDrag(){ if(!dragging) return; dragging=false; if(currentPath.length>1){ trySubmit(currentPath); } }
 
-      // Pointer events
-      gridEl.addEventListener('pointerdown', (e)=>{
-        const t=e.target.closest('.cell'); if(!t) return;
-        e.preventDefault();
-        try { gridEl.setPointerCapture(e.pointerId); } catch {}
-        startDragFrom(t);
-      });
-      window.addEventListener('pointermove', (e)=>{
-        if(!dragging) return;
-        const el = document.elementFromPoint(e.clientX, e.clientY);
-        const cell = el && el.closest ? el.closest('.cell') : null;
-        if(cell && gridEl.contains(cell)){ extendDragTo(cell); }
-      }, { passive: true });
-      window.addEventListener('pointerup',  ()=> endDrag(), { passive: true });
-      window.addEventListener('pointercancel', ()=> endDrag(), { passive: true });
-      window.addEventListener('pointerleave', ()=> endDrag(), { passive: true });
+      // pointer events
+      gridEl.addEventListener('pointerdown', (e)=>{ const t=e.target.closest('.cell'); if(!t) return; e.preventDefault(); try{ gridEl.setPointerCapture(e.pointerId); }catch{} startDragFrom(t); });
+      window.addEventListener('pointermove', (e)=>{ if(!dragging) return; const el=document.elementFromPoint(e.clientX,e.clientY); const cell=el && el.closest? el.closest('.cell'):null; if(cell && gridEl.contains(cell)){ extendDragTo(cell); } }, {passive:true});
+      window.addEventListener('pointerup', ()=> endDrag(), {passive:true});
+      window.addEventListener('pointercancel', ()=> endDrag(), {passive:true});
+      window.addEventListener('pointerleave', ()=> endDrag(), {passive:true});
 
-      // Controls
-      document.getElementById('btn-check').addEventListener('click', ()=>{
-        if(currentPath && currentPath.length>1){
-          if(!trySubmit(currentPath)) showToast('Not a hidden word — continue or Clear');
-        } else {
-          showToast('Click or drag letters in order to form a word');
-        }
-      });
-      document.getElementById('btn-clear').addEventListener('click', ()=>{ clearSelection(); });
-
+      // buttons
+      document.getElementById('btn-check').addEventListener('click', ()=>{ if(currentPath && currentPath.length>1){ if(!trySubmit(currentPath)) showToast('Not a hidden word — continue or Clear'); } else { showToast('Click or drag letters in order to form a word'); }});
+      document.getElementById('btn-clear').addEventListener('click', ()=> clearSelection());
       document.getElementById('btn-hint').addEventListener('click', ()=>{
-        const remaining = Object.keys(placed).filter(w => !state.found.includes(w));
+        const remaining=Object.keys(placed).filter(w=>!state.found.includes(w));
         if(remaining.length===0){ showToast('All words found — great job!'); return; }
-        const w = remaining[Math.floor(Math.random()*remaining.length)];
-        const coords = placed[w]; if(!coords || coords.length===0) return;
-        const ends = [coords[0], coords[coords.length-1]];
-        const hintCells = [];
-        for(const [x,y] of ends){
-          const cell = cellRefs[y][x];
-          if(cell){ cell.classList.add('hint'); hintCells.push(cell); }
-        }
-        const bankItem=[...bankEl.children].find(n=>n.dataset.word===w);
-        if(bankItem){ bankItem.classList.add('hint'); setTimeout(()=>bankItem.classList.remove('hint'), 1900); }
-        setTimeout(()=> hintCells.forEach(c=>c.classList.remove('hint')), 1800);
+        const w=remaining[Math.floor(Math.random()*remaining.length)];
+        const coords=placed[w]; if(!coords||!coords.length) return;
+        const ends=[coords[0], coords[coords.length-1]]; const cells=[];
+        for(const [x,y] of ends){ const c=cellRefs[y][x]; if(c){ c.classList.add('hint'); cells.push(c); } }
+        const bankItem=[...bankEl.children].find(n=>n.dataset.word===w); if(bankItem){ bankItem.classList.add('hint'); setTimeout(()=>bankItem.classList.remove('hint'),1900); }
+        setTimeout(()=>cells.forEach(c=>c.classList.remove('hint')),1800);
         showToast(`Hint: ${w.length} letters — start & end highlighted`);
       });
-
       document.getElementById('btn-reveal').addEventListener('click', ()=>{
-        const w=Object.keys(placed).find(x=>!state.found.includes(x));
-        if(!w){ showToast('All words found — great job!'); return; }
-        state.found.push(w); save();
-        for(const [x,y] of placed[w]){ cellRefs[y][x].dataset.found='true'; }
+        const w=Object.keys(placed).find(x=>!state.found.includes(x)); if(!w){ showToast('All words found — great job!'); return; }
+        state.found.push(w); save(); for(const [x,y] of placed[w]){ cellRefs[y][x].dataset.found='true'; }
         const el=[...bankEl.children].find(n=>n.dataset.word===w); if(el) el.dataset.found='true';
-        renderMeta(); showToast(`Revealed: ${w}`);
-        clearSelection();
+        renderMeta(); showToast(`Revealed: ${w}`); clearSelection();
       });
+      document.getElementById('btn-reset').addEventListener('click', ()=>{ if(confirm('Reset today\'s progress?')){ localStorage.removeItem(storageKey); location.reload(); }});
+      document.getElementById('btn-print').addEventListener('click', ()=> window.print());
 
-      document.getElementById('btn-reset').addEventListener('click', ()=>{
-        if(confirm('Reset today\'s progress?')){ localStorage.removeItem(storageKey); location.reload(); }
-      });
-
-      document.getElementById('btn-print').addEventListener('click', ()=>{ window.print(); });
-
-      // Theme toggle
+      // theme
       const THEME_KEY='ba-wordsearch-theme';
-      function applyTheme(themeMode){
-        document.documentElement.setAttribute('data-theme', themeMode);
-        document.getElementById('btn-theme').textContent = themeMode === 'dark' ? 'Light Mode' : 'Dark Mode';
-        try{ localStorage.setItem(THEME_KEY, themeMode); }catch{}
-      }
-      (function initTheme(){
-        let pref = 'light';
-        try{
-          pref = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
-        }catch{}
-        applyTheme(pref);
-      })();
-      document.getElementById('btn-theme').addEventListener('click', ()=>{
-        const cur = document.documentElement.getAttribute('data-theme') || 'light';
-        applyTheme(cur==='dark' ? 'light' : 'dark');
+      function applyTheme(mode){ document.documentElement.setAttribute('data-theme', mode); document.getElementById('btn-theme').textContent = mode==='dark' ? 'Light Mode' : 'Dark Mode'; try{ localStorage.setItem(THEME_KEY, mode); }catch{} }
+      (function initTheme(){ let pref='light'; try{ pref = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'); }catch{} applyTheme(pref); })();
+      document.getElementById('btn-theme').addEventListener('click', ()=>{ const cur=document.documentElement.getAttribute('data-theme')||'light'; applyTheme(cur==='dark'?'light':'dark'); });
+
+      // share
+      document.getElementById('btn-share').addEventListener('click', async ()=>{
+        const shareText=`I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
+        if(navigator.share){ try{ await navigator.share({text:shareText}); }catch{} }
+        else { try{ await navigator.clipboard.writeText(shareText); showToast("Share text copied! Paste it on social media."); }catch{ showToast("Unable to copy share text."); } }
       });
 
-      // Share
-      document.getElementById('btn-share').addEventListener('click', async () => {
-        const shareText = `I’m playing today’s Bad Alibi Daily Word Search! 🧩 #WordSearch\n${window.location.href}`;
-        if (navigator.share) {
-          try { await navigator.share({ text: shareText }); } catch (err) {}
-        } else {
-          try { await navigator.clipboard.writeText(shareText); showToast("Share text copied! Paste it on social media."); }
-          catch { showToast("Unable to copy share text."); }
-        }
-      });
-
-      // Midnight rollover
+      // midnight rollover (Chicago)
       (function scheduleChicagoMidnightRollover(){
         let activeKey = chicagoISODate();
         const prefix = 'ba-wordsearch-';
@@ -530,10 +408,7 @@
           }
         }, 30_000);
       })();
-    }
-
-    // Kick off
-    main();
+    })();
   </script>
 </body>
 </html>
