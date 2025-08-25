@@ -7,9 +7,8 @@
   <style>
     :root{
       --bg:#f5f5f5; --text:#222; --muted:#666; --card:#fff; --accent:#111; --brand:#111;
-      --border:#e7e7e7;
+      --border:#e7e7e7; --grid-size: 12; --hint:#ffbf47;
       --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.08);
-      --grid-size: 12; --hint:#ffbf47;
     }
     :root[data-theme="dark"]{
       --bg:#0e0f12; --text:#e8e8e8; --muted:#a0a0a0; --card:#17181c; --accent:#fafafa; --brand:#0ea5e9;
@@ -113,11 +112,12 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script type="module">
-    // ========= Config & tiny safety switch =========
+    // ========= Config & emergency switch =========
     const GRID_SIZE = 12;
     const WORDS_PER_PUZZLE = 12;
     const TIMEZONE = 'America/Chicago';
-    const FORCE_LOCAL_IF_API_FAILS = true;
+    // set to false after the Worker binding is fixed
+    const FORCE_LOCAL = true;
 
     const THEME_DISPLAY_NAMES = {
       Animals:"Animals", Fruits:"Fruits", Vegetables:"Vegetables", Sports:"Sports",
@@ -131,19 +131,23 @@
       VeteransDay:"Veterans Day", Christmas:"Christmas"
     };
 
-    // Minimal local fallback (only used if API fails)
+    // Minimal local fallback
     const WORD_LISTS = {
-      Animals:["DOG","CAT","HORSE","LION","TIGER","BEAR","MONKEY","FISH","BIRD","FROG","WHALE","MOUSE"],
-      Colors:["RED","BLUE","GREEN","YELLOW","PURPLE","PINK","BLACK","WHITE","BROWN","ORANGE","GOLD","SILVER"],
-      Sports:["SOCCER","BASEBALL","FOOTBALL","GOLF","TENNIS","RUNNING","CYCLING","SKIING","ROWING","SURFING","SKATING"],
-      Nature:["TREE","FLOWER","RIVER","MOUNTAIN","OCEAN","LAKE","FOREST","ISLAND","MEADOW","BEACH","VALLEY","CANYON"]
+      Animals:[ "DOG","CAT","HORSE","LION","TIGER","BEAR","MONKEY","FISH","BIRD","FROG","WHALE","MOUSE" ],
+      Colors:[ "RED","BLUE","GREEN","YELLOW","PURPLE","PINK","BLACK","WHITE","BROWN","ORANGE","GOLD","SILVER" ],
+      Sports:[ "SOCCER","BASEBALL","FOOTBALL","GOLF","TENNIS","RUNNING","CYCLING","SKATING","ROWING","SURFING","SKIING" ],
+      Nature:[ "TREE","FLOWER","RIVER","MOUNTAIN","OCEAN","LAKE","FOREST","ISLAND","MEADOW","BEACH","VALLEY","CANYON" ]
     };
 
     // ========= RNG & helpers =========
     function cyrb128(str){ let h1=1779033703,h2=3144134277,h3=1013904242,h4=2773480762; for(let i=0,k;i<str.length;i++){ k=str.charCodeAt(i); h1=h2^Math.imul(h1^k,597399067); h2=h3^Math.imul(h2^k,2869860233); h3=h4^Math.imul(h3^k,951274213); h4=h1^Math.imul(h4^k,2716044179);} h1=Math.imul(h3^(h1>>>18),597399067); h2=Math.imul(h4^(h2>>>22),2869860233); h3=Math.imul(h1^(h3>>>17),951274213); h4=Math.imul(h2^(h4>>>19),2716044179); return [(h1^h2^h3^h4)>>>0,(h2^h1)>>>0,(h3^h1)>>>0,(h4^h1)>>>0]; }
     function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; } }
     function rngFromSeed(seedStr){ const [a]=cyrb128(seedStr); return mulberry32(a); }
-    function chicagoISODate(d=new Date()){ return new Intl.DateTimeFormat('en-CA',{ timeZone:TIMEZONE, year:'numeric', month:'2-digit', day:'2-digit'}).format(d); }
+
+    function chicagoISODate(d=new Date()){
+      return new Intl.DateTimeFormat('en-CA',{ timeZone:TIMEZONE, year:'numeric', month:'2-digit', day:'2-digit'}).format(d);
+    }
+
     function shuffle(arr, rnd){ const a=arr.slice(); for(let i=a.length-1;i>0;i++){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
     function choice(arr, rnd){ return arr[Math.floor(rnd()*arr.length)]; }
     function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._hide); t._hide=setTimeout(()=>t.classList.remove('show'), 1500); }
@@ -184,33 +188,29 @@
       return grid;
     }
 
-    // ====== API fetch to /worker/daily-words with robust JSON guard ======
+    // ====== API (guarded) — reads JSON or falls back ======
     async function getDailyWordsFromAPI() {
-  const url = `/worker/daily-words?ts=${Date.now()}`;   // <— new route
-  try {
-    const res = await fetch(url, { cache: 'no-store' });
-    const ct = (res.headers.get('content-type') || '').toLowerCase();
-    const bodyTxt = await res.text();                   // read body once (even on 500)
+      const url = `/worker/daily-words?ts=${Date.now()}`;
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        const ct = (res.headers.get('content-type') || '').toLowerCase();
+        const bodyTxt = await res.text(); // read once, even on errors
 
-    if (!res.ok || !ct.includes('application/json')) {
-      console.warn('[daily-words] API bad:', res.status, ct, bodyTxt.slice(0,200));
-      return null;                                      // force fallback
+        if (!res.ok || !ct.includes('application/json')) {
+          console.warn('[daily-words] API bad:', res.status, ct, bodyTxt.slice(0,200));
+          return null;
+        }
+        const data = JSON.parse(bodyTxt);
+        let words = Array.isArray(data?.words) ? data.words : null;
+        if (!words) return null;
+        words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
+          .filter(w => /^[A-Z]{3,20}$/.test(w));
+        return { theme: data.theme || 'Animals', words };
+      } catch (err) {
+        console.warn('[daily-words] API failed:', err);
+        return null;
+      }
     }
-
-    const data = JSON.parse(bodyTxt);
-    let words = Array.isArray(data?.words) ? data.words : null;
-    if (!words) return null;
-
-    words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
-      .filter(w => /^[A-Z]{3,20}$/.test(w));
-
-    return { theme: data.theme || 'Animals', words };
-  } catch (err) {
-    console.warn('[daily-words] API failed:', err);
-    return null;                                        // fallback
-  }
-}
-
 
     // ========= Main bootstrap =========
     async function main(){
@@ -222,61 +222,37 @@
       const metaEl=document.getElementById('meta');
       document.documentElement.style.setProperty('--grid-size', GRID_SIZE);
 
-      // 1) Try API once (unless you force local)
+      // Build word list (API if possible; otherwise local)
       let theme, allWords, usedAPI=false;
       let api = null;
-      if (!FORCE_LOCAL_IF_API_FAILS) {
-        api = await getDailyWordsFromAPI();
-      } else {
-        // try once; if it fails we ignore and go local
-        api = await getDailyWordsFromAPI();
-      }
+      if (!FORCE_LOCAL) api = await getDailyWordsFromAPI();
 
       if (api && api.words && api.words.length) {
+        usedAPI = true;
         theme = api.theme;
         allWords = api.words.slice(0, WORDS_PER_PUZZLE);
-        usedAPI = true;
       } else {
         const themes = Object.keys(WORD_LISTS);
         theme = themes[Math.floor(rng() * themes.length)];
         allWords = shuffle(WORD_LISTS[theme], rng).slice(0, WORDS_PER_PUZZLE);
       }
 
-      // Banner: see source instantly
-      const tag = document.createElement('div');
-      tag.style.cssText = 'margin:.25rem 0 0;color:var(--muted);font-size:.9rem';
-      tag.textContent = (usedAPI ? 'Using API — Theme: ' : 'Using local fallback — Theme: ') + (THEME_DISPLAY_NAMES[theme] || theme);
-      metaEl.after(tag);
+      // Small banner so you see source
+      const banner = document.createElement('div');
+      banner.style.cssText='margin:.25rem 0 0;color:#666;font-size:.9rem';
+      banner.textContent = (usedAPI ? 'Using API — Theme: ' : 'Using local fallback — Theme: ') + (THEME_DISPLAY_NAMES[theme] || theme);
+      metaEl.after(banner);
 
-      // 2) Build grid robustly (retry a few seeds so we never end up empty)
-      function buildPlaced(words, seedBump=0){
-        const localRng = rngFromSeed('BA_WORD_' + todayKey + '_' + theme + '_' + seedBump);
-        let g = makeEmptyGrid(GRID_SIZE);
-        const placed = {};
-        for (const w of words) {
-          const coords = placeWord(g, w, localRng);
-          if (coords) placed[w] = coords;
-        }
-        g = fillGrid(g, localRng);
-        return { placed, grid: g };
+      // Build grid
+      let grid = makeEmptyGrid(GRID_SIZE);
+      const placed = {};
+      for (const w of allWords) {
+        const coords = placeWord(grid, w, rng);
+        if (coords) placed[w] = coords;
       }
+      grid = fillGrid(grid, rng);
 
-      let placed, grid;
-      let tries = 0;
-      while (tries < 5) {
-        const r = buildPlaced(allWords, tries);
-        placed = r.placed; grid = r.grid;
-        if (Object.keys(placed).length >= Math.min(WORDS_PER_PUZZLE, allWords.length, 6)) break; // at least 6 words
-        tries++;
-      }
-      if (!placed || Object.keys(placed).length === 0) {
-        // final safety: guaranteed local pack
-        const safe = shuffle(WORD_LISTS.Nature, rng).slice(0, WORDS_PER_PUZZLE);
-        const r = buildPlaced(safe, 99);
-        placed = r.placed; grid = r.grid; theme = 'Nature';
-      }
-
-      // 3) State & persistence
+      // State & persistence
       const storageKey='ba-wordsearch-'+todayKey;
       let state={ found: [] };
       try{ const saved=JSON.parse(localStorage.getItem(storageKey)); if(saved) state=saved; }catch{}
@@ -293,7 +269,6 @@
         `;
       }
 
-      // 4) Render grid + bank
       const cellRefs=[];
       function renderGrid(){
         gridEl.innerHTML=''; cellRefs.length=0;
@@ -337,7 +312,7 @@
       }
       applyFoundHighlights();
 
-      // 5) Selection logic
+      // Selection logic
       let currentPath=[]; let direction=null; let dragging=false;
       function clearSelection(){
         for(const el of document.querySelectorAll('.cell[data-selected="true"]')) el.removeAttribute('data-selected');
@@ -447,7 +422,6 @@
       }
 
       // Pointer events
-      const gridElListenerOpts = { passive: true };
       gridEl.addEventListener('pointerdown', (e)=>{
         const t=e.target.closest('.cell'); if(!t) return;
         e.preventDefault();
@@ -459,10 +433,10 @@
         const el = document.elementFromPoint(e.clientX, e.clientY);
         const cell = el && el.closest ? el.closest('.cell') : null;
         if(cell && gridEl.contains(cell)){ extendDragTo(cell); }
-      }, gridElListenerOpts);
-      window.addEventListener('pointerup',  ()=> endDrag(), gridElListenerOpts);
-      window.addEventListener('pointercancel', ()=> endDrag(), gridElListenerOpts);
-      window.addEventListener('pointerleave', ()=> endDrag(), gridElListenerOpts);
+      }, { passive: true });
+      window.addEventListener('pointerup',  ()=> endDrag(), { passive: true });
+      window.addEventListener('pointercancel', ()=> endDrag(), { passive: true });
+      window.addEventListener('pointerleave', ()=> endDrag(), { passive: true });
 
       // Controls
       document.getElementById('btn-check').addEventListener('click', ()=>{
@@ -504,6 +478,8 @@
       document.getElementById('btn-reset').addEventListener('click', ()=>{
         if(confirm('Reset today\'s progress?')){ localStorage.removeItem(storageKey); location.reload(); }
       });
+
+      document.getElementById('btn-print').addEventListener('click', ()=>{ window.print(); });
 
       // Theme toggle
       const THEME_KEY='ba-wordsearch-theme';
