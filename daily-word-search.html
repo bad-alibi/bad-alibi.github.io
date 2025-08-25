@@ -186,36 +186,31 @@
 
     // ====== API fetch to /worker/daily-words with robust JSON guard ======
     async function getDailyWordsFromAPI() {
-      const url = `/worker/daily-words?ts=${Date.now()}`;
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        const ct = (res.headers.get('content-type') || '').toLowerCase();
+  const url = `/worker/daily-words?ts=${Date.now()}`;   // <— new route
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    const bodyTxt = await res.text();                   // read body once (even on 500)
 
-        if (!res.ok) {
-          console.warn('[daily-words] API non-200:', res.status, 'at', url);
-          return null;
-        }
-        if (!ct.includes('application/json')) {
-          const txt = await res.text();
-          console.warn('[daily-words] Non-JSON response at', url, 'ct=', ct, 'body:', txt.slice(0, 200));
-          return null;
-        }
-
-        const data = await res.json();
-        let words = Array.isArray(data?.words) ? data.words : null;
-        if (!words?.length) {
-          console.warn('[daily-words] API missing words:', data);
-          return null;
-        }
-        words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
-          .filter(w => /^[A-Z]{3,20}$/.test(w));
-        console.log('[daily-words] API OK from', data.source || 'unknown', 'theme=', data.theme, 'count=', words.length);
-        return { theme: data.theme || 'Animals', words };
-      } catch (err) {
-        console.error('[daily-words] API failed:', err);
-        return null;
-      }
+    if (!res.ok || !ct.includes('application/json')) {
+      console.warn('[daily-words] API bad:', res.status, ct, bodyTxt.slice(0,200));
+      return null;                                      // force fallback
     }
+
+    const data = JSON.parse(bodyTxt);
+    let words = Array.isArray(data?.words) ? data.words : null;
+    if (!words) return null;
+
+    words = [...new Set(words.map(w => String(w).toUpperCase().trim()))]
+      .filter(w => /^[A-Z]{3,20}$/.test(w));
+
+    return { theme: data.theme || 'Animals', words };
+  } catch (err) {
+    console.warn('[daily-words] API failed:', err);
+    return null;                                        // fallback
+  }
+}
+
 
     // ========= Main bootstrap =========
     async function main(){
