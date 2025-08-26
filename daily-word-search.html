@@ -516,12 +516,25 @@
       })();
 
       // Grid drag wiring
-      function cellFromEvent(e){ const el=e.target.closest('.cell'); return el||null; }
-      gridEl.addEventListener('pointerdown',(e)=>{ const t=cellFromEvent(e); if(t) startDragFrom(t); },{passive:true});
-      window.addEventListener('pointermove',(e)=>{ if(!dragging) return; const el=document.elementFromPoint(e.clientX,e.clientY); const cell=el&&el.closest?el.closest('.cell'):null; if(cell && gridEl.contains(cell)) extendDragTo(cell); },{passive:true});
-      window.addEventListener('pointerup',()=> endDrag(),{passive:true});
-      window.addEventListener('pointercancel',()=> endDrag(),{passive:true});
-      window.addEventListener('pointerleave',()=> endDrag(),{passive:true});
+     gridEl.addEventListener('pointerdown', (e)=>{
+  const t = e.target.closest('.cell'); 
+  if (!t) return;
+  e.preventDefault();                      // stop page scroll/text selection
+  try { gridEl.setPointerCapture(e.pointerId); } catch {}
+  startDragFrom(t);
+});
+
+window.addEventListener('pointermove', (e)=>{
+  if (!dragging) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  const cell = el && el.closest ? el.closest('.cell') : null;
+  if (cell && gridEl.contains(cell)) extendDragTo(cell);
+}, { passive: true });
+
+window.addEventListener('pointerup',   ()=> endDrag(), { passive: true });
+window.addEventListener('pointercancel',()=> endDrag(), { passive: true });
+window.addEventListener('pointerleave', ()=> endDrag(), { passive: true });
+
     }
 
     // Kick off
