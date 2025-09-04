@@ -1,0 +1,121 @@
+[
+  {
+    "theme": "90's TV Shows",
+    "words": [
+      "FRIENDS",
+      "SEINFELD",
+      "ER",
+      "SIMPSONS",
+      "XFILES",
+      "BUFFY",
+      "BEVERLYHILLS",
+      "FULLHOUSE",
+      "HOMEIMPROVEMENT",
+      "FRASIER",
+      "BOYMEETSWORLD",
+      "SAVEDBYTHEBELL"
+    ]
+  },
+  {
+    "theme": "Chores",
+    "words": [
+      "DISHES",
+      "LAUNDRY",
+      "VACUUM",
+      "MOWLAWN",
+      "CLEANBATHROOM",
+      "DUST",
+      "IRONING",
+      "GROCERYSHOPPING",
+      "TAKEOUTTRASH",
+      "WASHCAR",
+      "WEEDING",
+      "SCRUBFLOORS"
+    ]
+  },
+  {
+    "theme": "Jobs",
+    "words": [
+      "TEACHER",
+      "DOCTOR",
+      "NURSE",
+      "LAWYER",
+      "ENGINEER",
+      "FARMER",
+      "POLICE",
+      "FIREFIGHTER",
+      "CHEF",
+      "WAITER",
+      "PILOT",
+      "DRIVER"
+    ]
+  },
+  {
+    "theme": "Major Cities",
+    "words": [
+      "PARIS",
+      "NEWYORK",
+      "LONDON",
+      "TOKYO",
+      "ROME",
+      "SYDNEY",
+      "BERLIN",
+      "LOSANGELES",
+      "CHICAGO",
+      "TORONTO",
+      "MADRID",
+      "AMSTERDAM"
+    ]
+  },
+  {
+    "theme": "Drinks",
+    "words": [
+      "WATER",
+      "COFFEE",
+      "TEA",
+      "JUICE",
+      "SODA",
+      "MILK",
+      "BEER",
+      "WINE",
+      "LEMONADE",
+      "SMOOTHIE",
+      "MILKSHAKE",
+      "ESPRESSO"
+    ]
+  },
+  {
+    "theme": "Playground Games",
+    "words": [
+      "TAG",
+      "HIDEANDSEEK",
+      "HOPSCOTCH",
+      "JUMPROPE",
+      "SIMONSAYS",
+      "REDROVER",
+      "FOURSQUARE",
+      "DODGEBALL",
+      "MARCOPOLO",
+      "FREEZETAG",
+      "KICKBALL",
+      "CAPTURETHEFLAG"
+    ]
+  },
+  {
+    "theme": "Games",
+    "words": [
+      "CHESS",
+      "MONOPOLY",
+      "POKER",
+      "SCRABBLE",
+      "CANDYLAND",
+      "UNO",
+      "CHECKERS",
+      "MOUSETRAP",
+      "SORRY",
+      "BINGO",
+      "YAHTZEE",
+      "BATTLESHIP"
+    ]
+  }
+]
