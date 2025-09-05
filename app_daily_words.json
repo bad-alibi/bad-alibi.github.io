@@ -215,8 +215,8 @@
       "CITRON",
       "KUMQUAT",
       "YUZU",
-      "SEED",
-      "ROOT",
+      "LEMON",
+      "LIME",
       "ORANGE"
     ]
   },
@@ -561,21 +561,21 @@
     ]
   },
   {
-    "theme": "Simple Machines",
+    "theme": "Amusement Park",
     "words": [
-      "LEVER",
-      "WHEEL",
-      "AXLE",
-      "PULLEY",
-      "WEDGE",
-      "SCREW",
-      "GEAR",
-      "SPRING",
-      "RAMP",
-      "CRANK",
-      "CAM",
-      "ALPHA"
-    ]
+      "ROLLERCOAST",
+      "COTTONCANDY",
+      "FERRISWHEEL",
+      "BUMPERCAR",
+      "FUNHOUSE",
+      "CAROUSEL",
+      "MIDWAY",
+      "TICKET",
+      "BALLOON",
+      "PRIZES",
+      "HOTDOG",
+      "RIDES"
+   ]
   },
   {
     "theme": "Opposites",
@@ -662,23 +662,23 @@
       "JERBOA"
     ]
   },
-  {
-    "theme": "Amphibians",
-    "words": [
-      "TOAD",
-      "NEWT",
-      "SALAMANDER",
-      "AXOLOTL",
-      "CAECILIAN",
-      "BULLFROG",
-      "MUDPUPPY",
-      "HELLBENDER",
-      "OLM",
-      "SIREN",
-      "TOADLET",
-      "FIRE"
-    ]
-  },
+{
+  "theme": "Outdoor Fun",
+  "words": [
+    "CAMPING",
+    "HIKING",
+    "FISHING",
+    "PICNIC",
+    "FRISBEE",
+    "KAYAKING",
+    "TENT",
+    "BONFIRE",
+    "CYCLING",
+    "SWIMMING",
+    "GARDENING",
+    "JOGGING"
+  ]
+},
   {
     "theme": "Summer",
     "words": [
@@ -1118,7 +1118,7 @@
       "WIND",
       "FROST",
       "ORCHARD",
-      "STAR"
+      "CORNMAZE"
     ]
   },
 
@@ -1646,7 +1646,7 @@
       "COIN",
       "RICHES",
       "MAP",
-      "DOUBLOONS",
+      "DOUBLOONS"
     ]
   },
   {
@@ -1666,7 +1666,6 @@
       "REEF"
     ]
   },
-[
   {
     "theme": "Desert",
     "words": [
@@ -1976,18 +1975,18 @@
   {
     "theme": "Candy",
     "words": [
-      "SWEET",
-      "GUM",
+      "SOUR",
+      "GUMMIES",
       "MINT",
-      "BAR",
+      "TRUFFLE",
       "LOLLIPOP",
       "CARAMEL",
       "FUDGE",
       "TAFFY",
-      "BONBON",
+      "GUM",
       "CHOCOLATE",
-      "CANDY",
-      "JELLY"
+      "LICORICE",
+      "JELLYBEAN"
     ]
   },
   {
@@ -2161,7 +2160,7 @@
     ]
   },
   {
-    "theme": "Jewelery",
+    "theme": "Jewelry",
     "words": [
       "RING",
       "CHAIN",
@@ -2210,5 +2209,5 @@
       "CLOUD",
       "VIRUS"
     ]
-  },
+  }
 ]
