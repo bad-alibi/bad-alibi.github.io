@@ -97,13 +97,58 @@
         <div class="head"><h2>Word Bank</h2></div>
         <div class="body">
           <div id="bank" class="bank" aria-live="polite"></div>
-          <div class="promo" style="margin-top:1rem">
-            Love this puzzle? Explore more books from our Bad Alibi authors.
-            <br />
-            • Pamela Pardee — Activity & finance · <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener">Amazon</a><br />
-            • Harper Lane — Sci-Fi & Romance · <a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener">Amazon</a><br />
-            • Pamela DuShane — Children’s & Coloring · <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener">Amazon</a>
-          </div>
+         
+ <style>
+  .ba-btn {
+    background:#111;
+    color:#fff !important;
+    padding:.45rem .9rem;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+    transition:background .2s ease, transform .15s ease;
+    display:inline-block;
+  }
+  .ba-btn:hover {
+    background:#333;
+    transform:translateY(-2px);
+  }
+</style>
+
+<div class="promo" style="margin-top:1rem">
+  <p style="margin:0 0 .75rem 0; font-weight:600;">Love this puzzle? Get the app!</p>
+  <a href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" 
+     target="_blank" rel="noopener">
+    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
+         alt="Get it on Google Play" 
+         style="height:60px;width:auto;display:block;margin:0 0 1rem 0;">
+  </a>
+
+  <p style="margin:0 0 .75rem 0; font-weight:600;">Explore more from our Bad Alibi authors:</p>
+  <div style="display:grid;gap:.6rem;">
+    <div>
+      <strong>Pamela Pardee</strong> — Activity & Finance  
+      <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener" class="ba-btn">Amazon</a>
+    </div>
+    <div>
+      <strong>Harper Lane</strong> — Sci-Fi & Romance  
+      <a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener" class="ba-btn">Amazon</a>
+    </div>
+    <div>
+      <strong>Pamela DuShane</strong> — Children’s & Coloring  
+      <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener" class="ba-btn">Amazon</a>
+    </div>
+  </div>
+
+  <p style="margin-top:1.25rem;text-align:center;">
+    <a href="https://mybadalibi.com" class="ba-btn">⬅ Return to mybadalibi.com</a>
+  </p>
+</div>
+
+
+
+
         </div>
       </aside>
     </div>
