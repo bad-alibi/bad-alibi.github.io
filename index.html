@@ -19,7 +19,7 @@
 
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Minimal inline CSS only for the corner ribbon + centered "View More" buttons -->
+  <!-- Minimal inline CSS only for ribbons + highlighted Daily Puzzle + hero CTAs -->
   <style>
     .coming-soon-wrap { position: relative; display: inline-block; }
     .coming-soon-ribbon {
@@ -31,8 +31,58 @@
     }
     .view-more-category { text-align: center; margin-top: 1.5rem; }
     .view-more-category .button { display: inline-block; }
-    /* small helper for the hero CTA */
-    .hero .btn { display:inline-block; margin-top:.6rem; padding:.6rem .9rem; border-radius:12px; background:#111; color:#fff; text-decoration:none; font-weight:700 }
+
+    /* hero CTA button (online puzzle) */
+    .hero .btn {
+      display:inline-block;
+      margin:.6rem .4rem 0;
+      padding:.6rem .9rem;
+      border-radius:12px;
+      background:#111;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      line-height:1;           /* ensure tidy vertical alignment */
+      vertical-align:middle;   /* align with Play badge */
+    }
+
+    /* highlight the Daily Puzzle nav link */
+    .nav-links li a.puzzle-link {
+      background:#28a745; color:#fff; padding:6px 12px; border-radius:8px;
+      font-weight:700; text-transform:uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .nav-links li a.puzzle-link:hover { background:#218838; }
+
+    /* Play Store badge next to hero CTA, aligned on the same row */
+    .playstore-btn {
+      display:inline-flex;          /* allow vertical centering of the image */
+      align-items:center;           /* center image vertically */
+      margin:.6rem .4rem 0;
+      vertical-align:middle;        /* align with .hero .btn */
+    }
+    .playstore-btn img {
+      height:70px;  /* larger badge */
+      width:auto;
+      vertical-align:middle;
+    }
+
+    /* Gentle pulse for attention (optional) */
+    .hero .btn.pulse { position: relative; }
+    .hero .btn.pulse::after {
+      content: ""; position: absolute; inset: 0; border-radius: 12px;
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(40,167,69,.55); }
+      70% { box-shadow: 0 0 0 12px rgba(40,167,69,0); }
+      100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
+    }
+
+    /* Keep badge comfy on very small screens */
+    @media (max-width: 480px) {
+      .playstore-btn img { height:46px; }
+    }
   </style>
 </head>
 <body>
@@ -45,9 +95,9 @@
       <li><a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener noreferrer">Harper Lane</a></li>
       <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
       <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi%2BTees&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
-<li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
-      <!-- Daily Puzzle link -->
-      <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Daily Puzzle</a></li>
+      <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
+      <!-- Highlighted Daily Puzzle -->
+      <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer" class="puzzle-link">Daily Puzzle</a></li>
     </ul>
   </div>
 </nav>
@@ -55,9 +105,12 @@
 <header class="hero">
   <div class="container">
     <h1>Bad Alibi</h1>
-    <!-- NEW: CTA to the daily puzzle -->
-    <a class="btn" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Play Today’s Daily Word Search</a>
-
+    <!-- Dual CTAs: online puzzle + Play Store app -->
+    <a class="btn pulse" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Play Today’s Daily Word Search</a>
+    <a class="playstore-btn" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" target="_blank" rel="noopener noreferrer" aria-label="Get the Word Search app on Google Play">
+      <!-- Save the official badge at: images/google-play-badge.png -->
+      <img src="images/google-play-badge.png" alt="Get it on Google Play">
+    </a>
   </div>
 </header>
 
@@ -71,11 +124,10 @@
     <div class="merch-item">
       <img src="images/merch-tshirt2.jpg" alt="T-Shirt 2" />
       <a href="https://a.co/d/hDrzR00" target="_blank" rel="noopener noreferrer" class="button">Buy T-Shirt</a>
-</div>
-<div class="merch-item">
+    </div>
+    <div class="merch-item">
       <img src="images/merch-totebag.jpg" alt="Totebag" />
       <a href="https://a.co/d/b67ibLy" target="_blank" rel="noopener noreferrer" class="button">Buy Tote Bag</a>
-    
     </div>
   </div>
 
@@ -86,15 +138,7 @@
   </div>
 </section>
 
-<!--<section class="about-authors">
-  <div class="container">
-    <p>
-      At <strong>Bad Alibi</strong>, we’ve got your cover — literally. From bold, conversation-starting T-shirts to gripping reads by three incredible authors, you’ll find the perfect excuse to shop.
-    </p>
-  </div>
-</section>-->
-
-<!-- NEW: Banner above Best Sellers -->
+<!-- Banner above Best Sellers -->
 <section class="container" aria-label="Bad Alibi Books banner" style="margin: 1.5rem auto;">
   <img
     src="images/BadAlibiBooks2.png"
@@ -518,8 +562,6 @@
     </div>
   </div>
 </section>
-
-
 
 <footer>
   <div class="container">
