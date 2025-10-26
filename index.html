@@ -83,6 +83,14 @@
     @media (max-width: 480px) {
       .playstore-btn img { height:46px; }
     }
+
+    /* HIDE the Sci-Fi & Romance tab + panel (per request) */
+    .bs-tab-labels label[for="bs-scifi"] { 
+      display: none !important;
+    }
+    #panel-scifi {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -92,7 +100,7 @@
     <ul class="nav-links" id="nav-menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">Pamela Pardee</a></li>
-      <li><a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener noreferrer">Harper Lane</a></li>
+      <!-- Removed: Harper Lane nav link -->
       <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
       <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
       <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
@@ -169,6 +177,7 @@
       <div class="bs-tab-labels">
         <label for="bs-all" class="bs-tab" role="tab" aria-controls="panel-all">Top 5</label>
         <label for="bs-finance" class="bs-tab" role="tab" aria-controls="panel-finance">Finance</label>
+        <!-- Sci-Fi & Romance tab label is hidden via CSS -->
         <label for="bs-scifi" class="bs-tab" role="tab" aria-controls="panel-scifi">Sci-Fi & Romance</label>
         <label for="bs-kids" class="bs-tab" role="tab" aria-controls="panel-kids">Kids</label>
         <label for="bs-activity" class="bs-tab" role="tab" aria-controls="panel-activity">Activity Books</label>
@@ -177,23 +186,14 @@
       <!-- Panels -->
       <div class="bs-panels">
 
-        <!-- Top 5 -->
+        <!-- Top 5 (Harper Lane items removed and list renumbered to keep five items) -->
         <div id="panel-all" class="bs-panel" role="tabpanel" aria-labelledby="bs-all">
           <div class="bs-nav">
             <button class="bs-prev" aria-label="Previous">&#10094;</button>
             <div class="bs-grid" aria-live="polite">
+              <!-- #1 -->
               <article class="bs-item">
                 <span class="rank-badge">#1</span>
-                <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
-                  <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-                </a>
-                <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
-                <p class="book-author">Harper Lane</p>
-                <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-              </article>
-
-              <article class="bs-item">
-                <span class="rank-badge">#2</span>
                 <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
                   <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
                 </a>
@@ -202,8 +202,9 @@
                 <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
+              <!-- #2 -->
               <article class="bs-item">
-                <span class="rank-badge">#3</span>
+                <span class="rank-badge">#2</span>
                 <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
                   <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
                 </a>
@@ -212,25 +213,37 @@
                 <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
+              <!-- #3 -->
               <article class="bs-item">
-                <span class="rank-badge">#4</span>
-                <a class="cover-wrap" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">
-                  <img loading="lazy" src="images/reunited.jpg" alt="Reunited cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-                </a>
-                <h3 class="book-title"><a href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">Reunited</a></h3>
-                <p class="book-author">Harper Lane</p>
-                <a class="button small" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-              </article>
-
-              <!-- New Book -->
-              <article class="bs-item">
-                <span class="rank-badge">#5</span>
+                <span class="rank-badge">#3</span>
                 <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
                   <img loading="lazy" src="images/landscapes.jpg" alt="Serenity in Nature Coloring Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
                 </a>
                 <h3 class="book-title"><a href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Serenity in Nature Coloring Book</a></h3>
                 <p class="book-author">Pamela DuShane</p>
                 <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #4 (added to keep Top 5 complete) -->
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/dinosaur.jpg" alt="Dinosaur Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Dinosaur Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #5 (added to keep Top 5 complete) -->
+              <article class="bs-item">
+                <span class="rank-badge">#5</span>
+                <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Pirate Adventures Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
             </div>
             <button class="bs-next" aria-label="Next">&#10095;</button>
@@ -290,36 +303,18 @@
           </div>
         </div>
 
-        <!-- Sci-Fi & Romance -->
-        <div id="panel-scifi" class="bs-panel" role="tabpanel" aria-labelledby="bs-scifi">
+        <!-- Sci-Fi & Romance (kept in DOM but hidden via CSS) -->
+        <div id="panel-scifi" class="bs-panel" role="tabpanel" aria-labelledby="bs-scifi" aria-hidden="true">
           <div class="bs-nav">
             <button class="bs-prev" aria-label="Previous">&#10094;</button>
             <div class="bs-grid" aria-live="polite">
-              <article class="bs-item">
-                <span class="rank-badge">#1</span>
-                <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
-                  <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-                </a>
-                <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
-                <p class="book-author">Harper Lane</p>
-                <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-              </article>
-
-              <article class="bs-item">
-                <span class="rank-badge">#2</span>
-                <a class="cover-wrap" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">
-                  <img loading="lazy" src="images/reunited.jpg" alt="Reunited cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
-                </a>
-                <h3 class="book-title"><a href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">Reunited</a></h3>
-                <p class="book-author">Harper Lane • Romance</p>
-                <a class="button small" href="https://a.co/d/aiF5kGH" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-              </article>
+              <!-- Left intact but hidden so nothing about Harper Lane appears on the page -->
             </div>
             <button class="bs-next" aria-label="Next">&#10095;</button>
           </div>
 
           <div class="view-more-category">
-            <a class="button" href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener noreferrer">View More Sci-Fi Books</a>
+            <!-- Hidden via CSS -->
           </div>
         </div>
 
@@ -463,12 +458,7 @@
       <p>Financial guides and activity books.</p>
       <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
     </div>
-    <div class="author-card">
-      <img src="images/harper-lane.png" alt="Harper Lane">
-      <h3>Harper Lane</h3>
-      <p>Sci-fi and romance stories that spark imagination.</p>
-      <a href="https://www.amazon.com/author/harperlane" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
-    </div>
+    <!-- Removed: Harper Lane author card -->
     <div class="author-card">
       <img src="images/pamela-dushane.jpg" alt="Pamela DuShane">
       <h3>Pamela DuShane</h3>
@@ -502,16 +492,7 @@
           <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </article>
 
-        <!-- Position 2 -->
-        <article class="bs-item">
-          <span class="rank-badge">🆕</span>
-          <a class="cover-wrap" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">
-            <img loading="lazy" src="images/featured1.jpg" alt="Founding Mars cover" width="480" height="720">
-          </a>
-          <h3 class="book-title"><a href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Founding Mars</a></h3>
-          <p class="book-author">Harper Lane</p>
-          <a class="button small" href="https://a.co/d/eFDvdDI" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
-        </article>
+        <!-- Removed: Position 2 (Founding Mars - Harper Lane) -->
 
         <!-- Position 3 -->
         <article class="bs-item">
