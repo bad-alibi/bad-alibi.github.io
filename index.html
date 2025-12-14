@@ -85,7 +85,7 @@
     }
 
     /* HIDE the Sci-Fi & Romance tab + panel (per request) */
-    .bs-tab-labels label[for="bs-scifi"] { 
+    .bs-tab-labels label[for="bs-scifi"] {
       display: none !important;
     }
     #panel-scifi {
@@ -104,6 +104,10 @@
       <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
       <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
       <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
+
+      <!-- Apps anchor -->
+      <li><a href="#apps">Apps</a></li>
+
       <!-- Highlighted Daily Puzzle -->
       <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer" class="puzzle-link">Daily Puzzle</a></li>
     </ul>
@@ -121,6 +125,102 @@
     </a>
   </div>
 </header>
+
+<!-- ======================
+     Android Apps
+====================== -->
+<section id="apps" class="apps-section" aria-labelledby="apps-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="apps-heading">Android Apps</h2>
+      <p class="best-sellers-sub">Puzzles, games, and tools—made by Bad Alibi.</p>
+    </div>
+  </div>
+
+  <div class="apps-grid">
+    <!-- APP 1 -->
+    <article class="app-card">
+      <img
+        class="app-icon"
+        src="images/app-wordsearch.png"
+        alt="Daily Word Search app icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+      <div class="app-body">
+        <h3>Daily Word Search</h3>
+        <p>A fun word search for everyone, relaxing gameplay, and many themes to explore.</p>
+
+        <div class="app-actions">
+          <a
+            class="button small"
+            href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Google Play</a>
+
+          <a
+            class="button small ghost"
+            href="daily-word-search.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Play on the Web</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- APP 2 -->
+    <article class="app-card">
+      <img
+        class="app-icon"
+        src="images/app-bloxmania.png"
+        alt="Blox Mania app icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+      <div class="app-body">
+        <h3>Blox Mania</h3>
+        <p>A fun, colorful block puzzle you can play in minutes—easy to start, hard to stop.</p>
+
+        <div class="app-actions">
+          <a
+            class="button small"
+            href="https://play.google.com/store/apps/details?id=com.badalibi.bloxmania"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Google Play</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- APP 3 -->
+    <article class="app-card">
+      <img
+        class="app-icon"
+        src="images/app-countmoney.png"
+        alt="Count Money app icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+      <div class="app-body">
+        <h3>Count Money</h3>
+        <p>A kid-friendly way to practice coins and bills.</p>
+
+        <div class="app-actions">
+          <a
+            class="button small"
+            href="https://play.google.com/store/apps/details?id=com.badalibi.countmoney"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Google Play</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
 
 <section class="merch-grid">
   <h2>Cool Merch</h2>
@@ -186,7 +286,7 @@
       <!-- Panels -->
       <div class="bs-panels">
 
-        <!-- Top 5 (Harper Lane items removed and list renumbered to keep five items) -->
+        <!-- Top 5 -->
         <div id="panel-all" class="bs-panel" role="tabpanel" aria-labelledby="bs-all">
           <div class="bs-nav">
             <button class="bs-prev" aria-label="Previous">&#10094;</button>
@@ -224,7 +324,7 @@
                 <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- #4 (added to keep Top 5 complete) -->
+              <!-- #4 -->
               <article class="bs-item">
                 <span class="rank-badge">#4</span>
                 <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
@@ -235,7 +335,7 @@
                 <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- #5 (added to keep Top 5 complete) -->
+              <!-- #5 -->
               <article class="bs-item">
                 <span class="rank-badge">#5</span>
                 <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
@@ -312,10 +412,7 @@
             </div>
             <button class="bs-next" aria-label="Next">&#10095;</button>
           </div>
-
-          <div class="view-more-category">
-            <!-- Hidden via CSS -->
-          </div>
+          <div class="view-more-category"></div>
         </div>
 
         <!-- Kids -->
@@ -491,8 +588,6 @@
           <p class="book-author">Pamela Pardee</p>
           <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </article>
-
-        <!-- Removed: Position 2 (Founding Mars - Harper Lane) -->
 
         <!-- Position 3 -->
         <article class="bs-item">

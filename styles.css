@@ -1,4 +1,815 @@
-/* ======================
+Skip to content
+Chat history
+
+
+
+
+You said:
+I need to add a section for android apps. Here's my index.html: <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- CSP: allow inline + external scripts from same origin so the arrow JS runs reliably -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 img-src 'self' https:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 script-src-elem 'self' 'unsafe-inline';
+                 script-src-attr 'unsafe-inline';">
+
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index, follow">
+  <title>Bad Alibi - Home</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Minimal inline CSS only for ribbons + highlighted Daily Puzzle + hero CTAs -->
+  <style>
+    .coming-soon-wrap { position: relative; display: inline-block; }
+    .coming-soon-ribbon {
+      position: absolute; top: 15px; left: -40px; width: 160px;
+      background: #ff0000; color: #fff; text-align: center; font-weight: 700;
+      padding: 5px 0; transform: rotate(-45deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); text-transform: uppercase; font-size: .9rem;
+      pointer-events: none;
+    }
+    .view-more-category { text-align: center; margin-top: 1.5rem; }
+    .view-more-category .button { display: inline-block; }
+
+    /* hero CTA button (online puzzle) */
+    .hero .btn {
+      display:inline-block;
+      margin:.6rem .4rem 0;
+      padding:.6rem .9rem;
+      border-radius:12px;
+      background:#111;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      line-height:1;           /* ensure tidy vertical alignment */
+      vertical-align:middle;   /* align with Play badge */
+    }
+
+    /* highlight the Daily Puzzle nav link */
+    .nav-links li a.puzzle-link {
+      background:#28a745; color:#fff; padding:6px 12px; border-radius:8px;
+      font-weight:700; text-transform:uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .nav-links li a.puzzle-link:hover { background:#218838; }
+
+    /* Play Store badge next to hero CTA, aligned on the same row */
+    .playstore-btn {
+      display:inline-flex;          /* allow vertical centering of the image */
+      align-items:center;           /* center image vertically */
+      margin:.6rem .4rem 0;
+      vertical-align:middle;        /* align with .hero .btn */
+    }
+    .playstore-btn img {
+      height:70px;  /* larger badge */
+      width:auto;
+      vertical-align:middle;
+    }
+
+    /* Gentle pulse for attention (optional) */
+    .hero .btn.pulse { position: relative; }
+    .hero .btn.pulse::after {
+      content: ""; position: absolute; inset: 0; border-radius: 12px;
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(40,167,69,.55); }
+      70% { box-shadow: 0 0 0 12px rgba(40,167,69,0); }
+      100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
+    }
+
+    /* Keep badge comfy on very small screens */
+    @media (max-width: 480px) {
+      .playstore-btn img { height:46px; }
+    }
+
+    /* HIDE the Sci-Fi & Romance tab + panel (per request) */
+    .bs-tab-labels label[for="bs-scifi"] { 
+      display: none !important;
+    }
+    #panel-scifi {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container nav-container">
+    <ul class="nav-links" id="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">Pamela Pardee</a></li>
+      <!-- Removed: Harper Lane nav link -->
+      <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
+      <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
+      <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
+      <!-- Highlighted Daily Puzzle -->
+      <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer" class="puzzle-link">Daily Puzzle</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Bad Alibi</h1>
+    <!-- Dual CTAs: online puzzle + Play Store app -->
+    <a class="btn pulse" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Play Today’s Daily Word Search</a>
+    <a class="playstore-btn" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" target="_blank" rel="noopener noreferrer" aria-label="Get the Word Search app on Google Play">
+      <!-- Save the official badge at: images/google-play-badge.png -->
+      <img src="images/google-play-badge.png" alt="Get it on Google Play">
+    </a>
+  </div>
+</header>
+
+<section class="merch-grid">
+  <h2>Cool Merch</h2>
+  <div class="grid">
+    <div class="merch-item">
+      <img src="images/merch-tshirt.jpg" alt="T-Shirt" />
+      <a href="https://a.co/d/87Ap4R3" target="_blank" rel="noopener noreferrer" class="button">Buy T-Shirt</a>
+    </div>
+    <div class="merch-item">
+      <img src="images/merch-tshirt2.jpg" alt="T-Shirt 2" />
+      <a href="https://a.co/d/hDrzR00" target="_blank" rel="noopener noreferrer" class="button">Buy T-Shirt</a>
+    </div>
+    <div class="merch-item">
+      <img src="images/merch-totebag.jpg" alt="Totebag" />
+      <a href="https://a.co/d/b67ibLy" target="_blank" rel="noopener noreferrer" class="button">Buy Tote Bag</a>
+    </div>
+  </div>
+
+  <div class="view-all-link">
+    <a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer" class="button">
+      View All Bad Alibi Products on Amazon
+    </a>
+  </div>
+</section>
+
+<!-- Banner above Best Sellers -->
+<section class="container" aria-label="Bad Alibi Books banner" style="margin: 1.5rem auto;">
+  <img
+    src="images/BadAlibiBooks2.png"
+    alt="Bad Alibi Books banner"
+    loading="lazy"
+    style="display:block; margin:0 auto; width:100%; max-width:720px; height:auto; border-radius:12px;"
+  />
+</section>
+
+<!-- Best Sellers Section -->
+<section class="best-sellers" aria-labelledby="best-sellers-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="best-sellers-heading">Best Sellers</h2>
+      <p class="best-sellers-sub">Trending favorites across our authors</p>
+    </div>
+
+    <!-- CSS-only Tabs -->
+    <div class="bs-tabs" role="tablist" aria-label="Best sellers categories">
+      <!-- Radios -->
+      <input type="radio" name="bsTabs" id="bs-all" class="bs-tab-radio" checked>
+      <input type="radio" name="bsTabs" id="bs-finance" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-scifi" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-kids" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-activity" class="bs-tab-radio">
+
+      <!-- Labels act as tabs -->
+      <div class="bs-tab-labels">
+        <label for="bs-all" class="bs-tab" role="tab" aria-controls="panel-all">Top 5</label>
+        <label for="bs-finance" class="bs-tab" role="tab" aria-controls="panel-finance">Finance</label>
+        <!-- Sci-Fi & Romance tab label is hidden via CSS -->
+        <label for="bs-scifi" class="bs-tab" role="tab" aria-controls="panel-scifi">Sci-Fi & Romance</label>
+        <label for="bs-kids" class="bs-tab" role="tab" aria-controls="panel-kids">Kids</label>
+        <label for="bs-activity" class="bs-tab" role="tab" aria-controls="panel-activity">Activity Books</label>
+      </div>
+
+      <!-- Panels -->
+      <div class="bs-panels">
+
+        <!-- Top 5 (Harper Lane items removed and list renumbered to keep five items) -->
+        <div id="panel-all" class="bs-panel" role="tabpanel" aria-labelledby="bs-all">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <!-- #1 -->
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #2 -->
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #3 -->
+              <article class="bs-item">
+                <span class="rank-badge">#3</span>
+                <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/landscapes.jpg" alt="Serenity in Nature Coloring Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Serenity in Nature Coloring Book</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #4 (added to keep Top 5 complete) -->
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/dinosaur.jpg" alt="Dinosaur Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Dinosaur Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #5 (added to keep Top 5 complete) -->
+              <article class="bs-item">
+                <span class="rank-badge">#5</span>
+                <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Pirate Adventures Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+        </div>
+
+        <!-- Finance -->
+        <div id="panel-finance" class="bs-panel" role="tabpanel" aria-labelledby="bs-finance">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability 2nd Edition</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/forty-and-broke.jpg" alt="Forty and Broke cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">Forty and Broke</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#3</span>
+                <a class="cover-wrap" href="https://a.co/d/fCMSMck" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/finance.jpg" alt="DOGE My Finances cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/fCMSMck" target="_blank" rel="noopener noreferrer">DOGE My Finances</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/fCMSMck" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/5LjVnLu" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/finance2.jpg" alt="DOGE My Finances cover 2" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/5LjVnLu" target="_blank" rel="noopener noreferrer">DOGE My Finances</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/5LjVnLu" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">View More Finance Books</a>
+          </div>
+        </div>
+
+        <!-- Sci-Fi & Romance (kept in DOM but hidden via CSS) -->
+        <div id="panel-scifi" class="bs-panel" role="tabpanel" aria-labelledby="bs-scifi" aria-hidden="true">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <!-- Left intact but hidden so nothing about Harper Lane appears on the page -->
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+
+          <div class="view-more-category">
+            <!-- Hidden via CSS -->
+          </div>
+        </div>
+
+        <!-- Kids -->
+        <div id="panel-kids" class="bs-panel" role="tabpanel" aria-labelledby="bs-kids">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/benny.jpg" alt="Benny's Blizzard cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">Benny's Blizzard</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">View More Kids Books</a>
+          </div>
+        </div>
+
+        <!-- Activity Books -->
+        <div id="panel-activity" class="bs-panel" role="tabpanel" aria-labelledby="bs-activity">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/dinosaur.jpg" alt="Dinosaur Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Dinosaur Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Pirate Adventures Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#3</span>
+                <a class="cover-wrap" href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/animals.jpg" alt="Animals Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">Animals Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/food.jpg" alt="Food Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">Food Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#5</span>
+                <a class="cover-wrap" href="https://a.co/d/4km31bh" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/christmas.jpg" alt="Christmas Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/4km31bh" target="_blank" rel="noopener noreferrer">Christmas Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/4km31bh" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#6</span>
+                <a class="cover-wrap" href="https://a.co/d/3xBKiml" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/3xBKiml" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/3xBKiml" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#7</span>
+                <a class="cover-wrap" href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/BucketList1.jpg" alt="Bucket List Journal cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">Bucket List Journal</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- New Book -->
+              <article class="bs-item">
+                <span class="rank-badge">#8</span>
+                <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/landscapes.jpg" alt="Serenity in Nature Coloring Book cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Serenity in Nature Coloring Book</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <section class="intro">
+    <h2 id="authors">Meet Our Authors</h2>
+  </section>
+
+  <section class="authors">
+    <div class="author-card">
+      <img src="images/pamela-pardee.jpg" alt="Pamela Pardee">
+      <h3>Pamela Pardee</h3>
+      <p>Financial guides and activity books.</p>
+      <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
+    </div>
+    <!-- Removed: Harper Lane author card -->
+    <div class="author-card">
+      <img src="images/pamela-dushane.jpg" alt="Pamela DuShane">
+      <h3>Pamela DuShane</h3>
+      <p>Children’s books and coloring adventures.</p>
+      <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
+    </div>
+  </section>
+</main>
+
+<!-- New Releases -->
+<section class="best-sellers new-releases" aria-labelledby="new-releases-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="new-releases-heading">New Releases</h2>
+      <p class="best-sellers-sub">Just released and ready to enjoy!</p>
+    </div>
+
+    <!-- Match Best Sellers navigation: arrows + scrolling grid -->
+    <div class="bs-nav">
+      <button class="bs-prev" aria-label="Previous">&#10094;</button>
+
+      <div class="bs-grid" aria-live="polite">
+        <!-- Position 1: Broke Joke -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability 2nd Edition</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Removed: Position 2 (Founding Mars - Harper Lane) -->
+
+        <!-- Position 3 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 4 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+          <p class="book-author">Pamela DuShane</p>
+          <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 5: America Word Search -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/america.jpg" alt="America Word Search cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">America Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 6: Christmas Word Search -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/christmas.jpg" alt="Christmas Word Search cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">Christmas Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+      </div>
+
+      <button class="bs-next" aria-label="Next">&#10095;</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2025 Bad Alibi. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="privacy.html" rel="noopener noreferrer">Privacy Policy</a> |
+      <a href="terms.html" rel="noopener noreferrer">Terms of Service</a> |
+      <a href="affiliate.html" rel="noopener noreferrer">Affiliate Disclosure</a>
+    </div>
+    <div class="social-icons">
+      <a href="https://www.facebook.com/profile.php?id=61578929661049" target="_blank" rel="noopener noreferrer"><img src="facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/bad__alibi/" target="_blank" rel="noopener noreferrer"><img src="instagram.png" alt="Instagram" /></a>
+      <a href="https://www.tiktok.com/@bad.alibi" target="_blank" rel="noopener noreferrer"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Inline script (allowed by CSP above) to drive the nav arrows on every tab -->
+<script>
+(() => {
+  const panelByRadioId = {
+    'bs-all': '#panel-all',
+    'bs-finance': '#panel-finance',
+    'bs-scifi': '#panel-scifi',
+    'bs-kids': '#panel-kids',
+    'bs-activity': '#panel-activity'
+  };
+
+  const stepFor = (grid) => {
+    const item = grid.querySelector('.bs-item');
+    const width = item ? (item.offsetWidth || parseFloat(getComputedStyle(item).minWidth) || 240) : 240;
+    const styles = getComputedStyle(grid);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 16;
+    return width + gap;
+  };
+
+  // Attach handlers
+  document.querySelectorAll('.bs-nav').forEach(nav => {
+    const grid = nav.querySelector('.bs-grid');
+    const prev = nav.querySelector('.bs-prev');
+    const next = nav.querySelector('.bs-next');
+    if (!grid || !prev || !next) return;
+
+    prev.addEventListener('click', (e) => {
+      e.preventDefault();
+      grid.scrollBy({ left: -stepFor(grid), behavior: 'smooth' });
+    });
+    next.addEventListener('click', (e) => {
+      e.preventDefault();
+      grid.scrollBy({ left: stepFor(grid), behavior: 'smooth' });
+    });
+  });
+
+  // Wake hidden panels when the tab switches so measurements are valid
+  document.querySelectorAll('.bs-tab-radio').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const panelSel = panelByRadioId[radio.id];
+      const grid = panelSel ? document.querySelector(panelSel + ' .bs-grid') : null;
+      if (!grid) return;
+      grid.scrollBy({ left: 1, behavior: 'auto' });
+      grid.scrollBy({ left: -1, behavior: 'auto' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
+ChatGPT said:
+
+Thought for 25s
+Here’s a clean “Android Apps” section you can drop into your index.html, styled to match your existing layout and re-using your Coming Soon ribbon.
+
+1) Add an “Apps” link to your navbar (optional but nice)
+Find your <ul class="nav-links" id="nav-menu"> and add this where you want it (ex: after “Downloads”):
+
+<li><a href="#apps">Apps</a></li>
+2) Paste this new Android Apps section into index.html
+Best spot: right after your </header> (hero) and before the merch section.
+
+<!-- Android Apps -->
+<section id="apps" class="apps-section" aria-labelledby="apps-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="apps-heading">Android Apps</h2>
+      <p class="best-sellers-sub">Puzzles, games, and tools—made by Bad Alibi.</p>
+    </div>
+
+    <div class="apps-grid">
+      <!-- LIVE APP -->
+      <article class="app-card">
+        <!-- Replace with your actual app icon file -->
+        <img
+          class="app-icon"
+          src="images/app-wordsearch.png"
+          alt="Bad Alibi Word Search app icon"
+          loading="lazy"
+          width="96"
+          height="96"
+        />
+        <div class="app-body">
+          <h3>Daily Word Search</h3>
+          <p>Play quick puzzles, build streaks, and enjoy new themes.</p>
+
+          <div class="app-actions">
+            <a
+              class="button small"
+              href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Google Play</a>
+
+            <a
+              class="button small ghost"
+              href="daily-word-search.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Play on the Web</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- COMING SOON APP (duplicate this card for more apps) -->
+      <article class="app-card coming-soon-wrap">
+        <span class="coming-soon-ribbon">Coming Soon</span>
+
+        <!-- Replace with your actual app icon file -->
+        <img
+          class="app-icon"
+          src="images/app-moneytrain.png"
+          alt="Money Train app icon"
+          loading="lazy"
+          width="96"
+          height="96"
+        />
+
+        <div class="app-body">
+          <h3>Money Train</h3>
+          <p>Track goals, budgets, and progress with a fun, simple flow.</p>
+
+          <div class="app-actions">
+            <a class="button small disabled" href="#" aria-disabled="true">Google Play</a>
+            <!-- Optional: replace with a real page or email capture -->
+            <a class="button small ghost" href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- COMING SOON EXAMPLE -->
+      <article class="app-card coming-soon-wrap">
+        <span class="coming-soon-ribbon">Coming Soon</span>
+
+        <img
+          class="app-icon"
+          src="images/app-countmoney.png"
+          alt="Count Money app icon"
+          loading="lazy"
+          width="96"
+          height="96"
+        />
+
+        <div class="app-body">
+          <h3>Count Money</h3>
+          <p>A kid-friendly way to practice coins, bills, and quick math.</p>
+
+          <div class="app-actions">
+            <a class="button small disabled" href="#" aria-disabled="true">Google Play</a>
+            <a class="button small ghost" href="#authors">Books</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Optional: add your Google Play developer page link when you have it -->
+    <!--
+    <div class="view-all-link">
+      <a class="button" href="https://play.google.com/store/apps/dev?id=YOUR_DEV_ID" target="_blank" rel="noopener noreferrer">
+        View All Bad Alibi Apps on Google Play
+      </a>
+    </div>
+    -->
+  </div>
+</section>
+Don’t forget: add these icon files (or rename to what you already have):
+
+images/app-wordsearch.png
+
+images/app-moneytrain.png
+
+images/app-countmoney.png
+
+3) Add this CSS to styles.css
+/* Android Apps section */
+.apps-section {
+  padding: 2.5rem 0;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.app-card {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+
+.app-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 18px;
+  object-fit: cover;
+  flex: 0 0 auto;
+  background: #111;
+}
+
+.app-body h3 {
+  margin: 0 0 .35rem;
+  font-size: 1.1rem;
+}
+
+.app-body p {
+  margin: 0 0 .9rem;
+  line-height: 1.35;
+  opacity: .92;
+}
+
+.app-actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+/* Optional button variants (won't affect existing .button styles much) */
+.button.ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+.button.ghost:hover {
+  border-color: rgba(255,255,255,0.5);
+}
+
+.button.disabled {
+  opacity: .55;
+  pointer-events: none;
+}
+If you tell me the exact app names + Play Store links/package IDs you want listed, I’ll swap the placeholders and format the cards to match your brand (games vs finance vs kids, etc.).
+
+You said:
+provide fully updated index.html file. Here's my current styles file: /* ======================
    Custom Font
 ====================== */
 @font-face {
@@ -329,3 +1140,1202 @@ img[alt~="banner"]{border-radius:12px}
 a:focus, button:focus{
   outline:2px solid #3b82f6; outline-offset:2px;
 }
+ChatGPT said:
+
+Thought for 22s
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- CSP: allow inline + external scripts from same origin so the arrow JS runs reliably -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 img-src 'self' https:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 script-src-elem 'self' 'unsafe-inline';
+                 script-src-attr 'unsafe-inline';">
+
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index, follow">
+  <title>Bad Alibi - Home</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Minimal inline CSS only for ribbons + highlighted Daily Puzzle + hero CTAs + Apps section -->
+  <style>
+    .coming-soon-wrap { position: relative; display: inline-block; }
+    .coming-soon-ribbon {
+      position: absolute; top: 15px; left: -40px; width: 160px;
+      background: #ff0000; color: #fff; text-align: center; font-weight: 700;
+      padding: 5px 0; transform: rotate(-45deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); text-transform: uppercase; font-size: .9rem;
+      pointer-events: none;
+    }
+    .view-more-category { text-align: center; margin-top: 1.5rem; }
+    .view-more-category .button { display: inline-block; }
+
+    /* hero CTA button (online puzzle) */
+    .hero .btn {
+      display:inline-block;
+      margin:.6rem .4rem 0;
+      padding:.6rem .9rem;
+      border-radius:12px;
+      background:#111;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      line-height:1;
+      vertical-align:middle;
+    }
+
+    /* highlight the Daily Puzzle nav link */
+    .nav-links li a.puzzle-link {
+      background:#28a745; color:#fff; padding:6px 12px; border-radius:8px;
+      font-weight:700; text-transform:uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .nav-links li a.puzzle-link:hover { background:#218838; }
+
+    /* Play Store badge next to hero CTA, aligned on the same row */
+    .playstore-btn {
+      display:inline-flex;
+      align-items:center;
+      margin:.6rem .4rem 0;
+      vertical-align:middle;
+    }
+    .playstore-btn img {
+      height:70px;
+      width:auto;
+      vertical-align:middle;
+    }
+
+    /* Gentle pulse for attention (optional) */
+    .hero .btn.pulse { position: relative; }
+    .hero .btn.pulse::after {
+      content: ""; position: absolute; inset: 0; border-radius: 12px;
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(40,167,69,.55); }
+      70% { box-shadow: 0 0 0 12px rgba(40,167,69,0); }
+      100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
+    }
+
+    /* Keep badge comfy on very small screens */
+    @media (max-width: 480px) {
+      .playstore-btn img { height:46px; }
+    }
+
+    /* HIDE the Sci-Fi & Romance tab + panel (per request) */
+    .bs-tab-labels label[for="bs-scifi"] { 
+      display: none !important;
+    }
+    #panel-scifi {
+      display: none !important;
+    }
+
+    /* ======================
+       Android Apps section
+    ====================== */
+    .apps-section { padding: 2.25rem 0; scroll-margin-top: 90px; }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+      width: 90%;
+      max-width: var(--container-w);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .app-card {
+      position: relative;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.05rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 150px;
+    }
+    /* coming-soon-wrap sets inline-block; override for app cards */
+    .app-card.coming-soon-wrap { display: flex; }
+
+    .app-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 18px;
+      object-fit: cover;
+      flex: 0 0 auto;
+      background: #111;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .app-body h3 { margin: 0 0 .25rem; font-size: 1.1rem; }
+    .app-body p { margin: 0 0 .85rem; color: var(--muted); line-height: 1.35; }
+    .app-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+    /* small button variants for this section */
+    .button.ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(0,0,0,.18);
+    }
+    .button.ghost:hover { border-color: rgba(0,0,0,.35); }
+
+    .button.disabled {
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      .apps-grid { width: 92%; }
+      .app-card { padding: .95rem; }
+      .app-icon { width: 70px; height: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container nav-container">
+    <ul class="nav-links" id="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">Pamela Pardee</a></li>
+      <!-- Removed: Harper Lane nav link -->
+      <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
+      <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
+      <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
+
+      <!-- NEW: Apps anchor -->
+      <li><a href="#apps">Apps</a></li>
+
+      <!-- Highlighted Daily Puzzle -->
+      <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer" class="puzzle-link">Daily Puzzle</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Bad Alibi</h1>
+    <!-- Dual CTAs: online puzzle + Play Store app -->
+    <a class="btn pulse" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Play Today’s Daily Word Search</a>
+    <a class="playstore-btn" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" target="_blank" rel="noopener noreferrer" aria-label="Get the Word Search app on Google Play">
+      <!-- Save the official badge at: images/google-play-badge.png -->
+      <img src="images/google-play-badge.png" alt="Get it on Google Play">
+    </a>
+  </div>
+</header>
+
+<!-- ======================
+     NEW: Android Apps
+====================== -->
+<section id="apps" class="apps-section" aria-labelledby="apps-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="apps-heading">Android Apps</h2>
+      <p class="best-sellers-sub">Puzzles, games, and tools—made by Bad Alibi.</p>
+    </div>
+  </div>
+
+  <div class="apps-grid">
+    <!-- LIVE APP -->
+    <article class="app-card">
+      <!-- Replace with your actual app icon file -->
+      <img
+        class="app-icon"
+        src="images/app-wordsearch.png"
+        alt="Daily Word Search app icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+      <div class="app-body">
+        <h3>Daily Word Search</h3>
+        <p>Play quick puzzles, build streaks, and enjoy new themes.</p>
+
+        <div class="app-actions">
+          <a
+            class="button small"
+            href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Google Play</a>
+
+          <a
+            class="button small ghost"
+            href="daily-word-search.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Play on the Web</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- COMING SOON APP -->
+    <article class="app-card coming-soon-wrap">
+      <span class="coming-soon-ribbon">Coming Soon</span>
+
+      <img
+        class="app-icon"
+        src="images/app-moneytrain.png"
+        alt="Money Train app icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+
+      <div class="app-body">
+        <h3>Money Train</h3>
+        <p>Track goals, budgets, and progress with a simple, fun flow.</p>
+
+        <div class="app-actions">
+          <a class="button small disabled" href="#" aria-disabled="true">Google Play</a>
+          <a class="button small ghost" href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- COMING SOON APP -->
+    <article class="app-card coming-soon-wrap">
+      <span class="coming-soon-ribbon">Coming Soon</span>
+
+      <img
+        class="app-icon"
+        src="images/app-countmoney.png"
+        alt="Count Money app icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+
+      <div class="app-body">
+        <h3>Count Money</h3>
+        <p>A kid-friendly way to practice coins, bills, and quick math.</p>
+
+        <div class="app-actions">
+          <a class="button small disabled" href="#" aria-disabled="true">Google Play</a>
+          <a class="button small ghost" href="#authors">Books</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="merch-grid">
+  <h2>Cool Merch</h2>
+  <div class="grid">
+    <div class="merch-item">
+      <img src="images/merch-tshirt.jpg" alt="T-Shirt" />
+      <a href="https://a.co/d/87Ap4R3" target="_blank" rel="noopener noreferrer" class="button">Buy T-Shirt</a>
+    </div>
+    <div class="merch-item">
+      <img src="images/merch-tshirt2.jpg" alt="T-Shirt 2" />
+      <a href="https://a.co/d/hDrzR00" target="_blank" rel="noopener noreferrer" class="button">Buy T-Shirt</a>
+    </div>
+    <div class="merch-item">
+      <img src="images/merch-totebag.jpg" alt="Totebag" />
+      <a href="https://a.co/d/b67ibLy" target="_blank" rel="noopener noreferrer" class="button">Buy Tote Bag</a>
+    </div>
+  </div>
+
+  <div class="view-all-link">
+    <a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer" class="button">
+      View All Bad Alibi Products on Amazon
+    </a>
+  </div>
+</section>
+
+<!-- Banner above Best Sellers -->
+<section class="container" aria-label="Bad Alibi Books banner" style="margin: 1.5rem auto;">
+  <img
+    src="images/BadAlibiBooks2.png"
+    alt="Bad Alibi Books banner"
+    loading="lazy"
+    style="display:block; margin:0 auto; width:100%; max-width:720px; height:auto; border-radius:12px;"
+  />
+</section>
+
+<!-- Best Sellers Section -->
+<section class="best-sellers" aria-labelledby="best-sellers-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="best-sellers-heading">Best Sellers</h2>
+      <p class="best-sellers-sub">Trending favorites across our authors</p>
+    </div>
+
+    <!-- CSS-only Tabs -->
+    <div class="bs-tabs" role="tablist" aria-label="Best sellers categories">
+      <!-- Radios -->
+      <input type="radio" name="bsTabs" id="bs-all" class="bs-tab-radio" checked>
+      <input type="radio" name="bsTabs" id="bs-finance" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-scifi" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-kids" class="bs-tab-radio">
+      <input type="radio" name="bsTabs" id="bs-activity" class="bs-tab-radio">
+
+      <!-- Labels act as tabs -->
+      <div class="bs-tab-labels">
+        <label for="bs-all" class="bs-tab" role="tab" aria-controls="panel-all">Top 5</label>
+        <label for="bs-finance" class="bs-tab" role="tab" aria-controls="panel-finance">Finance</label>
+        <!-- Sci-Fi & Romance tab label is hidden via CSS -->
+        <label for="bs-scifi" class="bs-tab" role="tab" aria-controls="panel-scifi">Sci-Fi & Romance</label>
+        <label for="bs-kids" class="bs-tab" role="tab" aria-controls="panel-kids">Kids</label>
+        <label for="bs-activity" class="bs-tab" role="tab" aria-controls="panel-activity">Activity Books</label>
+      </div>
+
+      <!-- Panels -->
+      <div class="bs-panels">
+
+        <!-- Top 5 (Harper Lane items removed and list renumbered to keep five items) -->
+        <div id="panel-all" class="bs-panel" role="tabpanel" aria-labelledby="bs-all">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <!-- #1 -->
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #2 -->
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #3 -->
+              <article class="bs-item">
+                <span class="rank-badge">#3</span>
+                <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/landscapes.jpg" alt="Serenity in Nature Coloring Book cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Serenity in Nature Coloring Book</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #4 -->
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/dinosaur.jpg" alt="Dinosaur Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Dinosaur Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- #5 -->
+              <article class="bs-item">
+                <span class="rank-badge">#5</span>
+                <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Pirate Adventures Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+        </div>
+
+        <!-- Finance -->
+        <div id="panel-finance" class="bs-panel" role="tabpanel" aria-labelledby="bs-finance">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability 2nd Edition</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/forty-and-broke.jpg" alt="Forty and Broke cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">Forty and Broke</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/4eTGJ7R" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#3</span>
+                <a class="cover-wrap" href="https://a.co/d/fCMSMck" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/finance.jpg" alt="DOGE My Finances cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/fCMSMck" target="_blank" rel="noopener noreferrer">DOGE My Finances</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/fCMSMck" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/5LjVnLu" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/finance2.jpg" alt="DOGE My Finances cover 2" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/5LjVnLu" target="_blank" rel="noopener noreferrer">DOGE My Finances</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/5LjVnLu" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">View More Finance Books</a>
+          </div>
+        </div>
+
+        <!-- Sci-Fi & Romance (kept in DOM but hidden via CSS) -->
+        <div id="panel-scifi" class="bs-panel" role="tabpanel" aria-labelledby="bs-scifi" aria-hidden="true">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <!-- Left intact but hidden so nothing about Harper Lane appears on the page -->
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+
+          <div class="view-more-category">
+            <!-- Hidden via CSS -->
+          </div>
+        </div>
+
+        <!-- Kids -->
+        <div id="panel-kids" class="bs-panel" role="tabpanel" aria-labelledby="bs-kids">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/benny.jpg" alt="Benny's Blizzard cover" width="480" height="720" sizes="(max-width: 640px) 80vw, 320px">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">Benny's Blizzard</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/azO8vrr" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+
+          <div class="view-more-category">
+            <a class="button" href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">View More Kids Books</a>
+          </div>
+        </div>
+
+        <!-- Activity Books -->
+        <div id="panel-activity" class="bs-panel" role="tabpanel" aria-labelledby="bs-activity">
+          <div class="bs-nav">
+            <button class="bs-prev" aria-label="Previous">&#10094;</button>
+            <div class="bs-grid" aria-live="polite">
+              <article class="bs-item">
+                <span class="rank-badge">#1</span>
+                <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/dinosaur.jpg" alt="Dinosaur Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Dinosaur Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#2</span>
+                <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/pirate.jpg" alt="Pirate Adventures Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Pirate Adventures Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#3</span>
+                <a class="cover-wrap" href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/animals.jpg" alt="Animals Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">Animals Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/7Q6UwWK" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#4</span>
+                <a class="cover-wrap" href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/food.jpg" alt="Food Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">Food Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/iwZxo1o" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#5</span>
+                <a class="cover-wrap" href="https://a.co/d/4km31bh" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/christmas.jpg" alt="Christmas Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/4km31bh" target="_blank" rel="noopener noreferrer">Christmas Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/4km31bh" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#6</span>
+                <a class="cover-wrap" href="https://a.co/d/3xBKiml" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/3xBKiml" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/3xBKiml" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <article class="bs-item">
+                <span class="rank-badge">#7</span>
+                <a class="cover-wrap" href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/BucketList1.jpg" alt="Bucket List Journal cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">Bucket List Journal</a></h3>
+                <p class="book-author">Pamela Pardee</p>
+                <a class="button small" href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+
+              <!-- New Book -->
+              <article class="bs-item">
+                <span class="rank-badge">#8</span>
+                <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
+                  <img loading="lazy" src="images/landscapes.jpg" alt="Serenity in Nature Coloring Book cover" width="480" height="720">
+                </a>
+                <h3 class="book-title"><a href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Serenity in Nature Coloring Book</a></h3>
+                <p class="book-author">Pamela DuShane</p>
+                <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+              </article>
+            </div>
+            <button class="bs-next" aria-label="Next">&#10095;</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <section class="intro">
+    <h2 id="authors">Meet Our Authors</h2>
+  </section>
+
+  <section class="authors">
+    <div class="author-card">
+      <img src="images/pamela-pardee.jpg" alt="Pamela Pardee">
+      <h3>Pamela Pardee</h3>
+      <p>Financial guides and activity books.</p>
+      <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
+    </div>
+    <!-- Removed: Harper Lane author card -->
+    <div class="author-card">
+      <img src="images/pamela-dushane.jpg" alt="Pamela DuShane">
+      <h3>Pamela DuShane</h3>
+      <p>Children’s books and coloring adventures.</p>
+      <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
+    </div>
+  </section>
+</main>
+
+<!-- New Releases -->
+<section class="best-sellers new-releases" aria-labelledby="new-releases-heading">
+  <div class="container">
+    <div class="intro">
+      <h2 id="new-releases-heading">New Releases</h2>
+      <p class="best-sellers-sub">Just released and ready to enjoy!</p>
+    </div>
+
+    <!-- Match Best Sellers navigation: arrows + scrolling grid -->
+    <div class="bs-nav">
+      <button class="bs-prev" aria-label="Previous">&#10094;</button>
+
+      <div class="bs-grid" aria-live="polite">
+        <!-- Position 1: Broke Joke -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/BrokeJoke2.jpg" alt="From Broke Joke to Financial Stability 2nd Edition cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">From Broke Joke to Financial Stability 2nd Edition</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Removed: Position 2 (Founding Mars - Harper Lane) -->
+
+        <!-- Position 3 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured2.jpg" alt="Halloween Word Search Book cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Halloween Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 4 -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/featured3.jpg" alt="Nighty Night, Summer Moon cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Nighty Night, Summer Moon</a></h3>
+          <p class="book-author">Pamela DuShane</p>
+          <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 5: America Word Search -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/america.jpg" alt="America Word Search cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">America Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+
+        <!-- Position 6: Christmas Word Search -->
+        <article class="bs-item">
+          <span class="rank-badge">🆕</span>
+          <a class="cover-wrap" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">
+            <img loading="lazy" src="images/christmas.jpg" alt="Christmas Word Search cover" width="480" height="720">
+          </a>
+          <h3 class="book-title"><a href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">Christmas Word Search</a></h3>
+          <p class="book-author">Pamela Pardee</p>
+          <a class="button small" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
+        </article>
+      </div>
+
+      <button class="bs-next" aria-label="Next">&#10095;</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2025 Bad Alibi. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="privacy.html" rel="noopener noreferrer">Privacy Policy</a> |
+      <a href="terms.html" rel="noopener noreferrer">Terms of Service</a> |
+      <a href="affiliate.html" rel="noopener noreferrer">Affiliate Disclosure</a>
+    </div>
+    <div class="social-icons">
+      <a href="https://www.facebook.com/profile.php?id=61578929661049" target="_blank" rel="noopener noreferrer"><img src="facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/bad__alibi/" target="_blank" rel="noopener noreferrer"><img src="instagram.png" alt="Instagram" /></a>
+      <a href="https://www.tiktok.com/@bad.alibi" target="_blank" rel="noopener noreferrer"><img src="tiktok.png" alt="TikTok" /></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Inline script (allowed by CSP above) to drive the nav arrows on every tab -->
+<script>
+(() => {
+  const panelByRadioId = {
+    'bs-all': '#panel-all',
+    'bs-finance': '#panel-finance',
+    'bs-scifi': '#panel-scifi',
+    'bs-kids': '#panel-kids',
+    'bs-activity': '#panel-activity'
+  };
+
+  const stepFor = (grid) => {
+    const item = grid.querySelector('.bs-item');
+    const width = item ? (item.offsetWidth || parseFloat(getComputedStyle(item).minWidth) || 240) : 240;
+    const styles = getComputedStyle(grid);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 16;
+    return width + gap;
+  };
+
+  // Attach handlers
+  document.querySelectorAll('.bs-nav').forEach(nav => {
+    const grid = nav.querySelector('.bs-grid');
+    const prev = nav.querySelector('.bs-prev');
+    const next = nav.querySelector('.bs-next');
+    if (!grid || !prev || !next) return;
+
+    prev.addEventListener('click', (e) => {
+      e.preventDefault();
+      grid.scrollBy({ left: -stepFor(grid), behavior: 'smooth' });
+    });
+    next.addEventListener('click', (e) => {
+      e.preventDefault();
+      grid.scrollBy({ left: stepFor(grid), behavior: 'smooth' });
+    });
+  });
+
+  // Wake hidden panels when the tab switches so measurements are valid
+  document.querySelectorAll('.bs-tab-radio').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const panelSel = panelByRadioId[radio.id];
+      const grid = panelSel ? document.querySelector(panelSel + ' .bs-grid') : null;
+      if (!grid) return;
+      grid.scrollBy({ left: 1, behavior: 'auto' });
+      grid.scrollBy({ left: -1, behavior: 'auto' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
+Quick note: this expects these new icon files to exist (or rename them to match what you already have):
+
+images/app-wordsearch.png
+
+images/app-moneytrain.png
+
+images/app-countmoney.png
+
+You said:
+provide updated styles file
+ChatGPT said:
+/* ======================
+   Custom Font
+====================== */
+@font-face {
+  font-family: 'Sprite Graffiti';
+  src: url('fonts/SpriteGraffiti.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ======================
+   Design Tokens
+====================== */
+:root{
+  --bg:#f5f5f5;
+  --text:#222;
+  --muted:#666;
+  --card:#fff;
+  --border:#e6e6e6;
+  --accent:#111;
+  --btn:#333;
+  --btnText:#fff;
+  --radius:16px;
+  --shadow:0 6px 18px rgba(0,0,0,.08);
+  --gap:1rem;
+
+  /* Layout widths */
+  --container-w:1000px;
+
+  /* Best-sellers sizing */
+  --bs-item-min:240px;
+  --bs-item-max:280px;
+  --bs-gap:1rem;
+}
+
+/* ======================
+   Base / Reset
+====================== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif;
+  background:var(--bg); color:var(--text);
+  line-height:1.45;
+}
+img{max-width:100%; height:auto; display:block}
+a{color:inherit}
+.container{width:90%; max-width:var(--container-w); margin:0 auto}
+
+/* Utilities */
+.text-center{text-align:center}
+.muted{color:var(--muted)}
+
+/* Buttons (center label) */
+.button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:.65rem 1rem;
+  border-radius:12px;
+  background:var(--btn);
+  color:var(--btnText);
+  text-decoration:none;
+  font-weight:700;
+  text-align:center;
+  transition:transform .08s ease, box-shadow .2s ease;
+  min-width:120px;
+}
+.button.small{
+  padding:.5rem .8rem;
+  font-weight:600;
+  border-radius:10px;
+  font-size:.95rem;
+  min-width:110px;
+}
+.button:hover{transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.08)}
+
+/* ======================
+   Navbar
+====================== */
+.navbar{
+  position:sticky; top:0; z-index:1000;
+  background:#333; color:#fff; padding:.5rem 0;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+.nav-container{display:flex; justify-content:center; align-items:center}
+.nav-links{
+  list-style:none; display:flex; gap:1.25rem; margin:0; padding:0;
+}
+.nav-links a{color:#fff; text-decoration:none; font-weight:500}
+.nav-links a:hover{text-decoration:underline}
+
+/* ======================
+   Hero
+====================== */
+.hero{
+  background:#111; color:#fff; padding:2.25rem 0; text-align:center;
+}
+.hero h1{
+  margin:0 0 .5rem 0;
+  font-size:5rem;              /* Increased size */
+  letter-spacing:.5px;
+  font-family:'Sprite Graffiti', cursive;
+}
+
+.hero .btn{
+  display:inline-block; margin-top:.6rem; padding:.6rem .9rem; border-radius:12px;
+  background:#fff; color:#111; text-decoration:none; font-weight:700;
+}
+
+/* ======================
+   Android Apps (NEW)
+====================== */
+.apps-section{
+  padding: 2.25rem 0;
+  scroll-margin-top: 90px; /* helps #apps anchor clear sticky nav */
+}
+.apps-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+
+  width: 90%;
+  max-width: var(--container-w);
+  margin-left:auto;
+  margin-right:auto;
+}
+.app-card{
+  position:relative;
+  display:flex;
+  gap: 1rem;
+  align-items:flex-start;
+  padding: 1.05rem;
+
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  min-height: 150px;
+}
+.app-icon{
+  width: 76px;
+  height: 76px;
+  border-radius: 18px;
+  object-fit: cover;
+  flex: 0 0 auto;
+
+  background:#111;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.app-body h3{
+  margin: 0 0 .25rem;
+  font-size: 1.1rem;
+}
+.app-body p{
+  margin: 0 0 .85rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.app-actions{
+  display:flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+/* button variants used in Apps section */
+.button.ghost{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(0,0,0,.18);
+}
+.button.ghost:hover{
+  border-color: rgba(0,0,0,.35);
+}
+.button.disabled{
+  opacity: .55;
+  pointer-events:none;
+}
+
+/* ====================== Cool Merch — responsive grid ====================== */
+.merch-grid {
+  padding: 2rem 0;
+}
+
+.merch-grid h2 {
+  text-align: center;
+  margin: 0 0 1rem;
+}
+
+.merch-grid .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  width: 90%;
+  max-width: var(--container-w);
+  margin: 0 auto;
+}
+
+.merch-grid .merch-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: .75rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.merch-grid .merch-item img {
+  width: 100%;
+  aspect-ratio: 3 / 4;        /* rectangular ratio */
+  object-fit: contain;        /* show entire product image */
+  background: #fff;           /* fill any padding */
+  border-radius: calc(var(--radius) - 6px);
+}
+
+.merch-grid .merch-item .button {
+  margin-top: auto;
+}
+
+.view-all-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* ======================
+   About Authors banner text block
+====================== */
+.about-authors{padding:1.25rem 0}
+.about-authors p{margin:.25rem auto 0; max-width:900px; text-align:center}
+
+/* ======================
+   Best Sellers (tabs + scroller)
+====================== */
+.best-sellers{
+  padding:2rem 0; background:transparent;
+}
+.best-sellers .intro{text-align:center; margin-bottom:1rem}
+.best-sellers h2{margin:.2rem 0 .25rem}
+.best-sellers-sub{margin:0; color:var(--muted)}
+
+.bs-tab-radio{position:absolute; left:-9999px}
+
+.bs-tab-labels{
+  display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;
+  margin:1rem auto .75rem; padding:0 .5rem;
+}
+.bs-tab{
+  cursor:pointer; user-select:none;
+  padding:.5rem .8rem; border-radius:999px; background:#e9e9e9; color:#222; font-weight:600;
+  border:1px solid #dadada;
+}
+#bs-all:checked ~ .bs-tab-labels label[for="bs-all"],
+#bs-finance:checked ~ .bs-tab-labels label[for="bs-finance"],
+#bs-scifi:checked ~ .bs-tab-labels label[for="bs-scifi"],
+#bs-kids:checked ~ .bs-tab-labels label[for="bs-kids"],
+#bs-activity:checked ~ .bs-tab-labels label[for="bs-activity"]{
+  background:#111; color:#fff; border-color:#111;
+}
+
+.bs-panels{position:relative}
+.bs-panel{display:none}
+#bs-all:checked ~ .bs-panels #panel-all,
+#bs-finance:checked ~ .bs-panels #panel-finance,
+#bs-scifi:checked ~ .bs-panels #panel-scifi,
+#bs-kids:checked ~ .bs-panels #panel-kids,
+#bs-activity:checked ~ .bs-panels #panel-activity{display:block}
+
+.bs-nav{position:relative}
+.bs-grid{
+  display:grid; grid-auto-flow:column;
+  grid-auto-columns:clamp(var(--bs-item-min), 26vw, var(--bs-item-max));
+  gap:var(--bs-gap);
+  overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory;
+  padding:.25rem 2.25rem;
+  scroll-behavior:smooth;
+}
+.bs-grid::-webkit-scrollbar{height:10px}
+.bs-grid::-webkit-scrollbar-thumb{background:#d4d4d4; border-radius:10px}
+.bs-grid > .bs-item{scroll-snap-align:start}
+
+.bs-item{
+  position:relative;
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:.75rem; display:flex; flex-direction:column;
+}
+.cover-wrap{
+  display:block; border-radius:12px; overflow:hidden; margin-bottom:.5rem;
+  background:#fafafa; border:1px solid var(--border);
+}
+.bs-item img{
+  width:100%; height:auto; display:block;
+  aspect-ratio:2/3; object-fit:cover;
+}
+.book-title{font-size:1rem; margin:.4rem 0 .1rem}
+.book-title a{text-decoration:none; color:var(--text)}
+.book-title a:hover{text-decoration:underline}
+.book-author{margin:0 0 .5rem; color:var(--muted); font-size:.95rem}
+
+.rank-badge{
+  position:absolute;
+  top:10px; left:10px;
+  z-index:2;
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:32px; height:32px; padding:0 .5rem;
+  border-radius:999px;
+  background:#111; color:#fff; font-weight:700; font-size:.9rem; line-height:1;
+  pointer-events:none;
+}
+
+.bs-prev,.bs-next{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:38px; height:38px; border-radius:50%;
+  border:1px solid #dcdcdc; background:#fff; color:#111; cursor:pointer;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+}
+.bs-prev{left:.25rem}
+.bs-next{right:.25rem}
+.bs-prev:hover,.bs-next:hover{background:#111; color:#fff}
+
+/* ======================
+   Authors section
+====================== */
+.intro h2{margin:0}
+.intro h2#authors{ text-align:center; }
+
+.authors{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap);
+  margin:1rem auto 2rem; width:90%; max-width:var(--container-w);
+}
+.author-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:1rem; text-align:center;
+  display:flex; flex-direction:column; align-items:center;
+}
+.author-card img{
+  width:140px; height:140px; object-fit:cover; border-radius:50%;
+  border:2px solid #eee; margin-bottom:.6rem;
+}
+.author-card h3{margin:.25rem 0 .25rem}
+.author-card p{margin:0 0 .75rem; color:var(--muted)}
+
+/* ======================
+   New Releases
+====================== */
+.new-releases .bs-grid{
+  grid-auto-columns:clamp(220px, 28vw, 260px);
+}
+
+/* ======================
+   Footer
+====================== */
+footer{
+  margin-top:2rem; padding:1.25rem 0; background:#000; border-top:1px solid var(--border);
+}
+footer p{margin:.25rem 0; text-align:center; color:var(--muted)}
+.footer-links, .social-icons{
+  display:flex; gap:.75rem; justify-content:center; align-items:center; margin-top:.25rem;
+}
+.footer-links a{color:#eee; text-decoration:none}
+.footer-links a:hover{text-decoration:underline}
+.social-icons img{
+  width:22px; height:22px; display:block;
+  /* keep icons in original colors */
+}
+
+/* ======================
+   Images / Banners
+====================== */
+img[alt~="banner"]{border-radius:12px}
+
+/* ======================
+   Responsive
+====================== */
+@media (max-width: 900px){
+  .merch-grid .grid{grid-template-columns:repeat(2,1fr)}
+  .authors{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 640px){
+  .hero{padding:1.6rem 0}
+  .hero h1{font-size:1.6rem}
+  .bs-grid{padding:.25rem 2.1rem}
+  .rank-badge{
+    top:8px; left:8px; min-width:28px; height:28px; font-size:.85rem;
+  }
+
+  /* Apps tweaks on small screens */
+  .app-card{padding:.95rem}
+  .app-icon{width:70px; height:70px}
+}
+@media (max-width: 580px){
+  .merch-grid .grid{grid-template-columns:1fr}
+  .authors{grid-template-columns:1fr}
+}
+
+/* ======================
+   Accessibility focus
+====================== */
+a:focus, button:focus{
+  outline:2px solid #3b82f6; outline-offset:2px;
+}
+
+
+
+
+No file chosenNo file chosen
+ChatGPT can make mistakes. Check important info.
