@@ -98,10 +98,11 @@ a{color:inherit}
 }
 .hero h1{
   margin:0 0 .5rem 0;
-  font-size:5rem;              /* Increased size */
+  font-size:5rem;
   letter-spacing:.5px;
   font-family:'Sprite Graffiti', cursive;
 }
+
 .hero .btn{
   display:inline-block; margin-top:.6rem; padding:.6rem .9rem; border-radius:12px;
   background:#fff; color:#111; text-decoration:none; font-weight:700;
@@ -112,13 +113,18 @@ a{color:inherit}
 ====================== */
 .apps-section{
   padding: 2.25rem 0;
-  scroll-margin-top: 90px; /* helps #apps anchor clear sticky nav */
+  scroll-margin-top: 90px;
 }
 .apps-grid{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.25rem;
   margin-top: 1.25rem;
+
+  width: 90%;
+  max-width: var(--container-w);
+  margin-left:auto;
+  margin-right:auto;
 }
 .app-card{
   position:relative;
@@ -144,10 +150,26 @@ a{color:inherit}
   background:#111;
   border: 1px solid rgba(0,0,0,.06);
 }
-.app-body h3{
-  margin: 0 0 .25rem;
+
+/* ✅ Title + publisher line (Bad Alibi always stays on ONE line) */
+.app-title{
+  margin: 0;
   font-size: 1.1rem;
+  line-height: 1.15;
 }
+.app-publisher{
+  display:block;
+  margin-top: .15rem;
+  margin-bottom: .55rem;
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--muted);
+
+  white-space: nowrap;       /* ✅ prevents "Bad Alibi" splitting */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .app-body p{
   margin: 0 0 .85rem;
   color: var(--muted);
@@ -177,10 +199,12 @@ a{color:inherit}
 .merch-grid {
   padding: 2rem 0;
 }
+
 .merch-grid h2 {
   text-align: center;
   margin: 0 0 1rem;
 }
+
 .merch-grid .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -189,6 +213,7 @@ a{color:inherit}
   max-width: var(--container-w);
   margin: 0 auto;
 }
+
 .merch-grid .merch-item {
   background: var(--card);
   border: 1px solid var(--border);
@@ -199,16 +224,19 @@ a{color:inherit}
   flex-direction: column;
   min-height: 100%;
 }
+
 .merch-grid .merch-item img {
   width: 100%;
-  aspect-ratio: 3 / 4;        /* rectangular ratio */
-  object-fit: contain;        /* show entire product image */
-  background: #fff;           /* fill any padding */
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #fff;
   border-radius: calc(var(--radius) - 6px);
 }
+
 .merch-grid .merch-item .button {
   margin-top: auto;
 }
+
 .view-all-link {
   text-align: center;
   margin-top: 1rem;
@@ -353,7 +381,6 @@ footer p{margin:.25rem 0; text-align:center; color:var(--muted)}
 .footer-links a:hover{text-decoration:underline}
 .social-icons img{
   width:22px; height:22px; display:block;
-  /* keep icons in original colors */
 }
 
 /* ======================
@@ -376,7 +403,6 @@ img[alt~="banner"]{border-radius:12px}
     top:8px; left:8px; min-width:28px; height:28px; font-size:.85rem;
   }
 
-  /* Apps tweaks on small screens */
   .app-card{padding:.95rem}
   .app-icon{width:70px; height:70px}
 }
