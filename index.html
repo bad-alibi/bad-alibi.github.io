@@ -42,8 +42,8 @@
       color:#fff;
       text-decoration:none;
       font-weight:700;
-      line-height:1;           /* ensure tidy vertical alignment */
-      vertical-align:middle;   /* align with Play badge */
+      line-height:1;
+      vertical-align:middle;
     }
 
     /* highlight the Daily Puzzle nav link */
@@ -56,13 +56,13 @@
 
     /* Play Store badge next to hero CTA, aligned on the same row */
     .playstore-btn {
-      display:inline-flex;          /* allow vertical centering of the image */
-      align-items:center;           /* center image vertically */
+      display:inline-flex;
+      align-items:center;
       margin:.6rem .4rem 0;
-      vertical-align:middle;        /* align with .hero .btn */
+      vertical-align:middle;
     }
     .playstore-btn img {
-      height:70px;  /* larger badge */
+      height:70px;
       width:auto;
       vertical-align:middle;
     }
@@ -79,7 +79,6 @@
       100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
     }
 
-    /* Keep badge comfy on very small screens */
     @media (max-width: 480px) {
       .playstore-btn img { height:46px; }
     }
@@ -100,13 +99,12 @@
     <ul class="nav-links" id="nav-menu">
       <li><a href="index.html">Home</a></li>
       <li><a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">Pamela Pardee</a></li>
-      <!-- Removed: Harper Lane nav link -->
       <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
       <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
       <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
 
-      <!-- Apps anchor -->
-      <li><a href="#apps">Apps</a></li>
+      <!-- ✅ Removed Apps link (kept All Apps) -->
+      <li><a href="https://play.google.com/store/apps/developer?id=Bad+Alibi&utm_source=na_Med" target="_blank" rel="noopener noreferrer">All Apps</a></li>
 
       <!-- Highlighted Daily Puzzle -->
       <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer" class="puzzle-link">Daily Puzzle</a></li>
@@ -117,10 +115,13 @@
 <header class="hero">
   <div class="container">
     <h1>Bad Alibi</h1>
-    <!-- Dual CTAs: online puzzle + Play Store app -->
-    <a class="btn pulse" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Play Today’s Daily Word Search</a>
-    <a class="playstore-btn" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" target="_blank" rel="noopener noreferrer" aria-label="Get the Word Search app on Google Play">
-      <!-- Save the official badge at: images/google-play-badge.png -->
+
+    <a class="btn pulse" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">
+      Play Today’s Daily Word Search
+    </a>
+
+    <a class="playstore-btn" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US"
+       target="_blank" rel="noopener noreferrer" aria-label="Get the Word Search app on Google Play">
       <img src="images/google-play-badge.png" alt="Get it on Google Play">
     </a>
   </div>
@@ -135,90 +136,76 @@
       <h2 id="apps-heading">Android Apps</h2>
       <p class="best-sellers-sub">Puzzles, games, and tools—made by Bad Alibi.</p>
     </div>
-  </div>
 
-  <div class="apps-grid">
-    <!-- APP 1 -->
-    <article class="app-card">
-      <img
-        class="app-icon"
-        src="images/app-wordsearch.png"
-        alt="Daily Word Search app icon"
-        loading="lazy"
-        width="96"
-        height="96"
-      />
-      <div class="app-body">
-        <h3>Daily Word Search</h3>
-        <p>A fun word search for everyone, relaxing gameplay, and many themes to explore.</p>
-
-        <div class="app-actions">
-          <a
-            class="button small"
-            href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Google Play</a>
-
-          <a
-            class="button small ghost"
-            href="daily-word-search.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Play on the Web</a>
+    <div class="apps-grid">
+      <!-- Word Search -->
+      <article class="app-card">
+        <img class="app-icon" src="images/app-wordsearch.png" alt="Word Search Bad Alibi app icon" loading="lazy" width="96" height="96" />
+        <div class="app-body">
+          <h3>Word Search Bad Alibi</h3>
+          <p>Daily word searches with fun themes—plus a web version you can play instantly.</p>
+          <div class="app-actions">
+            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" target="_blank" rel="noopener noreferrer">Google Play</a>
+            <a class="button small ghost" href="daily-word-search.html" target="_blank" rel="noopener noreferrer">Play on the Web</a>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- APP 2 -->
-    <article class="app-card">
-      <img
-        class="app-icon"
-        src="images/app-bloxmania.png"
-        alt="Blox Mania app icon"
-        loading="lazy"
-        width="96"
-        height="96"
-      />
-      <div class="app-body">
-        <h3>Blox Mania</h3>
-        <p>A fun, colorful block puzzle you can play in minutes—easy to start, hard to stop.</p>
-
-        <div class="app-actions">
-          <a
-            class="button small"
-            href="https://play.google.com/store/apps/details?id=com.badalibi.bloxmania"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Google Play</a>
+      <!-- Word Scramble -->
+      <article class="app-card">
+        <img class="app-icon" src="images/app-wordscramble.png" alt="Word Scramble Bad Alibi app icon" loading="lazy" width="96" height="96" />
+        <div class="app-body">
+          <h3>Word Scramble Bad Alibi</h3>
+          <p>Unscramble words fast, beat your best streak, and collect trophies as you play.</p>
+          <div class="app-actions">
+            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.wordscramble&hl=en_US" target="_blank" rel="noopener noreferrer">Google Play</a>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- APP 3 -->
-    <article class="app-card">
-      <img
-        class="app-icon"
-        src="images/app-countmoney.png"
-        alt="Count Money app icon"
-        loading="lazy"
-        width="96"
-        height="96"
-      />
-      <div class="app-body">
-        <h3>Count Money</h3>
-        <p>A kid-friendly way to practice coins and bills.</p>
-
-        <div class="app-actions">
-          <a
-            class="button small"
-            href="https://play.google.com/store/apps/details?id=com.badalibi.countmoney"
-            target="_blank"
-            rel="noopener noreferrer"
-          >Google Play</a>
+      <!-- Sugar Crash -->
+      <article class="app-card">
+        <img class="app-icon" src="images/app-sugarcrash.png" alt="Sugar Crash Bad Alibi app icon" loading="lazy" width="96" height="96" />
+        <div class="app-body">
+          <h3>Sugar Crash Bad Alibi</h3>
+          <p>A sweet candy puzzle with satisfying combos and “just one more try” energy.</p>
+          <div class="app-actions">
+            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.sugarcrash&hl=en_US" target="_blank" rel="noopener noreferrer">Google Play</a>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+
+      <!-- Blox Mania -->
+      <article class="app-card">
+        <img class="app-icon" src="images/app-bloxmania.png" alt="Blox Mania Bad Alibi app icon" loading="lazy" width="96" height="96" />
+        <div class="app-body">
+          <h3>Blox Mania Bad Alibi</h3>
+          <p>A fun, colorful block puzzle—easy to start, hard to put down.</p>
+          <div class="app-actions">
+            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.bloxmania&hl=en_US" target="_blank" rel="noopener noreferrer">Google Play</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Count Money -->
+      <article class="app-card">
+        <img class="app-icon" src="images/app-countmoney.png" alt="Count Money Bad Alibi app icon" loading="lazy" width="96" height="96" />
+        <div class="app-body">
+          <h3>Count Money Bad Alibi</h3>
+          <p>A kid-friendly way to practice coins, bills, and quick money math.</p>
+          <div class="app-actions">
+            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.countmoney&hl=en_US" target="_blank" rel="noopener noreferrer">Google Play</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Developer page button stays here too (optional but nice) -->
+    <div class="view-all-link">
+      <a class="button" href="https://play.google.com/store/apps/developer?id=Bad+Alibi&utm_source=na_Med" target="_blank" rel="noopener noreferrer">
+        All Apps by Bad Alibi
+      </a>
+    </div>
   </div>
 </section>
 
@@ -277,7 +264,6 @@
       <div class="bs-tab-labels">
         <label for="bs-all" class="bs-tab" role="tab" aria-controls="panel-all">Top 5</label>
         <label for="bs-finance" class="bs-tab" role="tab" aria-controls="panel-finance">Finance</label>
-        <!-- Sci-Fi & Romance tab label is hidden via CSS -->
         <label for="bs-scifi" class="bs-tab" role="tab" aria-controls="panel-scifi">Sci-Fi & Romance</label>
         <label for="bs-kids" class="bs-tab" role="tab" aria-controls="panel-kids">Kids</label>
         <label for="bs-activity" class="bs-tab" role="tab" aria-controls="panel-activity">Activity Books</label>
@@ -291,7 +277,6 @@
           <div class="bs-nav">
             <button class="bs-prev" aria-label="Previous">&#10094;</button>
             <div class="bs-grid" aria-live="polite">
-              <!-- #1 -->
               <article class="bs-item">
                 <span class="rank-badge">#1</span>
                 <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
@@ -302,7 +287,6 @@
                 <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- #2 -->
               <article class="bs-item">
                 <span class="rank-badge">#2</span>
                 <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
@@ -313,7 +297,6 @@
                 <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- #3 -->
               <article class="bs-item">
                 <span class="rank-badge">#3</span>
                 <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
@@ -324,7 +307,6 @@
                 <a class="button small" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- #4 -->
               <article class="bs-item">
                 <span class="rank-badge">#4</span>
                 <a class="cover-wrap" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">
@@ -335,7 +317,6 @@
                 <a class="button small" href="https://a.co/d/i8r9U1i" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- #5 -->
               <article class="bs-item">
                 <span class="rank-badge">#5</span>
                 <a class="cover-wrap" href="https://a.co/d/0aqUqZg" target="_blank" rel="noopener noreferrer">
@@ -407,12 +388,9 @@
         <div id="panel-scifi" class="bs-panel" role="tabpanel" aria-labelledby="bs-scifi" aria-hidden="true">
           <div class="bs-nav">
             <button class="bs-prev" aria-label="Previous">&#10094;</button>
-            <div class="bs-grid" aria-live="polite">
-              <!-- Left intact but hidden so nothing about Harper Lane appears on the page -->
-            </div>
+            <div class="bs-grid" aria-live="polite"></div>
             <button class="bs-next" aria-label="Next">&#10095;</button>
           </div>
-          <div class="view-more-category"></div>
         </div>
 
         <!-- Kids -->
@@ -523,7 +501,6 @@
                 <a class="button small" href="https://a.co/d/fkiwgpV" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </article>
 
-              <!-- New Book -->
               <article class="bs-item">
                 <span class="rank-badge">#8</span>
                 <a class="cover-wrap" href="https://a.co/d/2CjtzVO" target="_blank" rel="noopener noreferrer">
@@ -555,7 +532,6 @@
       <p>Financial guides and activity books.</p>
       <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer" class="button">View Books</a>
     </div>
-    <!-- Removed: Harper Lane author card -->
     <div class="author-card">
       <img src="images/pamela-dushane.jpg" alt="Pamela DuShane">
       <h3>Pamela DuShane</h3>
@@ -573,12 +549,10 @@
       <p class="best-sellers-sub">Just released and ready to enjoy!</p>
     </div>
 
-    <!-- Match Best Sellers navigation: arrows + scrolling grid -->
     <div class="bs-nav">
       <button class="bs-prev" aria-label="Previous">&#10094;</button>
 
       <div class="bs-grid" aria-live="polite">
-        <!-- Position 1: Broke Joke -->
         <article class="bs-item">
           <span class="rank-badge">🆕</span>
           <a class="cover-wrap" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">
@@ -589,7 +563,6 @@
           <a class="button small" href="https://a.co/d/9LdjG8O" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </article>
 
-        <!-- Position 3 -->
         <article class="bs-item">
           <span class="rank-badge">🆕</span>
           <a class="cover-wrap" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">
@@ -600,7 +573,6 @@
           <a class="button small" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </article>
 
-        <!-- Position 4 -->
         <article class="bs-item">
           <span class="rank-badge">🆕</span>
           <a class="cover-wrap" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">
@@ -611,7 +583,6 @@
           <a class="button small" href="https://a.co/d/hGmW6CO" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </article>
 
-        <!-- Position 5: America Word Search -->
         <article class="bs-item">
           <span class="rank-badge">🆕</span>
           <a class="cover-wrap" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">
@@ -622,7 +593,6 @@
           <a class="button small" href="https://a.co/d/39fYp2g" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
         </article>
 
-        <!-- Position 6: Christmas Word Search -->
         <article class="bs-item">
           <span class="rank-badge">🆕</span>
           <a class="cover-wrap" href="https://a.co/d/fq9n4hw" target="_blank" rel="noopener noreferrer">
@@ -674,7 +644,6 @@
     return width + gap;
   };
 
-  // Attach handlers
   document.querySelectorAll('.bs-nav').forEach(nav => {
     const grid = nav.querySelector('.bs-grid');
     const prev = nav.querySelector('.bs-prev');
@@ -691,7 +660,6 @@
     });
   });
 
-  // Wake hidden panels when the tab switches so measurements are valid
   document.querySelectorAll('.bs-tab-radio').forEach(radio => {
     radio.addEventListener('change', () => {
       const panelSel = panelByRadioId[radio.id];
