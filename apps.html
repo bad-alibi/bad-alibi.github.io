@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 img-src 'self' https:;
+                 style-src 'self' 'unsafe-inline';
+                 script-src 'self' 'unsafe-inline';
+                 script-src-elem 'self' 'unsafe-inline';
+                 script-src-attr 'unsafe-inline';">
+
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index, follow">
+
+  <title>Android Apps | Bad Alibi</title>
+  <meta name="description"
+        content="Explore Android games and apps from Bad Alibi, including Word Search, Rumble Rails, Chore Champ, Blox Mania, and more." />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .apps-page-hero {
+      background: #111;
+      color: #fff;
+      padding: 3rem 0 2.5rem;
+      text-align: center;
+    }
+
+    .apps-page-hero h1 {
+      margin: 0 0 .5rem;
+      font-family: 'Sprite Graffiti', cursive;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      letter-spacing: .5px;
+    }
+
+    .apps-page-hero p {
+      max-width: 620px;
+      margin: 0 auto;
+      color: #ddd;
+      font-size: 1.05rem;
+    }
+
+    .apps-section {
+      padding: 2.5rem 0 3rem;
+    }
+
+    .apps-section .intro {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+      gap: 1.25rem;
+      width: 90%;
+      max-width: var(--container-w);
+      margin: 0 auto;
+    }
+
+    .app-card {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      min-height: 190px;
+      padding: 1.1rem;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .app-icon {
+      width: 82px;
+      height: 82px;
+      flex: 0 0 82px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: #fff;
+    }
+
+    .app-body {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+      flex-direction: column;
+      align-self: stretch;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.25;
+    }
+
+    .app-publisher {
+      margin: .15rem 0 .55rem;
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .app-body p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .app-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: auto;
+    }
+
+    .button.ghost {
+      color: var(--text);
+      background: transparent;
+      border: 1px solid #cfcfcf;
+    }
+
+    .button.ghost:hover {
+      border-color: #999;
+    }
+
+    .apps-developer-link {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .nav-links a.current-page {
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 5px;
+    }
+
+    @media (max-width: 760px) {
+      .nav-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: .7rem 1rem;
+      }
+
+      .navbar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .apps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .app-card {
+        min-height: 0;
+      }
+
+      .app-icon {
+        width: 70px;
+        height: 70px;
+        flex-basis: 70px;
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="container nav-container">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="apps.html" class="current-page" aria-current="page">Apps</a></li>
+        <li><a href="daily-word-search.html">Daily Puzzle</a></li>
+        <li><a href="money.html">Downloads</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="apps-page-hero">
+    <div class="container">
+      <h1>Bad Alibi Apps</h1>
+      <p>Games, puzzles, learning tools, and family organization—all play, no ads.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="apps-section" aria-labelledby="apps-heading">
+      <div class="container intro">
+        <h2 id="apps-heading">Android Apps</h2>
+        <p class="best-sellers-sub">Choose an app and visit Google Play to learn more.</p>
+      </div>
+
+      <div class="apps-grid">
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-wordsearch.png"
+               alt="Word Search app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Word Search</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Daily puzzles, more than 100 categories, simple word selection, and light or dark play modes.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+
+              <a class="button small ghost"
+                 href="daily-word-search.html"
+                 target="_blank"
+                 rel="noopener noreferrer">Play on the Web</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-wordscramble.png"
+               alt="Word Scramble app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Word Scramble</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Unscramble words, choose Easy or Hard mode, build your streak, and collect trophies.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.wordscramble"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-sugarcrash.png"
+               alt="Sugar Crash app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Sugar Crash</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Match colorful candy tiles, trigger satisfying combos, beat your best time, and earn trophies.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.sugarcrash"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-bloxmania.png"
+               alt="Blox Mania app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Blox Mania</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Slide and place colorful blocks, complete rows and columns, clear the grid, and track personal bests.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.bloxmania"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-countmoney.png"
+               alt="Count Money app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Count Money</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Practice U.S. coins and bills with Count It and Make It modes, hints, voice support, and trophies.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.countmoney"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-codebrown.png"
+               alt="Code Brown app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Code Brown</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>A goofy bathroom-humor match game filled with toilets, toilet paper, gas bubbles, trophies, and quick wins.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.codebrown"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-rumblerails.png"
+               alt="Rumble Rails app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Rumble Rails</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Switch tracks at the right moment and guide colorful engines safely into their matching stations.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.rumblerails"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <img class="app-icon"
+               src="images/app-chorechamp.png"
+               alt="Chore Champ app icon"
+               loading="lazy"
+               width="96"
+               height="96" />
+
+          <div class="app-body">
+            <h3 class="app-title">Chore Champ</h3>
+            <div class="app-publisher">Bad Alibi</div>
+            <p>Track completed chores, select which chores are being paid, review history, and calculate payday totals.</p>
+
+            <div class="app-actions">
+              <a class="button small"
+                 href="https://play.google.com/store/apps/details?id=com.badalibi.chorechamp"
+                 target="_blank"
+                 rel="noopener noreferrer">Google Play</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="apps-developer-link">
+        <a class="button"
+           href="https://play.google.com/store/apps/developer?id=Bad+Alibi"
+           target="_blank"
+           rel="noopener noreferrer">
+          View All Apps on Google Play
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Bad Alibi. All rights reserved.</p>
+
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <span aria-hidden="true">|</span>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://www.facebook.com/profile.php?id=61578929661049"
+           target="_blank"
+           rel="noopener noreferrer">
+          <img src="facebook.png" alt="Facebook" />
+        </a>
+
+        <a href="https://www.instagram.com/bad__alibi/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <img src="instagram.png" alt="Instagram" />
+        </a>
+
+        <a href="https://www.tiktok.com/@bad.alibi"
+           target="_blank"
+           rel="noopener noreferrer">
+          <img src="tiktok.png" alt="TikTok" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -20,17 +20,7 @@
   <link rel="stylesheet" href="styles.css" />
 
   <style>
-    /* Ribbon helper (if you use Coming Soon in the future) */
-    .coming-soon-wrap { position: relative; display: inline-block; }
-    .coming-soon-ribbon {
-      position: absolute; top: 15px; left: -40px; width: 160px;
-      background: #ff0000; color: #fff; text-align: center; font-weight: 700;
-      padding: 5px 0; transform: rotate(-45deg);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3); text-transform: uppercase; font-size: .9rem;
-      pointer-events: none;
-    }
-
-    /* Highlight the Daily Puzzle nav link */
+/* Highlight the Daily Puzzle nav link */
     .nav-links li a.puzzle-link {
       background:#28a745; color:#fff; padding:6px 12px; border-radius:8px;
       font-weight:700; text-transform:uppercase;
@@ -95,6 +85,61 @@
       max-width: 520px;
       width: min(520px, 92vw);
     }
+
+    /* Homepage introduction to the full Android app catalog */
+    .home-apps-intro{
+      padding:2.5rem 0;
+      background:#fff;
+      border-bottom:1px solid #e6e6e6;
+    }
+    .home-apps-intro .intro{
+      text-align:center;
+      margin-bottom:1.25rem;
+    }
+    .home-apps-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:1rem;
+      margin:0 auto;
+    }
+    .home-app-card{
+      display:flex;
+      align-items:center;
+      gap:.9rem;
+      padding:1rem;
+      background:#f8f8f8;
+      border:1px solid #e6e6e6;
+      border-radius:16px;
+      box-shadow:0 6px 18px rgba(0,0,0,.06);
+      text-align:left;
+    }
+    .home-app-card img{
+      width:72px;
+      height:72px;
+      flex:0 0 72px;
+      border-radius:16px;
+      object-fit:cover;
+      background:#fff;
+      border:1px solid #e6e6e6;
+    }
+    .home-app-card h3{
+      margin:0 0 .2rem;
+      font-size:1.05rem;
+    }
+    .home-app-card p{
+      margin:0;
+      color:#666;
+      font-size:.93rem;
+      line-height:1.35;
+    }
+    .home-apps-action{
+      margin-top:1.35rem;
+      text-align:center;
+    }
+    @media (max-width: 800px){
+      .home-apps-grid{grid-template-columns:1fr;}
+      .home-app-card{max-width:560px; width:100%; margin:0 auto;}
+    }
   </style>
 </head>
 
@@ -107,13 +152,10 @@
     <div class="container nav-container">
       <ul class="nav-links" id="nav-menu">
         <li><a href="index.html">Home</a></li>
-        <li><a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener noreferrer">Pamela Pardee</a></li>
-        <li><a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener noreferrer">Pamela DuShane</a></li>
         <li><a href="https://www.amazon.com/s?rh=n%3A7141123011%2Cp_4%3ABad%2BAlibi&ref=bl_sl_s_ap_web_7141123011" target="_blank" rel="noopener noreferrer">Merch</a></li>
         <li><a href="money.html" target="_blank" rel="noopener noreferrer">Downloads</a></li>
 
-        <!-- ✅ Apps removed, keep All Apps -->
-        <li><a href="#apps">All Apps</a></li>
+        <li><a href="apps.html">Apps</a></li>
 
         <li><a href="daily-word-search.html" target="_blank" rel="noopener noreferrer" class="puzzle-link">Daily Puzzle</a></li>
       </ul>
@@ -142,112 +184,44 @@
   </header>
 
   <!-- ======================
-       ANDROID APPS
+       BAD ALIBI APPS INTRODUCTION
   ====================== -->
-  <section id="apps" class="apps-section" aria-labelledby="apps-heading">
+  <section class="home-apps-intro" aria-labelledby="home-apps-heading">
     <div class="container">
       <div class="intro">
-        <h2 id="apps-heading">Android Apps</h2>
-        <p class="best-sellers-sub">All play, no ads.</p>
+        <h2 id="home-apps-heading">Bad Alibi Apps</h2>
+        <p class="best-sellers-sub">Discover ad-free games, puzzles, learning tools, and helpful family apps for Android.</p>
       </div>
-    </div>
 
-    <div class="apps-grid">
-      <!-- Word Search -->
-      <article class="app-card">
-        <img class="app-icon" src="images/app-wordsearch.png" alt="Word Search app icon" loading="lazy" width="96" height="96" />
-        <div class="app-body">
-          <h3 class="app-title">Word Search</h3>
-          <div class="app-publisher">Bad Alibi</div>
-          <p>Daily word searches with fun themes—plus a web version you can play instantly.</p>
-          <div class="app-actions">
-            <a class="button small"
-               href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US"
-               target="_blank" rel="noopener noreferrer">Google Play</a>
-            <a class="button small ghost"
-               href="daily-word-search.html"
-               target="_blank" rel="noopener noreferrer">Play on the Web</a>
+      <div class="home-apps-grid">
+        <article class="home-app-card">
+          <img src="images/app-wordsearch.png" alt="Word Search app icon" loading="lazy" width="72" height="72">
+          <div>
+            <h3>Word Search</h3>
+            <p>Enjoy daily themed puzzles in the Android app or play instantly on the web.</p>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Word Scramble -->
-      <article class="app-card">
-        <img class="app-icon" src="images/app-wordscramble.png" alt="Word Scramble app icon" loading="lazy" width="96" height="96" />
-        <div class="app-body">
-          <h3 class="app-title">Word Scramble</h3>
-          <div class="app-publisher">Bad Alibi</div>
-          <p>Unscramble words fast, beat your best streak, and collect trophies as you play.</p>
-          <div class="app-actions">
-            <!-- replace # with your real link -->
-            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.wordscramble" target="_blank" rel="noopener noreferrer">Google Play</a>
+        <article class="home-app-card">
+          <img src="images/app-rumblerails.png" alt="Rumble Rails app icon" loading="lazy" width="72" height="72">
+          <div>
+            <h3>Rumble Rails</h3>
+            <p>Switch tracks and guide colorful engines safely to their matching stations.</p>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <!-- Sugar Crash -->
-      <article class="app-card">
-        <img class="app-icon" src="images/app-sugarcrash.png" alt="Sugar Crash app icon" loading="lazy" width="96" height="96" />
-        <div class="app-body">
-          <h3 class="app-title">Sugar Crash</h3>
-          <div class="app-publisher">Bad Alibi</div>
-          <p>A sweet candy puzzle with satisfying combos and “just one more try” energy.</p>
-          <div class="app-actions">
-            <!-- replace # with your real link -->
-            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.sugarcrash" target="_blank" rel="noopener noreferrer">Google Play</a>
+        <article class="home-app-card">
+          <img src="images/app-chorechamp.png" alt="Chore Champ app icon" loading="lazy" width="72" height="72">
+          <div>
+            <h3>Chore Champ</h3>
+            <p>Track completed chores, payday selections, totals, and chore history.</p>
           </div>
-        </div>
-      </article>
+        </article>
+      </div>
 
-      <!-- Blox Mania -->
-      <article class="app-card">
-        <img class="app-icon" src="images/app-bloxmania.png" alt="Blox Mania app icon" loading="lazy" width="96" height="96" />
-        <div class="app-body">
-          <h3 class="app-title">Blox Mania</h3>
-          <div class="app-publisher">Bad Alibi</div>
-          <p>A fun, colorful block puzzle—easy to start, hard to put down.</p>
-          <div class="app-actions">
-            <!-- replace # with your real link -->
-            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.bloxmania" target="_blank" rel="noopener noreferrer">Google Play</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Code Brown -->
-      <article class="app-card">
-        <img class="app-icon" src="images/app-codebrown.png" alt="Code Brown app icon" loading="lazy" width="96" height="96" />
-        <div class="app-body">
-          <h3 class="app-title">Code Brown</h3>
-          <div class="app-publisher">Bad Alibi</div>
-          <p>Toilet-humor match puzzles with poo, toilets, TP rolls, and gas bubbles.</p>
-          <div class="app-actions">
-            <!-- replace # with your real link -->
-            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.codebrown" target="_blank" rel="noopener noreferrer">Google Play</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Count Money -->
-      <article class="app-card">
-        <img class="app-icon" src="images/app-countmoney.png" alt="Count Money app icon" loading="lazy" width="96" height="96" />
-        <div class="app-body">
-          <h3 class="app-title">Count Money</h3>
-          <div class="app-publisher">Bad Alibi</div>
-          <p>A kid-friendly way to practice coins, bills, and quick money math.</p>
-          <div class="app-actions">
-            <!-- replace # with your real link -->
-            <a class="button small" href="https://play.google.com/store/apps/details?id=com.badalibi.countmoney" target="_blank" rel="noopener noreferrer">Google Play</a>
-          </div>
-        </div>
-      </article>
-    </div>
-
-    <div class="view-all-link">
-      <a class="button"
-         href="https://play.google.com/store/apps/developer?id=Bad+Alibi"
-         target="_blank" rel="noopener noreferrer">
-        All Apps by Bad Alibi
-      </a>
+      <div class="home-apps-action">
+        <a class="button" href="apps.html">View All Bad Alibi Apps</a>
+      </div>
     </div>
   </section>
 
