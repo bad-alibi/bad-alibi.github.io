@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bad Alibi — Daily Word Search (Click or Drag to Select)</title>
+  <title>Free Daily Word Search | Bad Alibi</title><meta name="description" content="Play a free daily word search in your browser, then explore Bad Alibi word-search books and the ad-free Android app.">
   <style>
     :root{
       --bg:#f5f5f5; --text:#222; --muted:#666; --card:#fff; --accent:#111; --brand:#111;
@@ -62,12 +62,19 @@
     .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111;color:#fff;padding:.6rem .9rem;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s ease}
     .toast.show{opacity:1}
   </style>
-</head>
+<style>
+  .shop-promo p{line-height:1.5}.shop-promo .ba-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.65rem .9rem;background:#176d35;color:#fff;text-decoration:none;border-radius:9px;font-size:1rem;line-height:1.4}
+  .shop-promo .ba-btn:hover{background:#105327}.promo-note{font-size:.875rem;color:var(--muted)}
+  .promo-book{display:flex;align-items:flex-start;gap:1rem;border-top:1px solid var(--border);margin-top:1.25rem;padding-top:1.25rem}.promo-book img{width:80px;height:auto;flex:0 0 80px}.promo-book h3{font-size:1rem;margin:0}.promo-book p{margin:.5rem 0 1rem}.badge{text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:3px solid #168345;outline-offset:4px}
+  @media(max-width:400px){.promo-book{flex-direction:column}}
+  @media print{.shop-promo{display:none}}
+</style></head>
 <body>
   <div class="container">
     <header>
       <div class="title">
-        <span class="badge">Bad Alibi</span>
+        <a class="badge" href="index.html" aria-label="Bad Alibi home">Bad Alibi</a>
         <h1>Daily Word Search</h1>
       </div>
       <div class="meta" id="meta"></div>
@@ -98,54 +105,7 @@
         <div class="body">
           <div id="bank" class="bank" aria-live="polite"></div>
          
- <style>
-  .ba-btn {
-    background:#111;
-    color:#fff !important;
-    padding:.45rem .9rem;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:600;
-    box-shadow:0 2px 6px rgba(0,0,0,.15);
-    transition:background .2s ease, transform .15s ease;
-    display:inline-block;
-  }
-  .ba-btn:hover {
-    background:#333;
-    transform:translateY(-2px);
-  }
-</style>
-
-<div class="promo" style="margin-top:1rem">
-  <p style="margin:0 0 .75rem 0; font-weight:600;">Love this puzzle? Get the app!</p>
-  <a href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch&hl=en_US" 
-     target="_blank" rel="noopener">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
-         alt="Get it on Google Play" 
-         style="height:60px;width:auto;display:block;margin:0 0 1rem 0;">
-  </a>
-
-  <p style="margin:0 0 .75rem 0; font-weight:600;">Explore more from our Bad Alibi authors:</p>
-  <div style="display:grid;gap:.6rem;">
-    <div>
-      <strong>Pamela Pardee</strong> — Activity & Finance  
-      <a href="https://www.amazon.com/author/pamelapardee" target="_blank" rel="noopener" class="ba-btn">Amazon</a>
-    </div>
-    
-    <div>
-      <strong>Pamela DuShane</strong> — Children’s & Coloring  
-      <a href="https://www.amazon.com/author/pameladushane" target="_blank" rel="noopener" class="ba-btn">Amazon</a>
-    </div>
-  </div>
-
-  <p style="margin-top:1.25rem;text-align:center;">
-    <a href="https://mybadalibi.com" class="ba-btn">⬅ Return to mybadalibi.com</a>
-  </p>
-</div>
-
-
-
-
+<div class="promo shop-promo" style="margin-top:1rem"><h2>Keep the puzzles going.</h2><p>Get Word Search for Android: 100+ categories, daily puzzles, light and dark modes. No ads.</p><a class="ba-btn" href="https://play.google.com/store/apps/details?id=com.badalibi.wordsearch" target="_blank" rel="noopener noreferrer" data-product="wordsearch" data-store="google-play" data-placement="daily-puzzle" aria-label="Buy on Google Play · $2.99 USD: wordsearch">Buy on Google Play · $2.99 USD</a><p class="promo-note">U.S. price checked September 12, 2026. See Google Play for your local price.</p><div class="promo-book"><img src="images/featured2.jpg" alt="Halloween Word Search cover" width="90" height="135" loading="lazy"><div><h3>Prefer pencil and paper?</h3><p>Try Halloween Word Search by Pamela Pardee.</p><a class="ba-btn" href="https://a.co/d/aVsdAOB" target="_blank" rel="noopener noreferrer" data-product="halloween-word-search" data-store="amazon" data-placement="daily-puzzle" aria-label="Buy on Amazon: halloween word search">Buy on Amazon</a></div></div><p><a href="index.html#books">Browse all books</a> · <a href="apps.html">Explore all apps</a></p></div>
         </div>
       </aside>
     </div>
@@ -587,5 +547,33 @@
     // Kick off
     main();
   </script>
-</body>
+<script>/* Purchase intent only: these events are not completed sales.
+ * This file makes no network requests and does not store visitor data.
+ * Connect an analytics provider to ba:product-click or a dataLayer custom
+ * event called product_click. See SETUP-NOTES.md for the event fields.
+ */
+(() => {
+  function track(event) {
+    if (event.type === 'auxclick' && event.button !== 1) return;
+    const link = event.target instanceof Element ? event.target.closest('a[data-product][data-store]') : null;
+    if (!link) return;
+    const detail = {
+      event: 'product_click',
+      product_id: link.dataset.product,
+      store: link.dataset.store,
+      placement: link.dataset.placement || 'product',
+      page_path: location.pathname
+    };
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(detail);
+      window.dispatchEvent(new CustomEvent('ba:product-click', { detail }));
+    } catch (error) {
+      // Analytics must never prevent a customer from reaching the store.
+    }
+  }
+  document.addEventListener('click', track);
+  document.addEventListener('auxclick', track);
+})();
+</script></body>
 </html>
