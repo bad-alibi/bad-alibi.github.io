@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https:; style-src 'self' 'sha256-Pb/Nt7wGG0UPE/iU9tvqZ8fZGjQIoFDAUmQNjci0fBg='; script-src 'self' 'sha256-pEepHN0YfHzecmudx2J1/zD2nnaFBs7Zfib3Kkg5plw=' 'sha256-r9oSJI3v99Ik6A2zhbpOwU13Q2ZWyyE7EnXwpWJMazw='; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https:; style-src 'self' 'sha256-Pb/Nt7wGG0UPE/iU9tvqZ8fZGjQIoFDAUmQNjci0fBg='; script-src 'self' 'sha256-qdF+p8UbDxL/20PsXMqOEGu7qxzPhy0AZoQ1gle3FHY=' 'sha256-r9oSJI3v99Ik6A2zhbpOwU13Q2ZWyyE7EnXwpWJMazw='; object-src 'none'; base-uri 'self'">
 <meta name="referrer" content="no-referrer"><meta name="robots" content="index, follow">
 <title>Shop Books | Bad Alibi</title><meta name="description" content="Browse Bad Alibi books by title or topic. Shop stories, coloring books, word searches, journals, planners, guest books, and finance books on Amazon."><link rel="canonical" href="https://mybadalibi.com/books.html">
 <style>@font-face{font-family:"Sprite Graffiti";src:url("fonts/SpriteGraffiti.otf") format("opentype");font-display:swap}
@@ -209,7 +209,7 @@
 <a class="book-cover" href="https://www.amazon.com/dp/B0CSZ6RSVH" target="_blank" rel="noopener noreferrer" data-product="junior-money-tracker" data-store="amazon" data-placement="book-catalog-cover"><img src="images/finance2.jpg" alt="Junior Money Tracker: 12-Month Workbook cover" width="480" height="720" loading="lazy"></a>
 <div class="book-body"><p class="eyebrow">Personal finance</p><h3 tabindex="-1">Junior Money Tracker: 12-Month Workbook</h3><p class="byline">By Pamela Pardee</p><p class="description">Help young readers build money skills with a 12-month tracker for saving, spending, and smart financial habits.</p>
 <a class="button" href="https://www.amazon.com/dp/B0CSZ6RSVH" target="_blank" rel="noopener noreferrer" data-product="junior-money-tracker" data-store="amazon" data-placement="book-catalog" aria-label="Buy on Amazon: junior money tracker">Buy on Amazon</a>
-</div></article></div><div class="empty-books" id="no-books" hidden><h3>No books found.</h3><p>Try a different word, choose another category, or clear your search and filters.</p><button class="button" type="button" id="reset-book-search">Show All Books</button></div><div class="catalog-end"><button class="button" type="button" id="show-more-books" aria-controls="book-grid" hidden>Show More Books</button></div>
+</div></article></div><div class="empty-books" id="no-books" hidden><h3>No books found.</h3><p>Try a different word, choose another category, or clear your search and filters.</p><button class="button" type="button" id="reset-book-search">Show All Books</button></div>
 </div></section></main><footer class="site-footer"><div class="wrap footer-top"><div><a class="wordmark" href="index.html">Bad Alibi</a><p>Books, puzzles, and apps for everyday life.</p></div><div class="footer-shop"><a href="books.html">Shop Books</a><a href="apps.html">Explore Apps</a><a href="index.html#merch">Shop Merch</a><a href="money.html">Free Downloads</a></div></div><div class="wrap footer-bottom"><p>&copy; 2026 Bad Alibi. All rights reserved.</p><div class="footer-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="affiliate.html">Affiliate Disclosure</a></div><div class="social-icons"><a href="https://www.facebook.com/profile.php?id=61578929661049" target="_blank" rel="noopener noreferrer"><img src="facebook.png" alt="Facebook" width="24" height="24" loading="lazy"></a><a href="https://www.instagram.com/bad__alibi/" target="_blank" rel="noopener noreferrer"><img src="instagram.png" alt="Instagram" width="24" height="24" loading="lazy"></a><a href="https://www.tiktok.com/@bad.alibi" target="_blank" rel="noopener noreferrer"><img src="tiktok.png" alt="TikTok" width="24" height="24" loading="lazy"></a></div></div></footer><script>(() => {
   const catalog = document.getElementById('book-catalog');
   if (!catalog) return;
@@ -220,13 +220,10 @@
   const form = document.getElementById('book-search-form');
   const status = document.getElementById('book-count');
   const activityIntro = document.getElementById('activity-books-intro');
-  const more = document.getElementById('show-more-books');
   const clear = document.getElementById('clear-book-filters');
   const empty = document.getElementById('no-books');
-  const batchSize = 12;
   let category = 'all';
   let type = 'all';
-  let limit = batchSize;
   const normalize = value => value.toLocaleLowerCase().replace(/[‘’]/g, "'").trim();
   const searchText = new Map(cards.map(card => [card, normalize(card.dataset.search)]));
 
@@ -235,7 +232,6 @@
     category = controls.some(button => button.dataset.filter === params.get('category')) ? params.get('category') : 'all';
     type = category === 'activity-books' && types.some(button => button.dataset.type === params.get('type')) ? params.get('type') : 'all';
     search.value = params.get('q') || '';
-    limit = batchSize;
   }
 
   function updateUrl() {
@@ -248,36 +244,28 @@
     try { history.replaceState(null, '', url); } catch (_) {}
   }
 
-  function render({ save = true, focusNew = false } = {}) {
-    const previousVisible = new Set(cards.filter(card => !card.hidden));
+  function render({ save = true } = {}) {
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const matches = cards.filter(card =>
       (category === 'all' || card.dataset.category === category) &&
       (type === 'all' || card.dataset.group === type) &&
       terms.every(term => searchText.get(card).includes(term))
     );
-    const shown = matches.slice(0, limit);
-    const shownSet = new Set(shown);
-    cards.forEach(card => { card.hidden = !shownSet.has(card); });
+    const matchingCards = new Set(matches);
+    cards.forEach(card => { card.hidden = !matchingCards.has(card); });
     controls.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
     types.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.type === type)));
     activityIntro.hidden = category !== 'activity-books';
-    status.textContent = matches.length ? `Showing ${shown.length} of ${matches.length} ${matches.length === 1 ? 'book' : 'books'}` : '0 books found';
-    more.hidden = shown.length >= matches.length;
+    status.textContent = matches.length ? `${matches.length} ${matches.length === 1 ? 'book' : 'books'}` : '0 books found';
     empty.hidden = matches.length !== 0;
     clear.hidden = category === 'all' && type === 'all' && !search.value.trim();
     if (save) updateUrl();
-    if (focusNew) {
-      const next = shown.find(card => !previousVisible.has(card));
-      if (next) next.querySelector('h3').focus({ preventScroll: true });
-    }
   }
 
   function reset() {
     category = 'all';
     type = 'all';
     search.value = '';
-    limit = batchSize;
     render();
     search.focus();
   }
@@ -285,17 +273,14 @@
   controls.forEach(button => button.addEventListener('click', () => {
     category = button.dataset.filter;
     type = 'all';
-    limit = batchSize;
     render();
   }));
   types.forEach(button => button.addEventListener('click', () => {
     type = button.dataset.type;
-    limit = batchSize;
     render();
   }));
-  search.addEventListener('input', () => { limit = batchSize; render(); });
-  form.addEventListener('submit', event => { event.preventDefault(); limit = batchSize; render(); });
-  more.addEventListener('click', () => { limit += batchSize; render({ focusNew: true }); });
+  search.addEventListener('input', () => render());
+  form.addEventListener('submit', event => { event.preventDefault(); render(); });
   clear.addEventListener('click', reset);
   document.getElementById('reset-book-search').addEventListener('click', reset);
   window.addEventListener('popstate', () => { restoreFromUrl(); render({ save: false }); });
