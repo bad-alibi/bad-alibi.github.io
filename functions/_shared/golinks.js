@@ -35,6 +35,9 @@ export const CONFIG = {
     },
     "shop": {
       "url": "https://mybadalibi.com/books"
+    },
+    "halloween-color": {
+      "url": "https://www.amazon.com/dp/B0CLH4Z7D6"
     }
   }
 };
