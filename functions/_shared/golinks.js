@@ -40,7 +40,7 @@ export const CONFIG = {
       "url": "https://www.amazon.com/dp/B0CLH4Z7D6"
     },
     "mars": {
-      "url": "https://www.amazon.com/s?k=9798289087218"
+      "url": "https://www.amazon.com/dp/B0FF3BV1L4"
     }
   }
 };
