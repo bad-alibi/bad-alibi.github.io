@@ -44,6 +44,9 @@ export const CONFIG = {
     },
     "sugarcrash": {
       "url": "https://play.google.com/store/apps/details?id=com.badalibi.sugarcrash"
+    },
+    "chorechamp": {
+      "url": "https://play.google.com/store/apps/details?id=com.badalibi.chorechamp"
     }
   }
 };
