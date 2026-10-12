@@ -41,6 +41,9 @@ export const CONFIG = {
     },
     "mars": {
       "url": "https://www.amazon.com/dp/B0FF3BV1L4"
+    },
+    "sugarcrash": {
+      "url": "https://play.google.com/store/apps/details?id=com.badalibi.sugarcrash"
     }
   }
 };
