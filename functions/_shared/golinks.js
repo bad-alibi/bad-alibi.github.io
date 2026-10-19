@@ -56,6 +56,9 @@ export const CONFIG = {
     },
     "timesprouts": {
       "url": "https://play.google.com/store/apps/details?id=com.timesprouts.app"
+    },
+    "retirementguest": {
+      "url": "https://www.amazon.com/dp/B0CQ4NF14D"
     }
   }
 };
