@@ -47,6 +47,15 @@ export const CONFIG = {
     },
     "chorechamp": {
       "url": "https://play.google.com/store/apps/details?id=com.badalibi.chorechamp"
+    },
+    "rumblerails": {
+      "url": "https://play.google.com/store/apps/details?id=com.badalibi.rumblerails"
+    },
+    "serenity": {
+      "url": "https://www.amazon.com/dp/B0D7GM2RFR"
+    },
+    "timesprouts": {
+      "url": "https://play.google.com/store/apps/details?id=com.timesprouts.app"
     }
   }
 };
