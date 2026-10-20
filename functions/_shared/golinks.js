@@ -59,6 +59,9 @@ export const CONFIG = {
     },
     "retirementguest": {
       "url": "https://www.amazon.com/dp/B0CQ4NF14D"
+    },
+    "badalibishirt": {
+      "url": "https://www.amazon.com/dp/B0FNF874LH"
     }
   }
 };
