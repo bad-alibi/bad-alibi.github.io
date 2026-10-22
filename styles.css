@@ -357,7 +357,8 @@ a{color:inherit}
   width:140px; height:140px; object-fit:cover; border-radius:50%;
   border:2px solid #eee; margin-bottom:.6rem;
 }
-.author-card h3{margin:.25rem 0 .25rem}
+.author-card h3,.author-card h2{margin:.25rem 0 .25rem}
+.author-card h2{font-size:1.17em}
 .author-card p{margin:0 0 .75rem; color:var(--muted)}
 
 /* ======================
