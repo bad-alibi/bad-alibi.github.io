@@ -62,6 +62,12 @@ export const CONFIG = {
     },
     "badalibishirt": {
       "url": "https://www.amazon.com/dp/B0FNF874LH"
+    },
+    "space": {
+      "url": "https://www.amazon.com/dp/B0CK3SDRPB"
+    },
+    "thanksgiving": {
+      "url": "https://www.amazon.com/dp/B0CYPT2DG4"
     }
   }
 };
