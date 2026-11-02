@@ -68,6 +68,12 @@ export const CONFIG = {
     },
     "thanksgiving": {
       "url": "https://www.amazon.com/dp/B0CYPT2DG4"
+    },
+    "reunited": {
+      "url": "https://www.amazon.com/dp/B0DCTXXHMK"
+    },
+    "mars-kindle": {
+      "url": "https://www.amazon.com/dp/B0FF1TD5TY"
     }
   }
 };
