@@ -253,7 +253,7 @@ async function handleStats(request, env, config, store, url) {
   const token = env && env.STATS_TOKEN;
   if (!token) return new Response('Not found', { status: 404, headers: { 'cache-control': 'no-store' } });
   const auth = request.headers.get('authorization') || '';
-  const given = auth.startsWith('Bearer ') ? auth.slice(7) : (url.searchParams.get('token') || '');
+  const given = auth.startsWith('Bearer ') ? auth.slice(7) : ''; // header-only: never accept the token in the URL
   if (!timingSafeEqual(given, token)) return new Response('Unauthorized', { status: 401, headers: { 'cache-control': 'no-store', 'www-authenticate': 'Bearer' } });
   if (!store) return new Response('Counting storage not configured (bind a D1 database as GOLINKS_DB)', { status: 503 });
 
