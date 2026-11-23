@@ -74,6 +74,12 @@ export const CONFIG = {
     },
     "mars-kindle": {
       "url": "https://www.amazon.com/dp/B0FF1TD5TY"
+    },
+    "christmas": {
+      "url": "https://www.amazon.com/dp/B0FLY7W6MX"
+    },
+    "bridal": {
+      "url": "https://www.amazon.com/dp/B0CR79HY77"
     }
   }
 };
